@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  ghost:
+        container_name: allthingsreversed.io
+        image: ghost:5.105
+        restart: on-failure
+        ports:
+         - 2368:2368
+        depends_on:
+         - db
+        volumes:
+         - ./blog/content:/var/lib/ghost/content
+        environment:
+           url: https://allthingsreversed.io
+           database__client: mysql
+           database__connection__host: db
+           database__connection__user: db_user
+           database__connection__password: ${DB_USER_PASS}
+           database__connection__database: allthingsreversed_production
+           mail__transport: SMTP
+           mail__options__host: smtp.webio.pl
+           mail__options__port: 465
+           mail__options__secureConnection: true
+           mail__options__auth__user: contact@allthingsreversed.io
+           mail__options__auth__pass: ${MAIL_USER_PASS}
+  db:
+        container_name: allthingsreversed_db
+        image: mysql:8.0
+        command: mysqld --interactive-timeout=86400
+        restart: on-failure
+        ports:
+         - 33060:33060
+         - 3306:3306
+        environment:
+                MYSQL_ROOT_PASSWORD: ${ROOT_PASS}
+                MYSQL_DATABASE: allthingsreversed_production
+                MYSQL_USER: db_user2
+                MYSQL_USER_PASSWORD: ${USER_PASS}
+        volumes:
+         - ./blog/mysql/data:/var/lib/mysql
+         - ./blog/mysql/config:/etc/mysql/conf.d
