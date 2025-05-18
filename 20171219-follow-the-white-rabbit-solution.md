@@ -1,5 +1,5 @@
 ---
-title: "Assembly job offer... "Follow the white rabbit" solution"
+title: "Assembly job offer... 'Follow the white rabbit' solution"
 date: 2017-12-19T07:34:50.000Z
 tags:
   - "solution"

@@ -1,5 +1,5 @@
 ---
-title: "Finding "Praktyczna Inżyniera Wsteczna" last hidden flag."
+title: "Finding 'Praktyczna Inżyniera Wsteczna' last hidden flag."
 date: 2018-02-17T08:53:38.000Z
 tags:
   - "gynvael"
