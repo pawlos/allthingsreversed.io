@@ -14,6 +14,7 @@ feature_image: "content/images/2021/11/004.webp"
 This fun, little challenge was RE challenge during N1CTF.
 
 We are given the following Rust source code:
+{% raw %}
 [code]
     macro_rules! check {
         (@s n1ctf{$Never:tt}) => {
@@ -68,6 +69,7 @@ We are given the following Rust source code:
     }
 
 [/code]
+{% endraw %}
 
 (Full source code [here](https://gist.github.com/pawlos/079a3301174d2a322d99ae607cde1bf0)).
 
