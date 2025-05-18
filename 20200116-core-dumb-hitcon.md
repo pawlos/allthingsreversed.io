@@ -33,8 +33,9 @@ After opening the file in Ghidra and analyzing it we can see a couple of functio
 
 ![](content/images/2020/01/image.png)
 
-The fact that it contains strings like "Please enter the flag:" and "Congratz! The flag is hitcon{%s}" :)
+The fact that it contains strings like "Please enter the flag:" and "Congratz! The flag is `hitcon{%s}`" :)
 " was also a strong indicator that it's the right place to start. From the string usages we can quickly identify that `FUN_555555554730` is some kind of `printf` or `puts` and `FUN_555555554740` reads the flag - up to `0x37` characters and stores it in variable `local_d8`. Later we see the check that in fact limits the flag length to `0x34` characters.
+
 [code]
     iVar1 = FUN_55555555488a(flag);
     if (iVar1 != 0x34) {
