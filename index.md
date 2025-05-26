@@ -1,5 +1,6 @@
 # Blog Index
 
+- 2025-05-25 - [NahamCon CTF 2025 — Challenge Writeups & Analysis](20250526-nahamcon-2025.md)
 - 2025-04-13 - [1753CTF - 🍀Luck, 🤷‍♂️ Free Flag and 🔮 Fortune](20250413-1753ctf-luck-free-flag-fortune.md)
 - 2024-11-28 - [Scripting Ghidra - Create Data](20241128-scripting-ghidra-create-data.md)
 - 2024-11-13 - [Scripting Ghidra - Set Equate](20241113-scripting-ghidra-set-equate.md)
