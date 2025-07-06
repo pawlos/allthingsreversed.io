@@ -27,77 +27,77 @@ feature_image: "content/images/2022/01/insomnie.webp"
 We are getting a zip file, with a single `.exe` file which triggers Defender almost immediately so we need to disable it and just to be safe run every tests in Hyper-V.
 
 Loading the file into Ghidra we are presented with not that complex `entry` method that can be simplified to the following form:
-[code]
-      _.elited = ".elited";
-      find_section(&section_elited,&len,_.elited);
-      xor_buffer(section_elited,len,(byte *)akxptiqmv);
-      _usr32dll = &User32.dll_str;
-      local_170 = &test_str;
-      .sfile = &.sfile_str;
-      _loadLibraryStr = &LoadLibraryA_str;
-      _exitProcessStr = &ExitProcess_str;
-      _freeLibraryStr = &FreeLibrary_str;
-      local_148 = &_MessageBoxAStr;
-      local_140 = &_akxptiqmv_str;
-      _getComputerNameAStr = &_GetComputerNameA_Str;
-      get_names((longlong *)&_usr32dll,9);
-      addr_LoadLibrary = (code *)GetAddr(local_1b8,_loadLibraryStr);
-      addr_ExitProcess = GetAddr(local_1b8,_exitProcessStr);
-      addr_FreeLibrary = (code *)GetAddr(local_1b8,_freeLibraryStr);
-      addr_GetComputerNameA = (code *)GetAddr(local_1b8,_getComputerNameAStr);
-      addr_user32_lib = (*addr_LoadLibrary)(_usr32dll);
-      if (addr_user32_lib != 0) {
-        (*addr_GetComputerNameA)(computerNameBuf,buf_size);
-        find_section(&sfile_section,&size,.sfile);
-        xor_buffer(sfile_section,size,computerNameBuf);
-        run(sfile_section,size);
-        (*addr_FreeLibrary)(addr_user32_lib);
-      }
-      return;
 
-[/code]
+```
+  _.elited = ".elited";
+  find_section(&section_elited,&len,_.elited);
+  xor_buffer(section_elited,len,(byte *)akxptiqmv);
+  _usr32dll = &User32.dll_str;
+  local_170 = &test_str;
+  .sfile = &.sfile_str;
+  _loadLibraryStr = &LoadLibraryA_str;
+  _exitProcessStr = &ExitProcess_str;
+  _freeLibraryStr = &FreeLibrary_str;
+  local_148 = &_MessageBoxAStr;
+  local_140 = &_akxptiqmv_str;
+  _getComputerNameAStr = &_GetComputerNameA_Str;
+  get_names((longlong *)&_usr32dll,9);
+  addr_LoadLibrary = (code *)GetAddr(local_1b8,_loadLibraryStr);
+  addr_ExitProcess = GetAddr(local_1b8,_exitProcessStr);
+  addr_FreeLibrary = (code *)GetAddr(local_1b8,_freeLibraryStr);
+  addr_GetComputerNameA = (code *)GetAddr(local_1b8,_getComputerNameAStr);
+  addr_user32_lib = (*addr_LoadLibrary)(_usr32dll);
+  if (addr_user32_lib != 0) {
+    (*addr_GetComputerNameA)(computerNameBuf,buf_size);
+    find_section(&sfile_section,&size,.sfile);
+    xor_buffer(sfile_section,size,computerNameBuf);
+    run(sfile_section,size);
+    (*addr_FreeLibrary)(addr_user32_lib);
+  }
+  return;
+```
 
 What is happening is, that we are finding a section `.elited`, decrypting with with XOR with password `akxptiqmv`. That section is used to obtain some names, load API functions like `LoadLibrary`, `ExitProcess`, `FreeLibrary` and `GetComputerNameA`. The last one is used to get the computer name and this is used as a password to decrypt data located in section `.sfile`. In the `run` function a remote thread is created in the same process and decrypted content from `.sfile` section is injected and executed.
 
 We don't know what should be the correct computer name to decrypt the content of `.sfile` but seeing some checks in the `run` function for `MZ` and `PE` constants we know it supposed to be a valid exe file. Having that knowledge we can get the actual computer name: `MOI-S1KRIT-KOMP`. With that we got a second part of the challenge.
 
 This is a bit more obfuscated one, with a few anti-debugging tricks. Some function were also quite large, and Ghidra took very long to decompile. To avoid waiting, I've looked mostly at the disassembly in this binary. Some function were decompiled but it wasn't pretty
-[code]
-      local_34 = 0;
-      auStack208[0] = 0x140007852;
-      _Seed = GetTickCount();
-      auStack208[0] = 0x140007859;
-      srand(_Seed);
-      auStack208[0] = 0x140007868;
-      local_3c = FUN_140006610();
-      auStack208[0] = 0x140007885;
-      local_38 = local_3c;
-      local_48 = (char *)malloc((ulonglong)local_3c);
-      local_c = 0x1a3fee83;
-      uStack176 = 0x1400078b4;
-      uVar16 = decode_pointer(?)(0x10);
-      lVar2 = -uVar16;
-      local_10 = 0x38cda9dc;
-      *(undefined4 *)((longlong)&local_a8 + lVar2) = 0x4896565f;
-      local_14 = 0x777001d;
-      local_18 = 0x4bf4cc5b;
-      local_1c = 0x772abdf3;
 
-[/code]
+```
+local_34 = 0;
+auStack208[0] = 0x140007852;
+_Seed = GetTickCount();
+auStack208[0] = 0x140007859;
+srand(_Seed);
+auStack208[0] = 0x140007868;
+local_3c = FUN_140006610();
+auStack208[0] = 0x140007885;
+local_38 = local_3c;
+local_48 = (char *)malloc((ulonglong)local_3c);
+local_c = 0x1a3fee83;
+uStack176 = 0x1400078b4;
+uVar16 = decode_pointer(?)(0x10);
+lVar2 = -uVar16;
+local_10 = 0x38cda9dc;
+*(undefined4 *)((longlong)&local_a8 + lVar2) = 0x4896565f;
+local_14 = 0x777001d;
+local_18 = 0x4bf4cc5b;
+local_1c = 0x772abdf3;
+```
 
 Debugging tricks that were used by this file was quite fun (hence the name of the following function):
-[code]
-    void do_fun_stuff(undefined8 param_1)
-    {
-      FUN_140003820(0x3ff0000000000000,param_1,1);
-      set_mouse_speed();
-      calls_set_cursor_pos();
-      call_beep();
-      SwapMouseButton(1);
-      return;
-    }
 
-[/code]
+```
+void do_fun_stuff(undefined8 param_1)
+{
+  FUN_140003820(0x3ff0000000000000,param_1,1);
+  set_mouse_speed();
+  calls_set_cursor_pos();
+  call_beep();
+  SwapMouseButton(1);
+  return;
+}
+```
 
 Checks were using `IsDebuggerPresent` API so it was quite easy to dodge that bullet. I've patched the binary in order not have to do it manually.
 
