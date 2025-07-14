@@ -58,64 +58,64 @@ We can get some information what files were changed between snapshots by issuing
 The `/etc/Quijote.txt`, `/usr/lib/zyppe` and `/usr/bin/dot` seems interesting. The first one is some text, which we don't know how to use (now) and the other two are ELF files, which we can load up in ghidra.
 
 The `dot` one, expects a password
-[code]
-    std::operator<<((basic_ostream *)std::cout,"Password: ");
-    std::operator>>((basic_istream *)std::cin,inp);
 
-[/code]
+```
+std::operator<<((basic_ostream *)std::cout,"Password: ");
+std::operator>>((basic_istream *)std::cin,inp);
+```
 
 calculates `SHA256` on it, and compares with a hash `b3c20caa9a1a82add9503e0eac43f741793d2031eb1c6e830274ed5ea36238bf`. We can also see appending `"@flare-on.com"` so it must be the binary, that will give us the flag, but we need a password.
 
 Checking the other binary, we can see that it opens a `Documents` folder, gets all the files one by one and encrypts them, saving a new one with `.broken` extension. The `encrypt` itself is a `RC4` with hardcoded key.
-[code]
-    void encrypt(char *inp)
-    {
-      uint uVar1;
-      int S [256];
-      char key [52];
-      int tmp2;
-      int k;
-      int l;
-      int ii;
-      int j;
-      int jj;
-      int i;
-      int tmp;
 
-      key._0_8_ = L'\x65732041';
-      key._8_8_ = L'\x20736920';
-      key._16_8_ = L'\x65676e6f';
-      key._24_8_ = L'\x72636573';
-      key._32_8_ = L'\x2065636e';
-      key._40_8_ = L'\x20656e6f';
-      key._48_4_ = L'\x74692073';
-      for (i = 0; i < 0x100; i += 1) {
-        S[i] = i;
-      }
-      ...
+```
+void encrypt(char *inp)
+{
+  uint uVar1;
+  int S [256];
+  char key [52];
+  int tmp2;
+  int k;
+  int l;
+  int ii;
+  int j;
+  int jj;
+  int i;
+  int tmp;
 
-[/code]
+  key._0_8_ = L'\x65732041';
+  key._8_8_ = L'\x20736920';
+  key._16_8_ = L'\x65676e6f';
+  key._24_8_ = L'\x72636573';
+  key._32_8_ = L'\x2065636e';
+  key._40_8_ = L'\x20656e6f';
+  key._48_4_ = L'\x74692073';
+  for (i = 0; i < 0x100; i += 1) {
+    S[i] = i;
+  }
+  ...
+```
 
 Since, `RC4` is reversable with itself, we can use the binary to decrypt all the files in the `~/Documents` folder.
 
 Doing that we can recover the original form of the files that were encrypted. Most of them are still not readable but `shopping_list.txt` and all the files starting with `u`. The `unagi` gives us: `The first byte of the password is 0x45`. The `udon_noddles.txt` `"ugali", "unagi" and "udon noodles" are delicious. What a coincidence that all of them start by "u"!` and `ugali.txt` \- `Ugali with Sausages or Spaghetti is tasty. It doesnâ€™t matter if you rotate it left or right, it is still tasty! You should try to come up with a great recipe using CyberChef.`
 
 The `shopping_list.txt`
-[code]
-    /
-    [U]don noodles
-    [S]trawberries
-    [R]eese's
-    /
-    [B]anana chips
-    [I]ce Cream
-    [N]atillas
-    /
-    [D]onuts
-    [O]melettes
-    [T]acos
 
-[/code]
+```
+/
+[U]don noodles
+[S]trawberries
+[R]eese's
+/
+[B]anana chips
+[I]ce Cream
+[N]atillas
+/
+[D]onuts
+[O]melettes
+[T]acos
+```
 
 And it points to the `/usr/bin/dot` binary that we have already found.
 
@@ -132,27 +132,27 @@ Collecting all the clues found along the way, we have parts of the password E4Q5
 I had trouble with getting the content from d-files, and correctly calculating 14th char which was ( `The 14th (and last byte) of the password is the sum of the number of participants from Spain, Singapore and Indonesia that finished the FLARE-ON 7, FLARE-ON 6 or FLARE-ON 5` \- the number I was getting was incorrect.
 
 But if we remember, the `dot` binary, it was comparing our password with SHA256, and we have enough characters to brut force the rest which is what I did.
-[code]
-    import itertools
-    import hashlib
-    import string
 
-    def calc_sha256(s):
-    	return hashlib.sha256(s).hexdigest()
+```
+import itertools
+import hashlib
+import string
 
-    letters = string.printable
-    print('[+] start')
-    for c in itertools.product(letters, repeat=3):
-    	v = str.encode(''.join(c))
-    	candidate = b'E4Q5d'+v[:2]+b'`s4lD5'+v[2:]
-    	if calc_sha256(candidate) == 'b3c20caa9a1a82add9503e0eac43f741793d2031eb1c6e830274ed5ea36238bf':
-    		print(f'candidate: {candidate}')
-    		import sys
-    		sys.exit(-1)
+def calc_sha256(s):
+  return hashlib.sha256(s).hexdigest()
 
-    print('done :(')
+letters = string.printable
+print('[+] start')
+for c in itertools.product(letters, repeat=3):
+  v = str.encode(''.join(c))
+  candidate = b'E4Q5d'+v[:2]+b'`s4lD5'+v[2:]
+  if calc_sha256(candidate) == 'b3c20caa9a1a82add9503e0eac43f741793d2031eb1c6e830274ed5ea36238bf':
+    print(f'candidate: {candidate}')
+    import sys
+    sys.exit(-1)
 
-[/code]
+print('done :(')
+```
 
 Running the script, we can get the candidate: E4Q5d6f`s4lD5I. Passing this flag to the binary gives the flag
 
