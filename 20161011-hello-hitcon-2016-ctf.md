@@ -24,37 +24,38 @@ So what tasks did I worked on?
 ## Leaking
 
 It was a node.js application that uses a VM to run the user code. The source code was given and it looked like this:
-[code]
-    "use strict";
 
-    var randomstring = require("randomstring");
-    var express = require("express");
-    var {VM} = require("vm2");
-    var fs = require("fs");
+```
+"use strict";
 
-    var app = express();
-    var flag = require("./config.js").flag
+var randomstring = require("randomstring");
+var express = require("express");
+var {VM} = require("vm2");
+var fs = require("fs");
 
-    app.get("/", function (req, res) {
-        res.header("Content-Type", "text/plain");
+var app = express();
+var flag = require("./config.js").flag
 
-        /*    Orange is so kind so he put the flag here. But if you can guess correctly :P    */
-        eval("var flag_" + randomstring.generate(64) + " = \"hitcon{" + flag + "}\";")
-        if (req.query.data && req.query.data.length <= 12) {
-            var vm = new VM({
-                timeout: 1000
-            });
-            console.log(req.query.data);
-            res.send("eval ->" + vm.run(req.query.data));
-        } else {
-            res.send(fs.readFileSync(__filename).toString());
-        }
-    });
+app.get("/", function (req, res) {
+    res.header("Content-Type", "text/plain");
 
-    app.listen(3000, function () {
-        console.log("listening on port 3000!");
-    });
-[/code]
+    /*    Orange is so kind so he put the flag here. But if you can guess correctly :P    */
+    eval("var flag_" + randomstring.generate(64) + " = \"hitcon{" + flag + "}\";")
+    if (req.query.data && req.query.data.length <= 12) {
+        var vm = new VM({
+            timeout: 1000
+        });
+        console.log(req.query.data);
+        res.send("eval ->" + vm.run(req.query.data));
+    } else {
+        res.send(fs.readFileSync(__filename).toString());
+    }
+});
+
+app.listen(3000, function () {
+    console.log("listening on port 3000!");
+});
+```
 
 So the first challenge was to get pass through the check for the length of the data being passed to the node app. 12 characters is not that many. The second one was to jump out of the VM to read the flag. VM should be secure right? Not so much :)
 

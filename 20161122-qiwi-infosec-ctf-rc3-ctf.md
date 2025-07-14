@@ -17,40 +17,41 @@ Last week there were two CTFs I've participated in.
 > I have a [snake](). CrackMe!.
 
 The file was a python compiled bytes. By using [uncompyle2](https://github.com/wibiti/uncompyle2) I was able to recover the .py file
-[code]
+
+```
     # 2016.11.22 11:24:48 CET
     #Embedded file name: task.py
     import marshal
     src = 'YwAAAAADAAAAGAAAAEMAAABz7wAAAGQBAGoAAGcAAGQCAGQDAGQEAGQFAGQGAGQHAGQIAGQJAGQKAGQLAGQMAGQNAGQOAGQPAGQMAGcPAERdHAB9AAB0AQB0AgB8AACDAQBkEAAXgwEAXgIAcToAgwEAfQEAdAMAZBEAgwEAfQIAfAIAfAEAawIAcuYAZAEAagAAZwAAZBIAZBMAZBQAZBUAZBYAZBcAZBgAZBkAZBoAZBsAZBwAZB0AZB4AZAsAZBwAZB8AZAMAZB0AZAgAZB4AZCAAZCEAZxYARF0VAH0AAHwAAGoEAGQiAIMBAF4CAHHGAIMBAEdIbgUAZCMAR0hkAABTKCQAAABOdAAAAAB0AQAAAF50AQAAADR0AQAAAEt0AQAAAGl0AQAAAC50AQAAAC90AQAAAE50AQAAAGp0AQAAAFB0AQAAAG90AQAAAD90AQAAAGx0AQAAADJ0AQAAAFRpAwAAAHMJAAAAWW91IHBhc3M6dAEAAABzdAEAAAB5dAEAAABudAEAAAB0dAEAAAA6dAEAAAB7dAEAAAB3dAEAAABxdAEAAABFdAEAAAA2dAEAAABmdAEAAABYdAEAAAB1dAEAAABhdAEAAAAxdAEAAAB9dAUAAABST1QxM3MFAAAATm8gOigoBQAAAHQEAAAAam9pbnQDAAAAY2hydAMAAABvcmR0CQAAAHJhd19pbnB1dHQGAAAAZGVjb2RlKAMAAAB0AQAAAGV0AwAAAHRtcHQGAAAAcGFzc3dkKAAAAAAoAAAAAHMHAAAAdGFzay5weVIcAAAAAgAAAHMKAAAAAAFfAQwBDAFvAQ=='.decode('base64')
     code = marshal.loads(src)
     exec code
-
-[/code]
+```
 
 By adding `import dis` and changing `exec code` to `print dis.dis(code)` we are able to obtain the Python byte code.
 
 [View Gist](https://gist.github.com/pawlos/893e22df5c712b0490b23fe265e8ad14)
 
 As I can see the code is not that complex. After few minutes we can get the original python code:
-[code]
-    tmp = ''
-    w = ''.join(['^','4','K','i','.','/','N','j','P','o','?','l','2','T','?'])
-    for e in w:
-    	tmp = tmp + chr(ord(e)+3)
 
-    print 'You pass:'
-    passwd = raw_input()
+```
+tmp = ''
+w = ''.join(['^','4','K','i','.','/','N','j','P','o','?','l','2','T','?'])
+for e in w:
+    tmp = tmp + chr(ord(e)+3)
 
-    if tmp == passwd:
-    	t = ''.join(['s','y','n','t',':','{','w','q','E','6','f','X','u','o','f','a','4','X','N','u','1','}'])
-    	w = ''
-    	for e in t:
-    		w = w + e.decode('ROT13')
-    	print w
-    else:
-    	print "No :("
-    return None
-[/code]
+print 'You pass:'
+passwd = raw_input()
+
+if tmp == passwd:
+    t = ''.join(['s','y','n','t',':','{','w','q','E','6','f','X','u','o','f','a','4','X','N','u','1','}'])
+    w = ''
+    for e in t:
+        w = w + e.decode('ROT13')
+    print w
+else:
+    print "No :("
+return None
+```
 
 What we can do now is either print the tmp variable to obtain the correct input (`a7Nl12QmSrBo5WB`) or just remove the check for correct input and get the correct flag: `flag:{jdR6sKhbsn4KAh1}`.
 
@@ -198,8 +199,8 @@ it looks like some quotes from a movie. My searching for some of them in your fa
   * [Evil Dead 2](http://www.imdb.com/title/tt0092991/)
 
 Ok, so maybe the flag is coded as binary depending of the movie? Let's try it out.
-[code]
 
+```
     army_of_darkness = ["Oh, you wanna know? 'Cause the answer's easy! I'm BAD Ash... and you're GOOD Ash! You're a goody little two-shoes! Little goody two-shoes! Little goody two-shoes!",
     "Good. Bad. I'm the guy with the gun.",
     "Look, maybe I didn't say every single little tiny syllable, no. But basically I said them, yeah.",
@@ -248,7 +249,7 @@ Ok, so maybe the flag is coded as binary depending of the movie? Let's try it ou
     print output
     n = int('0b'+output, 2)
     print binascii.unhexlify('%x' % n)
-[/code]
+```
 
 There was some back and forth with few of the quotes but due to the fact that I knew the first chars of the flag (`RC-2016-`) I could verify the correctness of quotes assignment to the movies. After making it correct and running we get the flag:
 

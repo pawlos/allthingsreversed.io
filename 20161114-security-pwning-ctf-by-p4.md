@@ -44,8 +44,10 @@ Let's try SQLi. Lets up "'" in a password field.
 
 Great! So let's log in:
 
+```
 username: admin
 password: ' or 1=1--
+```
 
 which gives us the flag: `pwn{5ql1njecti0nByp@ssMade4@5y}`. A quick one.
 
@@ -77,68 +79,70 @@ The pin is compared to number 0x539 = 1337 dec. The flag from the app works as a
 ## web 100 - Loteria flagowa (Flag lottery)
 
 In this one we're given a web page that selects 6 numbers from 10 to 99. Our task is to predict what is selected. If we do that correctly we will be given a flag.
-[code]
-    var express = require("express");
-    var app = express();
-    var expressWs = require('express-ws')(app);
-    var fs = require("fs");
 
-    var flag = fs.readFileSync("../flag").toString();
+```
+  var express = require("express");
+  var app = express();
+  var expressWs = require('express-ws')(app);
+  var fs = require("fs");
 
-    app.use(express.static('.'));
+  var flag = fs.readFileSync("../flag").toString();
 
-    app.ws('/', function(ws, req) {
-    	var seed = new Date().valueOf() & 0xFFFFFFFF;
-    	var rnd = betterRand(seed)
-        var userId = new Buffer(seed.toString()+","+rnd.next().value).toString("base64")
+  app.use(express.static('.'));
 
-        var numbers = Array.from(Array(6)).map(() => Math.floor(rnd.next().value * 89 + 10))
+  app.ws('/', function(ws, req) {
+    var seed = new Date().valueOf() & 0xFFFFFFFF;
+    var rnd = betterRand(seed)
+      var userId = new Buffer(seed.toString()+","+rnd.next().value).toString("base64")
 
-        ws.on('message', function(msg) {
-            try {
-                var m = JSON.parse(msg.replace("'", '').replace("'", ''));
-                var resp = {"numbers": numbers}
+      var numbers = Array.from(Array(6)).map(() => Math.floor(rnd.next().value * 89 + 10))
 
-                if(JSON.stringify(resp.numbers) === JSON.stringify(m.numbers))
-                    resp.flag = flag;
+      ws.on('message', function(msg) {
+          try {
+              var m = JSON.parse(msg.replace("'", '').replace("'", ''));
+              var resp = {"numbers": numbers}
 
-                console.log(resp);
-                ws.send(JSON.stringify(resp));
-            } catch(err) { }
+              if(JSON.stringify(resp.numbers) === JSON.stringify(m.numbers))
+                  resp.flag = flag;
 
-            ws.close()
-        });
+              console.log(resp);
+              ws.send(JSON.stringify(resp));
+          } catch(err) { }
 
-        console.log("[*] Peer connected!");
-        ws.send(JSON.stringify({"userId": userId}))
-    });
+          ws.close()
+      });
 
-    console.log("[*] Listening on port 5555...")
-    app.listen(5555);
+      console.log("[*] Peer connected!");
+      ws.send(JSON.stringify({"userId": userId}))
+  });
 
-    function* betterRand(seed) {
-      var m = 25, a = 11, c = 17, z = seed || 3;
-      for(;;) yield (z=(a*z+c)%m)/m;
-    }
-[/code]
+  console.log("[*] Listening on port 5555...")
+  app.listen(5555);
+
+  function* betterRand(seed) {
+    var m = 25, a = 11, c = 17, z = seed || 3;
+    for(;;) yield (z=(a*z+c)%m)/m;
+  }
+```
 
 we can see there where the numbers are generated but also that a random seed, and the a number that it's before our 6 numbers to guess are send to the client. Ok. Looks like we go everything we need. Lets save the html file, correct the links to the resources and modify the Javascript. In the `.onMessage` method we add
-[code]
-    var msg = JSON.parse(evt.data);
-    if(msg["userId"])
-    {
-      $("#user-id")[0].innerText = msg["userId"];
-      a = window.atob(msg["userId"]);
-      var s = a.split(",");
-      var seed = s[0];
-      var next = s[1];
-      var rnd = betterRand(seed);
 
-      while (rnd.next().value != next) ;
-      var numbers = Array.from(Array(6)).map(() => Math.floor(rnd.next().value * 89 + 10))
-      console.log(numbers);
-    }
-[/code]
+```
+  var msg = JSON.parse(evt.data);
+  if(msg["userId"])
+  {
+    $("#user-id")[0].innerText = msg["userId"];
+    a = window.atob(msg["userId"]);
+    var s = a.split(",");
+    var seed = s[0];
+    var next = s[1];
+    var rnd = betterRand(seed);
+
+    while (rnd.next().value != next) ;
+    var numbers = Array.from(Array(6)).map(() => Math.floor(rnd.next().value * 89 + 10))
+    console.log(numbers);
+  }
+```
 
 and we paste the `betterRand` function form the server side. So basically what we do here we decode a `userId` information that is send from the server and that contains `seed` and a number before our 6 numbers to guess. then we construct a random and generate numbers until we hit our number that is send with the seed. After we get it we get the 6 numbers and print them in the console. Our only task is to write them from the console to the fields - we could automate that but there's no need.
 
