@@ -15,10 +15,10 @@ feature_image: "content/images/2021/03/2021-03-19_22-22-46.png"
 # net user /times
 
 You probably know this but in case you don't, Windows has built in feature for setting up allowed login days and hours for a particular account. It can be done in the following way
-[code]
-    net user account_name /times:[{times | ALL}]
 
-[/code]
+```
+    net user account_name /times:[{times | ALL}]
+```
 
 but when I used it to restrict my kids account, I've encountered an interesting issue which resulted in reversing the binary & debugging. If that sounds interesting read further.
 
@@ -27,10 +27,10 @@ but when I used it to restrict my kids account, I've encountered an interesting 
 ## Context
 
 So I wanted to limit possible login days and times so that during week, it's only allowed for few hours and a bit more relaxing hours during weekend. The format of time times part for the command is the following
-[code]
-    StartDay[-EndDay],StartHour-EndHour
 
-[/code]
+```
+    StartDay[-EndDay],StartHour-EndHour
+```
 
 So let's just do that, shall we?
 
@@ -40,10 +40,10 @@ So let's just do that, shall we?
 
 
 First issue with the command I've encountered pretty quickly as typing the following command
-[code]
-    net user Gość /times:Pn-Pt,13:00-15:00;So-Nd,9:00-17:00
 
-[/code]
+```
+    net user Gość /times:Pn-Pt,13:00-15:00;So-Nd,9:00-17:00
+```
 
 **Note:**`Gość` is the Guest account in polish. `Pn` \- is short for poniedziałek (Monday), `Pt` is short for piątek (Friday). `So` is sobota (Saturday), and `Nd` is for niedziela (Sunday).
 
@@ -93,10 +93,10 @@ So, by observing the days in the debugger we confirm that the programs' short na
 ## Still no Sundays?
 
 Ok, so now when we know what's the correct short name is `N` let's finally set the allowed hours.
-[code]
-    net user Gość /times:Pn-Pt,13:00-15:00;So-N,9:00-17:00
 
-[/code]
+```
+    net user Gość /times:Pn-Pt,13:00-15:00;So-N,9:00-17:00
+```
 
 So now we are all set, right? Nope. Although running the command yield no errors when we look at hours we see the following
 
