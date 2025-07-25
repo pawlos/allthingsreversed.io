@@ -66,13 +66,14 @@ The file is loaded but not much analysis is performed and no memory maps are aut
 
 As for the memory maps, the documentation also helps here and we can quickly create a couple more regions
 
-```
-ram	0000	  0x7fff	0x8000
-video_bank	0x8000	0x9ffe
-work_ram	  0xc000	0xcffe
-work_ram2	  0xd000	0xdffe
-OAM	        0xfe00	0xfe9e
-io_controls	0xff00	0xff7e
+| region name | start |  end  |
+|-------------|-------|-------|
+|ram		      |0x0000	|0x7fff |
+|video_bank	  |0x8000	|0x9ffe |
+|work_ram	    |0xc000	|0xcffe |
+|work_ram2	  |0xd000	|0xdffe |
+|OAM	        |0xfe00	|0xfe9e |
+|io_controls	|0xff00	|0xff7e |
 ```
 
 Thanks to that, we won't be dealing with errors that some references are not defined. Also thanks to the documentation we can give specific locations more meaningful names. Instead of `0xff40`, we can use `LCD_Control`, and `0xff41` is `LCD_Status`.
