@@ -60,10 +60,10 @@ This part is easy - it gets the first char of the flag and stores it in [char] a
 So on the above example we see that if the first element is `0x65`, then we take value from offset (`0x10`) - we add to it a value from offset 0x4 and everything is stored again under `0x10`. On the other hand - if the first element is not equal to `0x65` then it's being compared with `0x8E`. If we have a match - we do the same but not the operation is different - it's subtraction. If we move further - `0x01` is division, `0x73` \- multiplication, and lastly - `0xFA` \- xor. Ok, that part is easy. What's next? Next we do the same - again we check the first byte of the buffer and based on it we perform an operation. What's difference is that we use different operands - this time we do it on parameters from offsets `0x10` and `0xC`. Results is stored again in `0x10`.
 
 To sum up, this is what we do:
-[code]
-    *(buf+0x10) = *(buf+0x10) (op) *(buf+0x04) (op) *(buf+0x0C)
 
-[/code]
+```
+    *(buf+0x10) = *(buf+0x10) (op) *(buf+0x04) (op) *(buf+0x0C)
+```
 
 And op - operation is based on *buf. Easy. Now's the difficult part - the problem with this code is that this calculated value is not at all compared with the flag. Only in case when we do not get the match with the first byte in the buf, we get to compare - I think this is a flaw in this CTF challenge.
 
@@ -72,24 +72,24 @@ And op - operation is based on *buf. Easy. Now's the difficult part - the proble
 But that should not stop us form being able to decode the flag.
 
 To solve this I will use radare's r2pipe tool that allows to hook up to radare2 engine from scripting languages like for example python.
-[code]
-    import r2pipe
 
-    r2 = r2pipe.open("./smoothie")
+```python
+import r2pipe
 
-    r2.cmd('doo AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+r2 = r2pipe.open("./smoothie")
 
-    r2.cmd('db 0x80485bb')
-    flag = ''
-    for i in range(31):
-        r2.cmd('dc')
-        dl = r2.cmd('dr? dl')
-        flag += chr(int(dl,16))
-        r2.cmd('dr eax = 0x0')
+r2.cmd('doo AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
 
-    print flag
+r2.cmd('db 0x80485bb')
+flag = ''
+for i in range(31):
+    r2.cmd('dc')
+    dl = r2.cmd('dr? dl')
+    flag += chr(int(dl,16))
+    r2.cmd('dr eax = 0x0')
 
-[/code]
+print flag
+```
 
 What we do here is we connect to the debugee target via r2pipe, we open it for debug (`doo`) with a fake flag. We set a breakpoint at the last `leave` instruction.
 
@@ -98,95 +98,96 @@ Then in a loop we deal with one flag char at a time. First we run the execution 
 > flag{HereBeDaFlagForYoDebug�h}
 
 Almost, there's still one char off. It's 2nd character for the end - so let's try to see if the problem is in the binary or in our analysis. If we check the values assigned to this char we get this:
-[code]
-    [0x8E, 0xBD, 0x1, 0x85, 0x14]
 
-[/code]
+```
+    [0x8E, 0xBD, 0x1, 0x85, 0x14]
+```
 
 Lets try to write a script that would try to get what's the correct character for this spot.
-[code]
-    # -*- coding: utf-8 -*-
-    import itertools
 
-    ops = [0x65, 0x8e, 0x01, 0x73, 0xFA]
+```python
+# -*- coding: utf-8 -*-
+import itertools
 
-    flag = "flag{HereBeDaFlagForYoDebug?h}"
-    inp = [0xBD, 0x85, 0x14]
+ops = [0x65, 0x8e, 0x01, 0x73, 0xFA]
+
+flag = "flag{HereBeDaFlagForYoDebug?h}"
+inp = [0xBD, 0x85, 0x14]
 
 
-    for op1,op2 in itertools.permutations(ops,2):
-    	for c in itertools.permutations(inp, 3):
-    		if op1 == 0x65:
-    			temp = c[2] + c[0]
-    		elif op1 == 0x8E:
-    			temp = c[2] - c[0]
-    		elif op1 == 0x01:
-    			temp = c[2] / c[0]
-    		elif op1 == 0x73:
-    			temp = c[2] * c[0]
-    		else:
-    			temp = c[2] ^ c[0]
+for op1,op2 in itertools.permutations(ops,2):
+    for c in itertools.permutations(inp, 3):
+        if op1 == 0x65:
+            temp = c[2] + c[0]
+        elif op1 == 0x8E:
+            temp = c[2] - c[0]
+        elif op1 == 0x01:
+            temp = c[2] / c[0]
+        elif op1 == 0x73:
+            temp = c[2] * c[0]
+        else:
+            temp = c[2] ^ c[0]
 
-    		if op2 == 0x65:
-    			temp = temp + c[1]
-    		elif op2 == 0x8E:
-    			temp = temp - c[1]
-    		elif op2 == 0x01:
-    			temp = temp / c[1]
-    		elif op2 == 0x73:
-    			temp = temp * c[1]
-    		else:
-    			temp = temp ^ c[1]
+        if op2 == 0x65:
+            temp = temp + c[1]
+        elif op2 == 0x8E:
+            temp = temp - c[1]
+        elif op2 == 0x01:
+            temp = temp / c[1]
+        elif op2 == 0x73:
+            temp = temp * c[1]
+        else:
+            temp = temp ^ c[1]
 
-    	print "{:02X}, {:02X}, {}, {}".format(op1, op2, chr(temp & 255), c)
-    	print flag[:-3]+chr(temp & 255)+flag[-2:]
-
-[/code]
+    print "{:02X}, {:02X}, {}, {}".format(op1, op2, chr(temp & 255), c)
+    print flag[:-3]+chr(temp & 255)+flag[-2:]
+```
 
 After running this we get some solutions:
-[code]
-    λ python smoothie_solution.py
-    65, 8E, L, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebugLh}
-    65, 01, ☺, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug☺h}
-    65, 73, Ľ, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebugĽh}
-    65, FA, T, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebugTh}
-    8E, 65, ., (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug.h}
-    8E, 01, ☺, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug☺h}
-    8E, 73, ═, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug═h}
-    8E, FA, ,, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug,h}
-    01, 65, Ä, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebugÄh}
-    01, 8E, ä, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebugäh}
-    01, 73, ş, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebugşh}
-    01, FA, î, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebugîh}
-    73, 65, I, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebugIh}
-    73, 8E, ?, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug?h}
-    73, 01, ∟, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug∟h}
-    73, FA, A, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebugAh}
-    FA, 65, ., (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug.h}
-    FA, 8E, $, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug$h}
-    FA, 01, ☺, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug☺h}
-    FA, 73, ═, (20, 133, 189)
-    flag{HereBeDaFlagForYoDebug═h}
-[/code]
+
+```
+λ python smoothie_solution.py
+65, 8E, L, (20, 133, 189)
+flag{HereBeDaFlagForYoDebugLh}
+65, 01, ☺, (20, 133, 189)
+flag{HereBeDaFlagForYoDebug☺h}
+65, 73, Ľ, (20, 133, 189)
+flag{HereBeDaFlagForYoDebugĽh}
+65, FA, T, (20, 133, 189)
+flag{HereBeDaFlagForYoDebugTh}
+8E, 65, ., (20, 133, 189)
+flag{HereBeDaFlagForYoDebug.h}
+8E, 01, ☺, (20, 133, 189)
+flag{HereBeDaFlagForYoDebug☺h}
+8E, 73, ═, (20, 133, 189)
+flag{HereBeDaFlagForYoDebug═h}
+8E, FA, ,, (20, 133, 189)
+flag{HereBeDaFlagForYoDebug,h}
+01, 65, Ä, (20, 133, 189)
+flag{HereBeDaFlagForYoDebugÄh}
+01, 8E, ä, (20, 133, 189)
+flag{HereBeDaFlagForYoDebugäh}
+01, 73, ş, (20, 133, 189)
+flag{HereBeDaFlagForYoDebugşh}
+01, FA, î, (20, 133, 189)
+flag{HereBeDaFlagForYoDebugîh}
+73, 65, I, (20, 133, 189)
+flag{HereBeDaFlagForYoDebugIh}
+73, 8E, ?, (20, 133, 189)
+flag{HereBeDaFlagForYoDebug?h}
+73, 01, ∟, (20, 133, 189)
+flag{HereBeDaFlagForYoDebug∟h}
+73, FA, A, (20, 133, 189)
+flag{HereBeDaFlagForYoDebugAh}
+FA, 65, ., (20, 133, 189)
+flag{HereBeDaFlagForYoDebug.h}
+FA, 8E, $, (20, 133, 189)
+flag{HereBeDaFlagForYoDebug$h}
+FA, 01, ☺, (20, 133, 189)
+flag{HereBeDaFlagForYoDebug☺h}
+FA, 73, ═, (20, 133, 189)
+flag{HereBeDaFlagForYoDebug═h}
+```
 
 Nothing really stands out here, if I would have to pick one I would get a `flag{HereBeDaFlagForYoDebug.h}`.
 
