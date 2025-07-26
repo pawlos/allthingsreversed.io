@@ -74,14 +74,14 @@ Let's see if `xorWithKey` is actually doing what it says:
 
 There's a lot for a simple xor but in fact this is what's being done (line: `0x47e`).
 
-This is fully reversable - decode the `"BgkNElIMQQAXCQsADwpZHgkfEg=="` with base-64 and xor the result with "this is the key". A simple python script would suffice:
-[code]
+This is fully reversible - decode the `"BgkNElIMQQAXCQsADwpZHgkfEg=="` with base-64 and xor the result with "this is the key". A simple python script would suffice:
+
+```
     import base64
     from itertools import cycle
 
     print(''.join([chr(ord(x) ^ ord(y)) for x,y in zip(base64.b64decode("BgkNElIMQQAXCQsADwpZHgkfEg=="), cycle("this is the key"))]))
-
-[/code]
+```
 
 running it in ipython:
 
