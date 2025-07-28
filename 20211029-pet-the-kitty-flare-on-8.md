@@ -40,27 +40,27 @@ The second one, is more chatty and it it's not so obvious as the first one. Ther
 ![](content/images/2021/10/image-6.webp)
 
 Upon closer inspection of the second stream, it can be recognized as a structured packed communication with the `ME0W` with some bytes followed by `PA30`. Upon even closer inspection, we can see that after `ME0W` is followed by some 4B value and then the size of the `PA30` package (value of `0x27` in this case).
-[code]
+
+```
     0000   4d 45 30 57 09 00 00 00 27 00 00 00 50 41 33 30   ME0W....'...PA30
     0010   d0 84 49 07 77 a0 d7 01 18 23 c0 b2 9f 0b 01 01   ..I.w....#......
     0020   46 00 94 13 53 1a cc 38 d1 31 a0 d7 78 07 00 00   F...S..8.1..x...
     0030   52 fd 0c                                          R..
-
-[/code]
+```
 
 Those `ME0W`, `PA30` and in case of PNG (`\x89PNG`) are so called magic values and we can search by them and obtain some more info about the package, if this is a common protocol and not one invented by the author of this challenge. `ME0W` is probably a lost cause but `PA30` could lead to something. Checking this online, we can end up on a Wiki page - [List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures), and there there's a row that looks familiar:
 
-`44 43 4D 01 50 41 33 30`
-`50 41 33 30`| `DCM␁PA30`
-`PA30`| 0| | Windows Update [Binary Delta Compression](https://en.wikipedia.org/wiki/Binary_delta_compression "Binary delta compression") file[[45]](https://en.wikipedia.org/wiki/List_of_file_signatures#cite_note-45)
----|---|---|---|---
+    44 43 4D 01 50 41 33 30       DCM␁PA30
+    50 41 33 30                   PA30
+
+Windows Update [Binary Delta Compression](https://en.wikipedia.org/wiki/Binary_delta_compression "Binary delta compression") file[[45]](https://en.wikipedia.org/wiki/List_of_file_signatures#cite_note-45)
 
 Ok. So it looks like, those `PA30` packages are mimicking Windows Update's communication. And the flag is probably somewhere inside.
 
 To ease working with those files, let's save the raw streams and split them into separate `ME0W` messages.
-[code]
-    from struct import pack, unpack
 
+```
+    from struct import pack, unpack
 
     splitter = b'ME0W'
 
@@ -91,8 +91,7 @@ To ease working with those files, let's save the raw streams and split them into
     split_the_data(data)
     data = open('chall/1.raw','rb').read()
     split_the_data(data)
-
-[/code]
+```
 
 After running the script, we have extracted the whole communication and nowe we can see the `PNG` file that was identified in the first stream.
 
