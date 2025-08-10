@@ -9,10 +9,10 @@ feature_image: "content/images/2017/08/mission_14.webp"
 
 # GynvaelEN - Mission 14 - Solution
 
-Stream: <https://www.youtube.com/watch?v=rhsH-snYkIc>
+Stream: <https://www.youtube.com/watch?v=rhsH-snYkIc>  
 Mission link: <https://goo.gl/oUg99i>
 
-> Damn it, how will I ever get out of this labyrinth?
+> Damn it, how will I ever get out of this labyrinth?  
 >  ― Simón Bolívar
 
 This mission in comparison to the [previous one](http://ctfs.ghost.io/gynvael-en-mission-13-solution/) was an easy one. This was a PPC category (programming).
@@ -26,7 +26,8 @@ So we write our script based on what we see in the log and what we know from ana
 And basically that's all!
 
 After running the script we retrieve the map (just needed to manually set the map limits):
-[code]
+
+```
     #########################################################
     #.#.#.....##.#..........#.#.#...#..#.......#.......##.#.#
     #.#.#.#.#.##.####.####.##.#.#.#....#######.#.#####..#.#.#
@@ -52,4 +53,4 @@ After running the script we retrieve the map (just needed to manually set the ma
     #.#.##..................................................#
     #.......................................................#
     #########################################################
-[/code]
+```
