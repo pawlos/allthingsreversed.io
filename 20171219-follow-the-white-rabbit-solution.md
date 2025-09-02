@@ -16,7 +16,7 @@ In a cold November night I was standing at a bus stop and saw and advertisement 
 
 Ok, to tell you the truth I was nothing like that. In reality I was just browsing through my Facebook wall and see this on my screen.
 
-Immediately I wanted to have a look at it but since the quality wasn't that good it might be a bit of a problem. Fortunately the URL page was clearly visible at the bottom so we could get the code and not to retype it. So let's visit the url: <https://git.io/vFmiE>
+Immediately I wanted to have a look at it but since the quality wasn't that good it might be a bit of a problem. Fortunately the URL page was clearly visible at the bottom so we could get the code and not to retype it. So let's visit the url: <https://git.io/vFmiE> (redirecting to https://gist.github.com/ooKu9yaiV4a/c7463504f1dba1e6bb1681f179dc7b59)
 
 There's not that much assembly going there so what I did was to analyze it an write a short python script to revers it. What Might ba a problem is only those 5 bytes just before `.A`.
 
