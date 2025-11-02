@@ -1,6 +1,6 @@
 ---
 title: "CryptoCat - Ultimate Calculator 3000: Challenge Writeup & Analysis"
-date: 2025-07-25T00:00:00.000Z
+date: 2025-10-23T00:00:00.000Z
 tags:
   - "cryptocat"
   - "reverse-engineering"
