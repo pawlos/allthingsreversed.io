@@ -79,8 +79,7 @@ def calc(v, num):
     return sum_1, sum_2
 ```
 
-> ![NOTE]
-> The `num` parameter controls which part of the tables is used (indexes 0-63, 64-127, etc.) - will be used later.
+> The `num` parameter controls which part of the tables is used (indexes 0-63, 64-127, etc.) depending which number we process.
 
 During this loop, there's one interesting check being done at `140001884`. `sum1` is compared with `0x1770` and if the value is greater than that, then we stop the calculation and with few chunks of code more we exit the VM calculation.
 
