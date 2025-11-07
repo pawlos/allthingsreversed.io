@@ -1,5 +1,6 @@
 # Blog Index
 
+- 2025-11-07 - [N1CTF 2025 - n1vm writeup](20251107-n1vm-writeup.md)
 - 2025-10-23 - [CryptoCat - Ultimate Calculator 3000: Challenge Writeup & Analysis](20251023-ultimate-calculator-3000.md)
 - 2025-10-20 - [Hack.lu CTF 2025 - Instructions unclear Writeup](20251020-instructions-unclear-hacklu-ctf.md)
 - 2025-07-25 - [Google CTF 2025 - cgb Writeup](20250725-cgb-google-ctf.md)
