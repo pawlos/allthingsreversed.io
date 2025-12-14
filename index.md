@@ -1,5 +1,6 @@
 # Blog Index
 
+- 2025-12-14 - [SECCON CTF 2025 Quals - Mini bloat](20251214-MiniBloat-writeup.md)
 - 2025-11-30 - [LakeCTF 2025 Quals - Another Android Applaketion writeup](20251130-AnotherAndroidApplaketion.md)
 - 2025-11-16 - [HackingHub - Mother Printers writeup](20251116-Mother-printers-writeup.md)
 - 2025-11-08 - [N1CTF 2025 - Whimsical_Ideas_Happy_SShheeeepp writeup](20251108-Whimsical_Ideas_Happy_SShheeeepp-writeup.md)
