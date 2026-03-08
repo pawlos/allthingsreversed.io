@@ -11,15 +11,15 @@ feature_image: "content/images/2016/10/Zrzut-ekranu-2016-10-11-o-22.48.44.webp"
 
 This is the very first post on this blog so it serves as 'Hello world' in my journey through the world of CTFs.
 
-I was always into this kind of challenges from quite a long time. I was doing some kind of security tasks from sites like [wechall.net](wechall.net), <http://www.bright-shadows.net> or [Rankk](http://www.rankk.org).
+I was always into this kind of challenges from quite a long time. I was doing some kind of security tasks from sites like [wechall.net](https://wechall.net), <http://www.bright-shadows.net> or [Rankk](http://www.rankk.org).
 
-I was also for a short time taking part CTFs from [ctftime.org](https://ctftime.org) but I was lacking a good team and commitment so I give up.
+I was also for a short time taking part in CTFs from [ctftime.org](https://ctftime.org) but I was lacking a good team and commitment so I gave up.
 
 This year I've promised myself to take another try. But to do this right - I needed a good team. The best even. So I've approached the captain of the best Polish team - [Dragon Sector](http://blog.dragonsector.pl) \- and asked if I can play with them in the CTFs. Of course it would be as a trial as I am learning to be on their level. To my surprise it wasn't very new to them and I was invited to play with them and the upcoming event was HitCon 2016 CTF.
 
 So how was it? For sure - great fun. Tasks were very hard (at least on my level). The team came at 11th place and I've managed to solve one task for 200 pts and advance on the other (I did not play for the whole 48h)
 
-So what tasks did I worked on?
+So what tasks did I work on?
 
 ## Leaking
 
@@ -63,7 +63,7 @@ The 12 character limit check was easy to break - it was only a matter of passing
 
 `curl -g -G 'http://52.198.115.130:3000/' --data-urlencode "data[0]@-"`
 
-Jumping of of the VM was a bit harder. I've tried different things. The VM wasn't as secure as you might imagine - just check [those issues](https://github.com/patriksimek/vm2/issues/32) on github that allow jumping out of the sandbox. But apparently the version used on the CTF was already patched. I needed to find something else.
+Jumping out of the VM was a bit harder. I've tried different things. The VM wasn't as secure as you might imagine - just check [those issues](https://github.com/patriksimek/vm2/issues/32) on github that allow jumping out of the sandbox. But apparently the version used on the CTF was already patched. I needed to find something else.
 
 I went on googling and found out that there's a different issue in Buffer type. [Looks like](https://github.com/nodejs/node/issues/4660) it does not clear the memory it allocates. So if you could allocated 10000 bytes it would print the content of memory with the contents that was there before. Bingo. That was what was needed. Just send to VM `new Buffer(10000)` and search for the flag in the output:
 
@@ -110,5 +110,5 @@ See you at hack.lu
 
 * * *
 
-  1. Later I found out that the task was created by Orange Tsai - a guy how hacked Facebook - nice. ↩︎
+  1. Later I found out that the task was created by Orange Tsai - a guy who hacked Facebook - nice. ↩︎
 
