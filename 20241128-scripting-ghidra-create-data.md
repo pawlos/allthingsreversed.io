@@ -11,7 +11,7 @@ feature_image: "content/images/2024/11/CreateData.webp"
 
 # Scripting Ghidra - Create Data
 
-In the fourth installment of this series (if you haven't read/seen here's - [part 1](20200508-scripting-ghidra.md), [part 2](20200707-automating-ghidra-part-2.md), [part 3](20210410-automating-ghidra-part-3.md) and [part 4](20241113-scripting-ghidra-set-equate.md)) we will be using the `CreateData()` functionality in an automatic fashion.
+In the fifth installment of this series (if you haven't read/seen here's - [part 1](20200508-scripting-ghidra.md), [part 2](20200707-automating-ghidra-part-2.md), [part 3](20210410-automating-ghidra-part-3.md) and [part 4](20241113-scripting-ghidra-set-equate.md)) we will be using the `CreateData()` functionality in an automatic fashion.
 
 * * *
 
