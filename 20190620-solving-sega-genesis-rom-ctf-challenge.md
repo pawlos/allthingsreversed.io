@@ -10,13 +10,13 @@ feature_image: "content/images/2019/06/top.png"
 
 # Solving SEGA Genesis ROM CTF Challenge
 
-File fot the challenge can be downloaded from [here](https://github.com/zznop/jump/tree/master/bin). In order to run the file we need an emulator. There are few available but I've used [gens](http://gens.me/). Probably a better one could be found but at least for my purpose this was enough. After running `gens` and loading the `jump.bin` we see this:
+File for the challenge can be downloaded from [here](https://github.com/zznop/jump/tree/master/bin). In order to run the file we need an emulator. There are few available but I've used [gens](http://gens.me/). Probably a better one could be found but at least for my purpose this was enough. After running `gens` and loading the `jump.bin` we see this:
 
 ![](content/images/2019/06/main_screen.PNG)Main screen of the challenge
 
 We can play with it a little bit to see what's possible (maybe some easy pass will get us somewhere) but in the end we need to do our analysis.
 
-We will use GHIDRA here. Without some work, the ROM wont be recognized correctly by GHIDRA. We have to set the correct processor type to 68000 but ROM is not just the code.
+We will use GHIDRA here. Without some work, the ROM won't be recognized correctly by GHIDRA. We have to set the correct processor type to 68000 but ROM is not just the code.
 
 ![](content/images/2019/06/pick_a_lang.webp)GHIDRA needs our help here.
 
@@ -26,7 +26,7 @@ Luckily the tool is highly scriptable and there are scripts available to do the 
 
 ![](content/images/2019/06/script_manager.PNG)Our new scripts are ready to be used
 
-And just run it. If everything wen find (and it should) you should see some more clear information in the disassembly now.
+And just run it. If everything went fine (and it should) you should see some more clear information in the disassembly now.
 
 ![](content/images/2019/06/after_script.PNG)Some things starting to make sense now.
 
@@ -206,7 +206,7 @@ So providing a password as `0d3c` and pressing `S` we should get `0x4545` in RAM
 
 ![](content/images/2019/06/first_part.PNG)
 
-Nice! We get `0x4553` where we expect it to be! But where the flag? Since we found one part that was hidden maybe there's more? This part is not really scientific one byt by scrolling through the code we see another one. At the address `0x034c` we see a similar bytes
+Nice! We get `0x4553` where we expect it to be! But where the flag? Since we found one part that was hidden maybe there's more? This part is not really scientific one but by scrolling through the code we see another one. At the address `0x034c` we see a similar bytes
 [code]
         0000034c 30              ??         30h    0
         0000034d 39              ??         39h    9
