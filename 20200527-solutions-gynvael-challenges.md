@@ -23,7 +23,7 @@ The challenges can be accessed at <http://challenges.gynvael.stream> with the po
 
 ## :5000
 
-First challenge is in Flask and the problematic here is the follow code
+First challenge is in Flask and the problem here is the following code
 [code]
     @app.route('/secret')
     def secret():
@@ -85,9 +85,9 @@ This one is in NodeJs & Express challenge. The problem that we need overcome.
 
 [/code]
 
-The first check ensures that we do not provide more than 5 characters wile the second one check if our secret is "GIVEmeTHEFlagNOW", which for sure is longer than 5 characters.
+The first check ensures that we do not provide more than 5 characters while the second one check if our secret is "GIVEmeTHEFlagNOW", which for sure is longer than 5 characters.
 
-How to deal with that? The old tricks with passing an array instead of just a value. If we do that, the `.length` for the first one will be calculated based on array elements number and the second comparison, since it's weekly typed will just take the string stored at index zero and compare.
+How to deal with that? The old tricks with passing an array instead of just a value. If we do that, the `.length` for the first one will be calculated based on array elements number and the second comparison, since it's weakly typed will just take the string stored at index zero and compare.
 
 Our final request is:
 
@@ -126,7 +126,7 @@ Reading about query object on request in [Express documentation](https://express
 
 And this ability to control the input is what we will exploit in this one.
 
-We can control the `X` object properties by sending the data in the form of `X[property]=value` so let's abuse that and control `length`. It will allow us to pass the check for 800 or more characters when the check is done on request's query parameter but when length is called on a `JSON.toStringify`'ed object the actual `length` of produced string will be used.
+We can control the `X` object properties by sending the data in the form of `X[property]=value` so let's abuse that and control `length`. It will allow us to pass the check for 800 or more characters when the check is done on request's query parameter but when length is called on a `JSON.stringify`'ed object the actual `length` of produced string will be used.
 
 So sending `X[length]=801&` will get us through the first checks. What about the second one? With the exception? We need to abuse the same behavior again with `toString`. If we provide such property, we will override the default one which is a function, so that when called to concatenate the string `'<' + req.query.X + '>'` will produce an error and thus returning the flag to us.
 
@@ -237,7 +237,7 @@ so instead of `.text()` as in previous task we use `.urlencoded()` formatter wit
 
 This sounds like a tough nut to crack. The default `Content-Type` for this is `application/x-www-form-urlencoded`.
 
-What we can try is this "automatic inflation of `gzip` and `deflate` encodings. Lets try with it.
+What we can try is this "automatic inflation of `gzip` and `deflate` encodings. Let's try with it.
 
 Let's compress the data `"secret=ShowMeTheFlag"` with `zlib` and pass it to our request.
 [code]
