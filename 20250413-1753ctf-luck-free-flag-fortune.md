@@ -102,7 +102,7 @@ For seeds of length 3 or less, nothing useful was found, but running it with 4-c
 > Found: PEe<  
 > Found: MU+>  
 
-I've used used the first one: `dcL#`.
+I've used the first one: `dcL#`.
 
 Providing this seed to the remote instance allows us to win and get the flag: `1753c{wh4t_4n_1ncred1ble_luck_1t_w4sss}`.
 
