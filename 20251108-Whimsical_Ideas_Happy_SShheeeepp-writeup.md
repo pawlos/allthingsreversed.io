@@ -72,7 +72,7 @@ input = 4271562B
 decode => 815AF9
 ```
 
-The decoded value is not transformed with the following routing (translated to python):
+The decoded value is now transformed with the following routing (translated to python):
 
 ```python
 def transform(v):
@@ -84,7 +84,7 @@ def transform(v):
 And the value after transformation is being printed with `DbgPrint("func => %X\n",v);` so again we can check if what we are calculating matches the driver.
 
 Computed value is now converted to base64 and appended to `SheepVillage.txt:` so it's treated as an alternate data stream indicator. 
-Let's check if that file does have some ADS attached it it.
+Let's check if that file does have some ADS attached to it.
 
 ```
 streams SheepVillage.txt
