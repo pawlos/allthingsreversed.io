@@ -10,7 +10,7 @@ feature_image: "content/images/2017/09/mission_15_theme.webp"
 
 # GynvaelEN - Mission 15 - Solution
 
-Another Wednesday, another mission. This time we've got a vulnerability that allows leaking any via as a image - [link](http://gynvael.vexillium.org/ext/315b8f1b6995d1d67244c04d4da9e5421dfc708a_mission015.txt) :)
+Another Wednesday, another mission. This time we've got a vulnerability that allows leaking any file as an image - [link](http://gynvael.vexillium.org/ext/315b8f1b6995d1d67244c04d4da9e5421dfc708a_mission015.txt) :)
 
 So we download the attached image and got this:
 ![mission_15_leak](content/images/2017/09/mission_15_leak.png)
@@ -39,7 +39,7 @@ The immediate conclusion is that the bars represent chars in the file and the as
 
 [/code]
 
-What we do hear we get the height of each bar in a very naive approach - but it's enough here. We don't need anything fancy. After running the script we get the mentioned script.
+What we do here we get the height of each bar in a very naive approach - but it's enough here. We don't need anything fancy. After running the script we get the mentioned script.
 [code]
      'e6d9fe6df8fd2a07ca6636729d4a615a',
       5 => '273e97dc41693b152c71715d099a1049',
