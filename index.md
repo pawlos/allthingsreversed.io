@@ -1,5 +1,7 @@
 # Blog Index
 
+- 2026-03-08 - [A 29-Year-Old Bug in Quake II - Hunting a 64-bit Porting Issue in ref_soft](20260308-quake2-64bit-sizeof-bug.md)
+- 2026-03-08 - [Fuzzing .NET Libraries with AFL++ and SharpFuzz](20260308-fuzzing-dotnet-libraries.md)
 - 2025-12-14 - [SECCON CTF 2025 Quals - Mini bloat](20251214-MiniBloat-writeup.md)
 - 2025-11-30 - [LakeCTF 2025 Quals - Another Android Applaketion writeup](20251130-AnotherAndroidApplaketion.md)
 - 2025-11-16 - [HackingHub - Mother Printers writeup](20251116-Mother-printers-writeup.md)
