@@ -21,4 +21,4 @@ Instead use this:
 
 > kill -SIGTRAP $(pidof r2)
 
-This cause r2 to break and you will end up in `gdb` prompt.
+This causes r2 to break and you will end up in `gdb` prompt.
