@@ -61,7 +61,7 @@ What is happening is, that we are finding a section `.elited`, decrypting with w
 
 We don't know what should be the correct computer name to decrypt the content of `.sfile` but seeing some checks in the `run` function for `MZ` and `PE` constants we know it supposed to be a valid exe file. Having that knowledge we can get the actual computer name: `MOI-S1KRIT-KOMP`. With that we got a second part of the challenge.
 
-This is a bit more obfuscated one, with a few anti-debugging tricks. Some function were also quite large, and Ghidra took very long to decompile. To avoid waiting, I've looked mostly at the disassembly in this binary. Some function were decompiled but it wasn't pretty
+This is a bit more obfuscated one, with a few anti-debugging tricks. Some functions were also quite large, and Ghidra took very long to decompile. To avoid waiting, I've looked mostly at the disassembly in this binary. Some function were decompiled but it wasn't pretty
 
 ```
 local_34 = 0;
@@ -99,7 +99,7 @@ void do_fun_stuff(undefined8 param_1)
 }
 ```
 
-Checks were using `IsDebuggerPresent` API so it was quite easy to dodge that bullet. I've patched the binary in order not have to do it manually.
+Checks were using `IsDebuggerPresent` API so it was quite easy to dodge that bullet. I've patched the binary in order not to have to do it manually.
 
 But even if we avoid those, more tricks awaits us - binary elevates it's privilege (`RtlAdjustPrivilege`) and call `NtRaiseHardError` that caused Hyper-V to crash and restart. We had to avoid that bullet too.
 
