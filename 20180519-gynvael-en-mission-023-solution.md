@@ -11,7 +11,7 @@ feature_image: "content/images/2018/05/Zrzut-ekranu-2018-05-19-o-12.55.04.webp"
 
 # GynvaelEN - Mission 023 - Solution
 
-Prefere videos? You can also watch it - if not, continue reading.
+Prefer videos? You can also watch it - if not, continue reading.
 
 [Watch on YouTube](https://www.youtube.com/watch?v=GErhZVcClv0)
 
@@ -56,7 +56,7 @@ Ok, we're done here. Let's find the `dbname.db.enc`.
 
 # system.img
 
-Ok, so we now that this "malware" is encrypting the dbname.db file but where is the file? Let us see what's hiding in the second file that is delivered with the package - system.img. Running `file` on it gives us the following info:
+Ok, so we know that this "malware" is encrypting the dbname.db file but where is the file? Let us see what's hiding in the second file that is delivered with the package - system.img. Running `file` on it gives us the following info:
 
 > file system.img
 >  system.img: Linux rev 1.0 ext4 filesystem data, UUID=8725a49a-a886-4a07-a360-0279942e827d (extents) (huge files)
