@@ -71,7 +71,7 @@ After the cleaning up we can identify the binary's algorithm as follows:
       result ^= ch
 ```
 
-And the final result for each grup is compared with 15 values stored in the binary
+And the final result for each group is compared with 15 values stored in the binary
 
 ```
 final
@@ -85,7 +85,7 @@ final
           88 1f
 ```
 
-From that information, we can deduce that the passphrase should be 15 words separated by space. Let's get back to the hashing algorithms. With CTF's challenges and such algorithms there's a high chance that it's not an original work but rather a known one. We can check if it's a known one by searching for the constants used in the code - here the values `0x11c9dc5` and `0x1000193`.
+From that information, we can deduce that the passphrase should be 15 words separated by space. Let's get back to the hashing algorithms. With CTF's challenges and such algorithms there's a high chance that it's not an original work but rather a known one. We can check if it's a known one by searching for the constants used in the code - here the values `0x811c9dc5` and `0x1000193`.
 
 When we do that we can find out that the algorithm is [FNV hash](https://en.wikipedia.org/wiki/Fowler–Noll–Vo_hash_function). The simplicity of it is also good for replicating the code in python and trying to brute some easy values.
 
