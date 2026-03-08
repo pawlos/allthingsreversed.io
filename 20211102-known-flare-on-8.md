@@ -15,7 +15,7 @@ feature_image: "content/images/2021/11/capa.webp"
 
 > We need your help with a ransomware infection that tied up some of our critical files. Good luck.
 
-With the second challenge, it's a bit step up in the difficulty. We are given an EXE with some files (different types; images images and text) that has been encrypted.
+With the second challenge, it's a bit step up in the difficulty. We are given an EXE with some files (different types; images and text) that has been encrypted.
 
 Opening file in Ghidra, we can see less than 10 methods. From `entry` we can identify `main` and check what it's doing.
 [code]
@@ -43,9 +43,9 @@ The core part is the following:
 
   * find files with `.encrypted` extension
   * prepares a new name, without `.encrypted` extension
-  * call `FUN_00401220` with the new name, original name a argument passed to the binary
+  * call `FUN_00401220` with the new name, original name an argument passed to the binary
 
-Cleaning up the above code, we can get the following, much readable version
+Cleaning up the above code, we can get the following, much more readable version
 [code]
     File = FindFirstFileA(s_*.encrypted_0040372c,(LPWIN32_FIND_DATAA)&local_194);
     if (hFile == (HANDLE)0xffffffff) {
@@ -85,7 +85,7 @@ Cleaning up the above code, we can get the following, much readable version
 
 [/code]
 
-The function works in chunks of 8 bytes and transforms them according the the above formula. This actually might be a bit confusing with the `shift`-s, and `or`-s, but if we would look at the assembly (which is sometimes better - see [https://allthingsreversed.io/dont-trust-the-decompilers/](20210517-dont-trust-the-decompilers.md)) it's clear that the routine is build from two simple opcodes: `xor`, `rol` and `sub`.
+The function works in chunks of 8 bytes and transforms them according the the above formula. This actually might be a bit confusing with the `shift`-s, and `or`-s, but if we would look at the assembly (which is sometimes better - see [https://allthingsreversed.io/dont-trust-the-decompilers/](20210517-dont-trust-the-decompilers.md)) it's clear that the routine is build from three simple opcodes: `xor`, `rol` and `sub`.
 
 Simplifying, each character is processed in the following way:
 [code]
@@ -93,7 +93,7 @@ Simplifying, each character is processed in the following way:
 
 [/code]
 
-`Rol` (and `ror`) are not available in python but we can write then using simple lambda:
+`Rol` (and `ror`) are not available in python but we can write them using simple lambda:
 [code]
     ror = lambda val, r_bits, max_bits: \
         ((val & (2**max_bits-1)) >> r_bits%max_bits) | \
@@ -109,9 +109,9 @@ To use them, we need to provide the additional information as 3rd parameter - si
 
 Knowing the routine, there's still one problem - password for the decryption. It's being passed as an argument to this code and we don't know it, yet.
 
-Let's focus on the encrypted files. We have, `cicero.txt.ecnrypted`, `commandovm.gif.encrypted`, `critical_data.txt.encrypted`, `flarevm.jpg.encrypted`, `lating_alphabeth.txt.encrypted` and `capa.png.encrypted`.
+Let's focus on the encrypted files. We have, `cicero.txt.encrypted`, `commandovm.gif.encrypted`, `critical_data.txt.encrypted`, `flarevm.jpg.encrypted`, `latin_alphabet.txt.encrypted` and `capa.png.encrypted`.
 
-Some of those images, are known FlareVM images that we could find and extract password for the encryption. But we have a simpler sample. `latin_alphabeth.txt.encrypted`.
+Some of those images, are known FlareVM images that we could find and extract password for the encryption. But we have a simpler sample. `latin_alphabet.txt.encrypted`.
 
 If we consider the file name to be telling the truth, we should have all the Latin letters inside this file. Let's see what we will get if we can reverse the routine and get the password (knowing the output and the input):
 [code]
@@ -123,4 +123,4 @@ If we consider the file name to be telling the truth, we should have all the Lat
 
 [/code]
 
-If we pass our encrypted `latin_alphabeth.txt.encrypted` and potential input `"ABCDEFGHIJKLMNOPQRSTUVWXYZ"` we can retrieve the key: `No1Trust`. Having that, we can decode the rest of the files and obtain the flag: `(>0_0)> You_Have_Awakened_Me_Too_Soon_EXE@flare-on.com <(0_0<)`. Solved.
+If we pass our encrypted `latin_alphabet.txt.encrypted` and potential input `"ABCDEFGHIJKLMNOPQRSTUVWXYZ"` we can retrieve the key: `No1Trust`. Having that, we can decode the rest of the files and obtain the flag: `(>0_0)> You_Have_Awakened_Me_Too_Soon_EXE@flare-on.com <(0_0<)`. Solved.
