@@ -217,7 +217,7 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
 
 [Watch on YouTube](https://www.youtube.com/watch?v=12B8nGCg468)
 
-**Notes:** Snes game analyzed in ghidra and run in FCEUX emulator.
+**Notes:** NES game analyzed in ghidra and run in FCEUX emulator.
 **Tools:** ghidra, fceux,
 **Tags:** 6502, ghidra, nes, snes, game, snake, emulation
 
