@@ -31,7 +31,7 @@ The script is a simple MD5/SHA1 comparison that uses a weak equals operator (`==
 
 <https://github.com/spaze/hashes>
 
-This repro actually describes this issue in details and has the examples of such hashes for both MD5 and SHA1! So we got both needed paswords for one search. Awesome. What just needs to be done is just curl:
+This repo actually describes this issue in details and has the examples of such hashes for both MD5 and SHA1! So we got both needed passwords for one search. Awesome. What just needs to be done is just curl:
 
 > curl -v [http://gynvael.coldwind.pl/c3459750a432b7449b5619e967e4b82d90cfc971_mission018/admin.php?password1=QLTHNDT&password2=aaroZmOk](http://gynvael.coldwind.pl/c3459750a432b7449b5619e967e4b82d90cfc971_mission018/admin.php?password1=QLTHNDT&password2=aaroZmOk)
 
@@ -39,8 +39,8 @@ And that gives us the flag:
 
 > I'm not sure this is how equality is supposed to work.
 
-But that's not all. We see an additional message that informs us that there's a second stage of this task located at superadmin.php. If we navigate there, we see a simillar script but this time with sha256.
+But that's not all. We see an additional message that informs us that there's a second stage of this task located at superadmin.php. If we navigate there, we see a similar script but this time with sha256.
 
-~~Unfortunatelly the simillar hashes are not to be found on the internet - so we need to hash it ourself. I;ve started doing this myself but it will take some time and might not result in any hits. Time will tell.~~
+~~Unfortunately the similar hashes are not to be found on the internet - so we need to hash it ourself. I've started doing this myself but it will take some time and might not result in any hits. Time will tell.~~
 
 The second part become solvable when few SHA256 hashes were discovered to produce hashes in the form of `0e<digits>`. Sending one of those gives us the flag for stage 2: `Huh, this was supposed to be unsolvable.`.
