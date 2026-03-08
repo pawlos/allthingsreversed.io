@@ -255,7 +255,7 @@ With that, we are left with much shorter file, which readability can be improved
 	if('rFzmLyTiZ6AHlL1Q4xV7G8pW32'>=ZEKC6C35RAHD)eval(ZEKC6C35RAHD)
 ```
 
-We can strip it even further down by removing some unncessary assignments. What is the core is the following
+We can strip it even further down by removing some unnecessary assignments. What is the core is the following
 
 ```js
 dataEncoded = "4fny3zLzDRY...=="
@@ -358,7 +358,7 @@ We need to wait a while but after a moment we can see some decoded, readable str
 ![](content/images/2021/10/image-10.webp)
 
 Since it has to be a valid JS a promising one is the one starting with `//` as a comment. We can also see that after `\r
-` there's another line starting with `//`. The results isn't prefect but we can see some text and figure out the rest. It looks like it's the Bee movie script. By limiting what each characters can be we can extract the correct value for letters. The valid input for this stage is `ChVCVYzI1dU9cVg1ukBqO2u4UGr9aVCNWHpMUuYDLmDO22cdhXq3oqp8jmKBHUWI`.
+` there's another line starting with `//`. The result isn't perfect but we can see some text and figure out the rest. It looks like it's the Bee movie script. By limiting what each characters can be we can extract the correct value for letters. The valid input for this stage is `ChVCVYzI1dU9cVg1ukBqO2u4UGr9aVCNWHpMUuYDLmDO22cdhXq3oqp8jmKBHUWI`.
 
 And by using it, we will get is the following
 
