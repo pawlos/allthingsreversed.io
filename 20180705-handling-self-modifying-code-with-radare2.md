@@ -2,7 +2,7 @@
 title: "Handling self-modifying​ code with radare2"
 date: 2018-07-05T04:58:29.000Z
 tags:
-  - "radre2"
+  - "radare2"
   - "self-modifying-code"
   - "smc"
 feature_image: "content/images/2018/07/Screen-Shot-2018-07-05-at-06.36.11.webp"
@@ -10,7 +10,7 @@ feature_image: "content/images/2018/07/Screen-Shot-2018-07-05-at-06.36.11.webp"
 
 # Handling self-modifying​ code with radare2
 
-This is a post that explains a little bit in details what was shown in the two videos that could be watched on my YT channel. If you haven't seen them and are not yet confused enough about I recommend go check them out.
+This is a post that explains a little bit in details what was shown in the two videos that could be watched on my YT channel. If you haven't seen them and are not yet confused enough I recommend you go check them out.
 
 [Watch on YouTube](https://www.youtube.com/watch?v=BBWtpBZVJvQ) [Watch on YouTube](https://www.youtube.com/watch?v=8GsiQWVlyLg)
 
@@ -138,6 +138,6 @@ and a true constant reveals itself!
 
 Double voilà!
 
-As it could be sine from the `wo?` output there's some are multiple operations that we can apply. And of course, we can issue one after another to simulate more complex algorithms i.e. xor with addition.
+As it could be seen from the `wo?` output there are multiple operations that we can apply. And of course, we can issue one after another to simulate more complex algorithms i.e. xor with addition.
 
-Hope now the SMC and how to deal with it in radare2. Have fun!
+Hope now you understand SMC and how to deal with it in radare2. Have fun!
