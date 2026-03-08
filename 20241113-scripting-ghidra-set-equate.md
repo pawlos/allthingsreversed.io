@@ -69,7 +69,7 @@ Once this setup is complete, we can start replacing hash values in the disassemb
        #do the replace - code to follow
 [/code]
 
-To replace a value with a name, we will use `SetEquateCmd` Ghidra APIs. But to use it, we need a couple for values.
+To replace a value with a name, we will use `SetEquateCmd` Ghidra APIs. But to use it, we need a couple of values.
 [code]
     i = getInstructionAt(toAddr(addr))
     v = i.getScalar(1)
