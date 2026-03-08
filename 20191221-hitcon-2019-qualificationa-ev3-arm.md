@@ -13,7 +13,7 @@ feature_image: "content/images/2019/12/hitcon_logo.webp"
 
 # Hitcon 2019 Qualification - EV3 Arm
 
-It's one of those challenges that brings together two things that I like - this time it was reverse engineering nad lego bricks.
+It's one of those challenges that brings together two things that I like - this time it was reverse engineering and lego bricks.
 
 What was the input in this challenge was a picture that, supposedly depict how the robot was programmed and a `rbf` file that contains the aforementioned robot states.
 
