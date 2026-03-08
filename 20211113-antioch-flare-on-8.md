@@ -14,7 +14,7 @@ feature_image: "content/images/2021/11/antios_top.webp"
 
 This challenge was really AAARGH for me. In retrospect I wonder why I didn't see what I was supposed to see and due to that lost almost a week on this fairly easy challenge. But let's start from the beginning.
 
-We are given a tar file, which contains, a lot of (possibly) randomly names folders, `a13ffcf46cf41480e7f15c7f3c6b862b799bbe61e7d5909150d8a43bd3b6c039.json`, `manifest.json` and `repositories` files. Each folder contains `json`, `layer.tar` and `VERSION`. Inspecting the files it become obvious that the whole `antioch.tar` is a docker archive which we can import.
+We are given a tar file, which contains, a lot of (possibly) randomly names folders, `a13ffcf46cf41480e7f15c7f3c6b862b799bbe61e7d5909150d8a43bd3b6c039.json`, `manifest.json` and `repositories` files. Each folder contains `json`, `layer.tar` and `VERSION`. Inspecting the files it became obvious that the whole `antioch.tar` is a docker archive which we can import.
 
 ```
   λ docker load --input chall\antioch.tar
@@ -94,7 +94,7 @@ So the one matching pair would be `Zoot` and `Tan`, and as we seen from the code
 
 ![](content/images/2021/11/anchios.gif)Checking the binary
 
-Now we have some problems, we do not have the files from the other layers in the correct order and we don't know the order. The order could be give by the number with the message "Right. Off you go #8" but how to map that to layers?
+Now we have some problems, we do not have the files from the other layers in the correct order and we don't know the order. The order could be given by the number with the message "Right. Off you go #8" but how to map that to layers?
 
 That was my problem for a long time - too long. But there is a link, the names are in the `json` files. If we open one we can clearly see the name `Zoot` as an author.
 
