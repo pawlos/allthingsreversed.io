@@ -9,7 +9,7 @@
 - 2025-10-20 - [Hack.lu CTF 2025 - Instructions unclear Writeup](20251020-instructions-unclear-hacklu-ctf.md)
 - 2025-07-25 - [Google CTF 2025 - cgb Writeup](20250725-cgb-google-ctf.md)
 - 2025-06-15 - [bi0s CTF 2025 - Avernos Writeup](20250615-avernos-bi0sCTF-2025.md)
-- 2025-05-25 - [NahamCon CTF 2025 - Challenge Writeups & Analysis](20250526-nahamcon-2025.md)
+- 2025-05-26 - [NahamCon CTF 2025 - Challenge Writeups & Analysis](20250526-nahamcon-2025.md)
 - 2025-04-13 - [1753CTF - 🍀Luck, 🤷‍♂️ Free Flag and 🔮 Fortune](20250413-1753ctf-luck-free-flag-fortune.md)
 - 2024-11-28 - [Scripting Ghidra - Create Data](20241128-scripting-ghidra-create-data.md)
 - 2024-11-13 - [Scripting Ghidra - Set Equate](20241113-scripting-ghidra-set-equate.md)
