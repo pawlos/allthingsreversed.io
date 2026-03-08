@@ -24,7 +24,7 @@ Use `RegEx` to find matching words, grep for `flare` to win or check the code to
 
 Decompile the binary and find an interesting function (`0x4012c0` \- WinProc).
 
-![](content/images/2022/11/code.png)hecking the right pixel to be clicked
+![](content/images/2022/11/code.png)Checking the right pixel to be clicked
 
 `X = int(FLAR) % 741, Y = int(E-On) % 641`
 
@@ -62,7 +62,7 @@ C++ binary with vtables? No problem. We are also given PCAP file where we can se
 
 ![](content/images/2022/11/stream_2.png)
 
-Requests with payloads and correct replys
+Requests with payloads and correct replies
 
 Patch the `Sleep`, function that makes the request is `FUN_403D70`.
 
