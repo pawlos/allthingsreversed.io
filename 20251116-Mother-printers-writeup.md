@@ -182,7 +182,7 @@ The binary supports only `GET` and `POST` requests, with the following endpoints
 * `/print` & `/scan`
 * `/jobs/manage`
 
-Checking the flow of auth we can spot that apart from `/` & `GET /login` endpoints, `/etc/mnt_info.csv` also doesn't require authentication, so we can access it without being logged in.
+Checking the flow of auth we can spot that apart from `/` & `GET /login` endpoints and `/etc/mnt_info.csv` also doesn't require authentication, so we can access it without being logged in.
 
 Triggering this endpoint reveals several pieces of information, including the serial number and flag 2.
 
