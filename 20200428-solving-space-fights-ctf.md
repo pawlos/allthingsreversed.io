@@ -24,15 +24,15 @@ Upon loading this file into Ghidra we will need to pick up the 'language' for th
 
 For this task we can consult with [NES Wiki](http://wiki.nesdev.com/) and pick 6502. After this we can continue.
 
-Since the file is a complete ROM, Ghidra will not know how to parse this file correctly. We need to help here a little bit. We can skip the inital analysis as it won't do us any good and switch to Memory maps to redefine then.
+Since the file is a complete ROM, Ghidra will not know how to parse this file correctly. We need to help here a little bit. We can skip the initial analysis as it won't do us any good and switch to Memory maps to redefine then.
 
-The initial layout of maps is a below
+The initial layout of maps is as below
 
 ![](content/images/2020/04/image-14.webp)
 
 and it's not perfect (we could work if it if we must) so we will redefine it. But we need to know redefine to what.
 
-Here where awesome documentation from [NesDEV](http://wiki.nesdev.com/w/index.php/Nesdev_Wiki) comes handy. There's not only a detailed description of the ROM file format ([iNES](http://wiki.nesdev.com/w/index.php/INES)) but also how the date is being [mapped in the memory](http://wiki.nesdev.com/w/index.php/CPU_memory_map). Let's use this knowledge to fix our maps in Ghidra.
+Here where awesome documentation from [NesDEV](http://wiki.nesdev.com/w/index.php/Nesdev_Wiki) comes handy. There's not only a detailed description of the ROM file format ([iNES](http://wiki.nesdev.com/w/index.php/INES)) but also how the data is being [mapped in the memory](http://wiki.nesdev.com/w/index.php/CPU_memory_map). Let's use this knowledge to fix our maps in Ghidra.
 
 First we will map the code for the correct address. Based on the wiki, the code in the iNES file starts at address `0x16` (we don't have trainer data) and it should be mapped at `0x8000`.
 
