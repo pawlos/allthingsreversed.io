@@ -10,11 +10,11 @@ feature_image: "content/images/2018/03/Zrzut-ekranu-2018-03-30-o-23.28.06.webp"
 
 # Gynvael - Mission 021 - Solution
 
-The [source](goo.gl/uk8RZB) for this mission can be found in stream [63](https://www.youtube.com/watch?v=4OmK-7ULYd4). It is in Polish but it can be easily spotted that the main source is a PCAP file that can be downloaded from [here](goo.gl/p1Pwgm).
+The [source](https://goo.gl/uk8RZB) for this mission can be found in stream [63](https://www.youtube.com/watch?v=4OmK-7ULYd4). It is in Polish but it can be easily spotted that the main source is a PCAP file that can be downloaded from [here](https://goo.gl/p1Pwgm).
 
 # Wireshark(ing)
 
-Hacing this file on our disk, there isn't much more to do just to open it in Wireshark. This is probably a go-to tool when it comes to analyzing PCAP-files.
+Having this file on our disk, there isn't much more to do just to open it in Wireshark. This is probably a go-to tool when it comes to analyzing PCAP-files.
 
 ![Zrzut-ekranu-2018-03-30-o-22.24.03](content/images/2018/03/Zrzut-ekranu-2018-03-30-o-22.24.03.webp)
 
@@ -28,9 +28,9 @@ Browsing through the list and my attention was immediately caught by 3 items:
   * something_suspicious.png
   * something with `application/zip` Content Type.
 
-Quickly checked the `/misja021_secret_area` and I was certain that this is the right place but we've needed a response reply. Thre was a `POST` request that was showing sending a `asdf` reply to the form but this didin't work.
+Quickly checked the `/misja021_secret_area` and I was certain that this is the right place but we've needed a response reply. There was a `POST` request that was showing sending a `asdf` reply to the form but this didn't work.
 
-I've donloaded all off them and began next stage - outside Wireshark.
+I've downloaded all of them and began next stage - outside Wireshark.
 
 # Wild-goose chase
 
@@ -58,7 +58,7 @@ Running this script gave me this:
 
 ![foo](content/images/2018/03/foo.webp)
 
-LOL. But even at this point I was still under the impression that there's a password somewhere. Well spending another fruitless 15 minutes and I gave up. We need another approch.
+LOL. But even at this point I was still under the impression that there's a password somewhere. Well spending another fruitless 15 minutes and I gave up. We need another approach.
 
 # Back to the drawing table
 
@@ -75,7 +75,7 @@ and in a matter of seconds you will get:
 > PASSWORD FOUND!!!!: pw == cdo
 
 For john it's a bit trickier.
-first we need to optain the hashes by using zip2john utility.
+first we need to obtain the hashes by using zip2john utility.
 
 > zip2john zip.zip > zip.hash
 
@@ -99,17 +99,17 @@ After unzipping the file we're given the `challenge_response.pyc`, I was thinkin
 
 > cat challenge_response.pyc
 
-hoping that something interesting will be visible. At it was.
+hoping that something interesting will be visible. And it was.
 
 ![Zrzut-ekranu-2018-03-30-o-23.14.56](content/images/2018/03/Zrzut-ekranu-2018-03-30-o-23.14.56.webp)
 
-We could clearly see the usage (that we needed a password for), rot13(!) and a long string that was looking strange. So let's try to rot13 it and see waht we will get:
+We could clearly see the usage (that we needed a password for), rot13(!) and a long string that was looking strange. So let's try to rot13 it and see what we will get:
 
 > echo 'ovatb_onatb_obatb_ovfu_onfu_obfus' | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 >
 >  bingo_bango_bongo_bish_bash_boshf
 
-but using it gives us a 'no-no'. Looking a bit closer to this 'bingo_bango...' and we can see that the last 'f' is a bit odd. Probably it shoudn't be there, so let's try without it and...
+but using it gives us a 'no-no'. Looking a bit closer to this 'bingo_bango...' and we can see that the last 'f' is a bit odd. Probably it shouldn't be there, so let's try without it and...
 
 > python challenge_response.pyc bingo_bango_bongo_bish_bash_bosh 20589149961826172157662607405
 >
@@ -121,6 +121,6 @@ Using that on page gives us the flag:
 
 Lessons learned:
 
-  * read the descirption cerefully!
-  * addded fcrackzip & john tools to the [Ubuntu post-install script](https://gist.github.com/pawlos/3d53885d484bfb6108543150b2a51a8f)
+  * read the description carefully!
+  * added fcrackzip & john tools to the [Ubuntu post-install script](https://gist.github.com/pawlos/3d53885d484bfb6108543150b2a51a8f)
 
