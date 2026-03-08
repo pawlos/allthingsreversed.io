@@ -16,7 +16,7 @@ Ghidra is an awesome RE tool that quickly took off after its initial launch in 2
 
 * * *
 
-In the last post I was showing how we need to create a memory mam blocks when we do an analysis of NES rom. It required few operations to get complete. Let's see if we can automate the process.
+In the last post I was showing how we need to create a memory map blocks when we do an analysis of NES rom. It required few operations to get complete. Let's see if we can automate the process.
 
 Let's gather some information what we would like to get from our script:
 
