@@ -71,9 +71,9 @@ And providing this value as an answer on the page, verifies it is correct and ma
 
 Also an important observation is that refreshing the page a couple of times we can assure they are not generated.
 
-One could try to solve those by hand replacing the JavaScript strict operators to Python's one but there's one extra problem. We are only allowed to solved challenges that are open until Day 14 (13th during the actual competition). Further days are closed until we will reach that day.
+One could try to solve those by hand replacing the JavaScript strict operators to Python's one but there's one extra problem. We are only allowed to solve challenges that are open until Day 14 (13th during the actual competition). Further days are closed until we will reach that day.
 
-Of course we can wait that long to solve the challenge so we need another way.
+Of course we can't wait that long to solve the challenge so we need another way.
 
 ## Solution
 
