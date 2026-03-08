@@ -93,7 +93,7 @@ To ease working with those files, let's save the raw streams and split them into
     split_the_data(data)
 ```
 
-After running the script, we have extracted the whole communication and nowe we can see the `PNG` file that was identified in the first stream.
+After running the script, we have extracted the whole communication and now we can see the `PNG` file that was identified in the first stream.
 
 ![](content/images/2021/10/meow-1.webp)
 
@@ -104,7 +104,7 @@ Now, we need something that can work with Windows Updates compression. Deep unde
 > Applied 1 patch successfully
 > Final hash: OsdAMg6SJ4EFnx69R5NJFq2ToD4utovfwrzBaVxmssk=
 
-It worked and if we view the results (`output.bin`) we can see that the file is an PE32 executable. Let's fire up Ghidra.
+It worked and if we view the results (`output.bin`) we can see that the file is a PE32 executable. Let's fire up Ghidra.
 
 By inspecting the binary, checking the strings and functions it looks like this was the binary that was used to produce the communication that we saw in the pcap file. Indications of that are the calls to `CreateDeltaB`, `ApplyDeltaB` from `MSDELTA.DLL` and string like `~me0w~`. The most important part from the binary is the `client` method that is responsible for receiving bytes. By inspecting the method we can spot, that the bytes we get needs to be decoded by xoring them with `meoow` to get the original bytes.
 
