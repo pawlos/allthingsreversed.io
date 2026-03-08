@@ -13,7 +13,7 @@ tags:
 ---
 
 ## Intro
-`Another Android Applaketion` was one of the reversing challenges during Lake CTF 2025 Quals. It was a bit harder version of a challenge that was available during Lake CTF 2024 - `An Android Applaketion`.'
+`Another Android Applaketion` was one of the reversing challenges during Lake CTF 2025 Quals. It was a bit harder version of a challenge that was available during Lake CTF 2024 - `An Android Applaketion`.
 
 Same as the last time, we are given a single `.apk` file with the challenge.
 
@@ -102,7 +102,7 @@ char *__fastcall do_nop(__int64 a1, __int64 a2, __int64 a3, __int64 a4)
 }
 ```
 
-Therefore, to find the flag, we need to start with the initial `aaa` and `bbb` values, locate the class corresponding to `aaa`, and execute the method matching `bbb`.`
+Therefore, to find the flag, we need to start with the initial `aaa` and `bbb` values, locate the class corresponding to `aaa`, and execute the method matching `bbb`.
 
 So we start with `aaa=86e50149658661312a9e0b35558d84f6c6d3da797f552a9657fe0558ca40cdef` so we need to peek inside class `public class Check86e50149658661312a9e0b35558d84f6c6d3da797f552a9657fe0558ca40cdef` and check the method based on `bbb=031b4af5197ec30a926f48cf40e11a7dbc470048a21e4003b7a3c07c5dab1baa`.
 
