@@ -8,7 +8,7 @@ feature_image: "content/images/2016/11/Zrzut-ekranu-2016-11-14-o-20.50.06.webp"
 
 # Security Pwning CTF by p4
 
-A few days ago, I've attended a [Security PWNinng 2016](https://www.instytutpwn.pl/konferencja/pwning2016/) conference in Warsaw. There was a CTF during the event in which I took part and solved few tasks.
+A few days ago, I've attended a [Security PWNing 2016](https://www.instytutpwn.pl/konferencja/pwning2016/) conference in Warsaw. There was a CTF during the event in which I took part and solved few tasks.
 
 The CTF was organized by [p4 team](https://www.linkedin.com/company/p4-team). If you want to have a try it's still available at <https://pwning2016.p4.team>. It's in polish but I guess google translate can help here.
 
@@ -17,7 +17,7 @@ The CTF was organized by [p4 team](https://www.linkedin.com/company/p4-team). If
 The name of the task already suggests the technique that should be used here. When we check the source of the webpage we can see that links to images are specified with file parameters that takes the path.
 
 ![](content/images/2016/11/Zrzut-ekranu-2016-11-14-o-19.17.14.webp)
-Lets try to use it for our purpose and put there a path to potential flag file.
+Let's try to use it for our purpose and put there a path to potential flag file.
 
 ![](content/images/2016/11/Zrzut-ekranu-2016-11-14-o-19.20.25.webp)
 
@@ -53,7 +53,7 @@ which gives us the flag: `pwn{5ql1njecti0nByp@ssMade4@5y}`. A quick one.
 
 ## Stegano 50 - I'm going to space
 
-In this task we're given a file which is a Wave file with Apollo13 radio transmission between Neil Armstrong and Huston Space Center. You know, the one with "That’s one small step for a man, one giant leap for mankind". As this is stegano and Wave file I suspect that some information might be hidden on LSB. But the first thing I always do in such case - I open the file in Audacity.
+In this task we're given a file which is a Wave file with Apollo 11 radio transmission between Neil Armstrong and Houston Space Center. You know, the one with "That’s one small step for a man, one giant leap for mankind". As this is stegano and Wave file I suspect that some information might be hidden on LSB. But the first thing I always do in such case - I open the file in Audacity.
 
 ![](content/images/2016/11/Zrzut-ekranu-2016-11-14-o-19.34.44.webp)
 
@@ -125,7 +125,7 @@ In this one we're given a web page that selects 6 numbers from 10 to 99. Our tas
   }
 ```
 
-we can see there where the numbers are generated but also that a random seed, and the a number that it's before our 6 numbers to guess are send to the client. Ok. Looks like we go everything we need. Lets save the html file, correct the links to the resources and modify the Javascript. In the `.onMessage` method we add
+we can see there where the numbers are generated but also that a random seed, and the a number that it's before our 6 numbers to guess are send to the client. Ok. Looks like we go everything we need. Let's save the html file, correct the links to the resources and modify the Javascript. In the `.onMessage` method we add
 
 ```
   var msg = JSON.parse(evt.data);
@@ -144,7 +144,7 @@ we can see there where the numbers are generated but also that a random seed, an
   }
 ```
 
-and we paste the `betterRand` function form the server side. So basically what we do here we decode a `userId` information that is send from the server and that contains `seed` and a number before our 6 numbers to guess. then we construct a random and generate numbers until we hit our number that is send with the seed. After we get it we get the 6 numbers and print them in the console. Our only task is to write them from the console to the fields - we could automate that but there's no need.
+and we paste the `betterRand` function form the server side. So basically what we do here we decode a `userId` information that is sent from the server and that contains `seed` and a number before our 6 numbers to guess. then we construct a random and generate numbers until we hit our number that is send with the seed. After we get it we get the 6 numbers and print them in the console. Our only task is to write them from the console to the fields - we could automate that but there's no need.
 
 Of course we could hit a value that is false-positive but in such case we re-run it again. It should produce correct numbers fairly quick. It worked the first time I run it.
 
@@ -152,4 +152,4 @@ The flag returned from the server after typing the numbers: `pwn{U5e_M0ar_53cuR3
 
 Yup. Random here was the weak spot + that we were given the seed.
 
-That's all the task that I had time solve - I wanted to actually listen to the talks :). But since the tasks are still there I think I'll attack them again. I need to work especially on the crypto ones.
+That's all the tasks that I had time to solve - I wanted to actually listen to the talks :). But since the tasks are still there I think I'll attack them again. I need to work especially on the crypto ones.
