@@ -13,7 +13,7 @@ feature_image: "content/images/2022/04/top.webp"
 
 > The secret is 'Knowin' what the cards were'.
 
-Apart from the message we are give the file, with the instruction to run it with `mono the_gambler.exe`. This alone gives away the fact that, this is a .NET assembly and we can skip any initial analysis and go straight to dnSpy.
+Apart from the message we are given the file, with the instruction to run it with `mono the_gambler.exe`. This alone gives away the fact that, this is a .NET assembly and we can skip any initial analysis and go straight to dnSpy.
 
 * * *
 
@@ -29,7 +29,7 @@ There's a bit of mess at the beginning but right after that we can see a standar
 
 ![](content/images/2022/04/image-2.webp)
 
-Continuing with the program, generated random is passed to `Program.play` (we will check that in a moment) an the result of this function is considered as numbers of heads in a coin toss.
+Continuing with the program, generated random is passed to `Program.play` (we will check that in a moment) and the result of this function is considered as numbers of heads in a coin toss.
 
 ![](content/images/2022/04/image-3.png)
 
@@ -128,7 +128,7 @@ Now we only need to modify the play method. Fortunately dnSpy allows to modify c
 
 ![](content/images/2022/04/image-4.png)
 
-We will add an extra variable that will store all the bits and at the end of the method, print it to the console. We could write the code to convert form binary to ascii, but for simplicity that we will deal later.
+We will add an extra variable that will store all the bits and at the end of the method, print it to the console. We could write the code to convert from binary to ascii, but for simplicity that we will deal later.
 
 ```
 private static int play(Random r)
