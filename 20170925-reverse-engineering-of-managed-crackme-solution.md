@@ -21,7 +21,7 @@ It all started with OP wrongly identifying it as a C# CrackMe. The first look at
 
 After initial investigation from the question & provided screenshots I could not figure out more, but thankfully a binary was provided. Now I can explore.
 
-And in fact it is a Managed C++/.NET solution. The first interesting fact is that was where to look for `Main` it wasn't found in som obvious locations like `Program` class.
+And in fact it is a Managed C++/.NET solution. The first interesting fact is that was where to look for `Main` it wasn't found in some obvious locations like `Program` class.
 
 ![crr_04](content/images/2017/09/crr_04.webp)
 
@@ -37,7 +37,7 @@ but if a bit of unmangling is done, it's quite understandable piece of code. Fir
 
 [View Gist](https://gist.github.com/pawlos/6d44cec95ca3d1f5bbf2a3d676128000)
 
-I did the analysis of this method on the picture, but now you can easily see that copy content from textBoxes into a native memory and continue working on them. This is what makes this a bit more harder then usual .net assemblies.
+I did the analysis of this method on the picture, but now you can easily see that copies content from textBoxes into a native memory and continue working on them. This is what makes this a bit harder than usual .net assemblies.
 
 Even though we can see that on [line 14](https://gist.github.com/pawlos/6d44cec95ca3d1f5bbf2a3d676128000#file-button2_click_unmangled-cs-L14) & [17](https://gist.github.com/pawlos/6d44cec95ca3d1f5bbf2a3d676128000#file-button2_click_unmangled-cs-L17) we check if `string1` contains '@' (64) and '.' (46). So we assume that `string1` contains our entered e-mail - also the name of one of the variables - `email` indicates that this might be the case. The it's moved around few times and we ended up on [line 32](https://gist.github.com/pawlos/6d44cec95ca3d1f5bbf2a3d676128000#file-button2_click_unmangled-cs-L32) were we pass `md` and `email` to the method `Check()`. Let's focus on it now.
 
