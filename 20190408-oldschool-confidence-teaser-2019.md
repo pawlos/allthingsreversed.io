@@ -68,7 +68,7 @@ Upon loading the binary in the Ghidra identifies the file as 16-bit in Real-mode
 
 This is in fact old. But not so old for me as my initial experience with ASM was in fact 16-bit in real mode. So seeing the code was only bringing back old memories (back in the days I was coding some stuff in ASM - you can find some of the work on [my YT](https://www.youtube.com/watch?v=zoOPUa-0cqc&list=PL8bwawVZNV0wZm8JCbbICG2pvfL7qRVr2)). So let's in fact look at the code.
 
-After the initial analysis only 4 functions were created and one of them was `entry` so we being our exploration from there.
+After the initial analysis only 4 functions were created and one of them was `entry` so we begin our exploration from there.
 
 ![](content/images/2019/04/image-1.png)Only 4 functions were identified after the analysis.
 
@@ -95,7 +95,7 @@ The initial part sets up stack segment (`SS`) and pointer(`SP`). And after that 
 
 If you are not familiar with DOS the it's worth to mention that application communicated with it with interrupts. The most useful one was (probably) `0x21`. The standard was that you had to prepare some registers and in `AH` the operation number was passed. In this case we are setting to be `AH=0x9` so we are going to display a string on screen.
 
-Now it's a good time to find some resource on DOS interrupts. Back in the day the ultimate source was [Ralf's Brows Interrupt List](http://ctyme.com/rbrown.htm). You could find everything there. Of course you would have to have it downloaded first as internet access was not so common as nowadays. During this challenge there was only few method used so no comprehensive reference to DOS interrupts was needed. I've remember `0x9` (and few others) by heart.
+Now it's a good time to find some resource on DOS interrupts. Back in the day the ultimate source was [Ralf Brown's Interrupt List](http://ctyme.com/rbrown.htm). You could find everything there. Of course you would have to have it downloaded first as internet access was not so common as nowadays. During this challenge there was only few method used so no comprehensive reference to DOS interrupts was needed. I've remember `0x9` (and few others) by heart.
 
 So let's analyze the above part of code. In `0x9` command we need to pass the segment & offset to the string we want to display in `DS:DX` pair of registers. Segment registers cannot be set to literal value directly so we need to pass `0x1000` to DS indirectly via `AX`. `DX` points to the offset. So the string we want to display is located at: `0x1000:0xa2`. Let's go there in Ghidra and see if we are correct:
 
@@ -133,7 +133,7 @@ And this is consistent with the code we see next
     1000:0169 eb  49           JMP        LAB_100f_00c4
 ```
 
-This is clearly a bounds check code. We could right client on right side of `CMP`-s opcode and use a Convert sub-menu and then `Char` to actually instruct Ghirda to display it as a character instead of hexadecimal value. We will see the boundaries are set at: `:`, `g` or `G`. It might be not clear from the first sight but if we check ASCII table we get that ':' is right after digits and of course 'g' or 'G' is right after 'f' (and 'F') so it might be that this method accepts only hexadecimal digits as input. Let's verify that running the program again.
+This is clearly a bounds check code. We could right client on right side of `CMP`-s opcode and use a Convert sub-menu and then `Char` to actually instruct Ghidra to display it as a character instead of hexadecimal value. We will see the boundaries are set at: `:`, `g` or `G`. It might be not clear from the first sight but if we check ASCII table we get that ':' is right after digits and of course 'g' or 'G' is right after 'f' (and 'F') so it might be that this method accepts only hexadecimal digits as input. Let's verify that running the program again.
 
 We can clearly see that going outside the valid range of hexadecimals stops the immediately but staying withing range allows us to go until the whole key is accepted.
 
