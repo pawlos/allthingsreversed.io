@@ -22,9 +22,9 @@ Prefer watching?
 
 [Watch on YouTube](https://www.youtube.com/watch?v=MBRTx0Tn1dg)
 
-As usually, if possible, starting this task from running the binary - we would be presented with no visible indication that something happen. As mentioned in the introduction - nothing gets printed on the screen. Also from the task description we can get that the way we need to input the flag is not as normal as we are used to it. We need to dig deeper.
+As usually, if possible, starting this task from running the binary - we would be presented with no visible indication that something happened. As mentioned in the introduction - nothing gets printed on the screen. Also from the task description we can get that the way we need to input the flag is not as normal as we are used to it. We need to dig deeper.
 
-Loading this binary into Ghidra gives us an interesting results almost immediately.
+Loading this binary into Ghidra gives us interesting results almost immediately.
 
 ![](content/images/2020/04/image.png)
 
@@ -43,7 +43,7 @@ To know what's happening here we need to check what is this function signature.
 
 [/code]
 
-In our code we can see the handle being passed as well as some additional parameters we need to decode what they mean. In our decompiled code we see value of `7` begin passed as `PROCESSINFOCLASS`. Let's see at the documentation to see that that means.
+In our code we can see the handle being passed as well as some additional parameters we need to decode what they mean. In our decompiled code we see value of `7` begin passed as `PROCESSINFOCLASS`. Let's look at the documentation to see what that means.
 
 > ProcessDebugPort 7
 >  Retrieves a DWORD_PTR value that is the port number of the debugger for the process. A nonzero value indicates that the process is being run under the control of a ring 3 debugger.
@@ -61,11 +61,11 @@ To allow remote debugging in the VM one needs to start a server using the **`.se
 
 ![](content/images/2020/04/image-5.webp)For the server, we need to change to our machine name
 
-If everything works, after hitting ok, we should establish a connection (if not, [see here](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/remode-debugging-using-windbg)). And we can start debugging.
+If everything works, after hitting ok, we should establish a connection (if not, [see here](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/remote-debugging-using-windbg)). And we can start debugging.
 
-As a first breakpoint we need to set one on the `NtQueryInformationProcess` so that we can intercept the call for our `DEBUG_PORT`. The second one could be for `OpenClipbord` so that we do not miss it.
+As a first breakpoint we need to set one on the `NtQueryInformationProcess` so that we can intercept the call for our `DEBUG_PORT`. The second one could be for `OpenClipboard` so that we do not miss it.
 
-After setting that we can observer that `NtQueryInformationProcess` is being called multiple times but on one of them we see our `Program.exe` in the call stack. This is our call. We can but a breakpoint on the check for debug port result and modify it so that the execution will continue.
+After setting that we can observer that `NtQueryInformationProcess` is being called multiple times but on one of them we see our `Program.exe` in the call stack. This is our call. We can put a breakpoint on the check for debug port result and modify it so that the execution will continue.
 
 Next call would be `OpenClipboard` and consequently a call to `GetClipboardData` after which we can see our data in the memory of the process. We verified that this is in fact how we can input something to the application. Nice.
 
