@@ -13,7 +13,7 @@ feature_image: "content/images/2017/10/smoothie_solution.png"
 
 Another good question from RE on Stack Exchange. I've already posted an [answer](https://reverseengineering.stackexchange.com/a/16387/18014) there, but here let's put a bit more explanation and answer the question in the title.
 
-So how do you approach this CTF challenge? Well basically the sam way you would do with all the other ones. You analyze it and analyze it until you are familiar with it you can make a educated guess on how it works (even if it's a partial guess). But how to do it...
+So how do you approach this CTF challenge? Well basically the same way you would do with all the other ones. You analyze it and analyze it until you are familiar with it you can make a educated guess on how it works (even if it's a partial guess). But how to do it...
 
 In case of this program or for any other we open it in a debugger - I'm using either [radare2](http://rada.re/r/) or [Relyze](https://www.relyze.com/). For this one it was Relyze. So when you open it and try to locate a `main`. There's nothing obfuscated in this binary so we can locate it at 0x00000F19 pretty quickly. From there it's obvious to see that there should be one parameter to be passed to it as a flag.
 
@@ -27,13 +27,13 @@ By the first look at its size, one might be scared a lot.
 
 ![size](content/images/2017/10/size.png)
 
-That's a big function! But let's not jump to conclusions yet. Lengthy doesn't mean difficult and hard to understand. So let's try to check what's is being done there.
+That's a big function! But let's not jump to conclusions yet. Lengthy doesn't mean difficult and hard to understand. So let's try to check what is being done there.
 
 If you look closely you can see a pattern
 
 ![setup_pattern](content/images/2017/10/setup_pattern.png)
 
-and it is repeated during the whole `setup()` method. So if we understand that one block is doing, we will understand the whole method. So let's start:
+and it is repeated during the whole `setup()` method. So if we understand what one block is doing, we will understand the whole method. So let's start:
 
 What the block does it first allocates 0x14 (5*4) bytes of space. And then puts some "random" (we will later see they are not random) values in the indexes (0,1,2,3,4). So after the first block executes we do have:
 [code]
@@ -49,7 +49,7 @@ And we repeat that pattern 31 times - with different values. And that's all - th
 
 ## check()
 
-This is the second part of the puzzle. We pretty much know what's going on in the setup, so now let's try to understand what's going one with the data that's being prepared there.
+This is the second part of the puzzle. We pretty much know what's going on in the setup, so now let's try to understand what's going on with the data that's being prepared there.
 
 ![check_first](content/images/2017/10/check_first.png)
 
@@ -69,7 +69,7 @@ And op - operation is based on *buf. Easy. Now's the difficult part - the proble
 
 ![cmp](content/images/2017/10/cmp.png)
 
-But that should not stop us form being able to decode the flag.
+But that should not stop us from being able to decode the flag.
 
 To solve this I will use radare's r2pipe tool that allows to hook up to radare2 engine from scripting languages like for example python.
 
