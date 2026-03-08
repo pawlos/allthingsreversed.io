@@ -14,7 +14,7 @@ feature_image: "content/images/2022/11/top-1.webp"
 
 > Reverse-engineering like the meow way!
 
-We are given a Windows 32-bit executable that we can load into Ghidra. In the initial peak into the `main`, we can see the following
+We are given a Windows 32-bit executable that we can load into Ghidra. In the initial peek into the `main`, we can see the following
 
 ```
     (*DAT_0040544c)(iVar3,iVar3 >> 0x1f,iVar3,iVar3 >> 0x1f,0xc4,0,&local_10,&local_10 >> 0x1f);
