@@ -48,7 +48,7 @@ The main one was:
     @pause
 ```
 
-It makes more sens to analyze from the last one and go backwards.
+It makes more sense to analyze from the last one and go backwards.
 
 ## Rust
 
@@ -104,7 +104,7 @@ Compiling this would of course give us correct program, but not with our custom 
 
 Dos part was hand-written assembly. But I didn't write it from scratch this time but used one of my old assembly for the fire effect - <https://github.com/pawlos/asm/tree/master/fire>. What had to be added was to take input, validate the flag.
 
-Compiling this was done under DOSBos with some MASM assembler 😎
+Compiling this was done under DOSBox with some MASM assembler 😎
 
 ```
     set DOSBOX="c:\Program Files (x86)\DOSBox-0.74-2\DOSBox.exe"
