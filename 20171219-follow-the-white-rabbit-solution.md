@@ -10,7 +10,7 @@ feature_image: "content/images/2017/12/23926567_10211888897952419_37692526558395
 
 # Assembly job offer... "Follow the white rabbit" solution
 
-In a cold November night I was standing at a bus stop and saw and advertisement on the streets of Wrocław. What was odd about it it was written purely in assembly.
+In a cold November night I was standing at a bus stop and saw an advertisement on the streets of Wrocław. What was odd about it it was written purely in assembly.
 
 ![23926567_10211888897952419_3769252655839556878_o](content/images/2017/12/23926567_10211888897952419_3769252655839556878_o.webp)
 
@@ -18,7 +18,7 @@ Ok, to tell you the truth I was nothing like that. In reality I was just browsin
 
 Immediately I wanted to have a look at it but since the quality wasn't that good it might be a bit of a problem. Fortunately the URL page was clearly visible at the bottom so we could get the code and not to retype it. So let's visit the url: <https://git.io/vFmiE> (redirecting to https://gist.github.com/ooKu9yaiV4a/c7463504f1dba1e6bb1681f179dc7b59)
 
-There's not that much assembly going there so what I did was to analyze it an write a short python script to revers it. What Might ba a problem is only those 5 bytes just before `.A`.
+There's not that much assembly going there so what I did was to analyze it an write a short python script to revers it. What might be a problem is only those 5 bytes just before `.A`.
 
 The assembly is not complex, we can identify a loop over the bytes, defined at the bottom. 0x21 is subtracted from each character and then based on the value we do one of two things:
 
@@ -120,7 +120,7 @@ The correct algorithm is here:
     }
 ```
 
-Run it, paste the output in the form on the page and...error. Solution not correct. Information about spaces? Should I remove them? Hmm...WTF? I've struggle a bit here but in the end managed to figured it out.
+Run it, paste the output in the form on the page and...error. Solution not correct. Information about spaces? Should I remove them? Hmm...WTF? I've struggle a bit here but in the end managed to figure it out.
 
 My first mistake was that I did not noticed that the input is changed every time the page refreshed, so I've needed to update my script each time.
 
