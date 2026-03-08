@@ -16,13 +16,13 @@ The very first what comes to my mind when it comes to ZIP with passwords is PKCr
 
 ![misja_12](content/images/2017/10/misja_12.webp)
 
-So I've went to a mission ;) and tried to locate the tool. I was surpried that I was able to [find it](https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html) and it was still available to download. Unfortunatelly it did not work under some recent Win OS (even Win7 with Compatiblity mode) so I had to use a Win95 VM - fortunatelly I got a VM already installed so I could run it there.
+So I've went to a mission ;) and tried to locate the tool. I was surprised that I was able to [find it](https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html) and it was still available to download. Unfortunately it did not work under some recent Win OS (even Win7 with Compatibility mode) so I had to use a Win95 VM - fortunately I got a VM already installed so I could run it there.
 
-It did run there but browsing though the options and the tools (PkCrack is not one but couple of them) got me nowehere. In order to use it I would have to have at least one already decrypted file.
+It did run there but browsing though the options and the tools (PkCrack is not one but couple of them) got me nowhere. In order to use it I would have to have at least one already decrypted file.
 
-That was a dead end and almost complete wast of time :(
+That was a dead end and almost complete waste of time :(
 
-I needed another approch. What struct me a bit was the fact that the files are so small - 4 bytes each (in exception of the last one - which I did not noticed until very, very end!). Maybe we can extract the data by calculating all possible CRC32 sums and find out what produces the ones that are of interest to us?
+I needed another approach. What struck me a bit was the fact that the files are so small - 4 bytes each (in exception of the last one - which I did not noticed until very, very end!). Maybe we can extract the data by calculating all possible CRC32 sums and find out what produces the ones that are of interest to us?
 
 Let's try this idea out.
 
@@ -39,7 +39,7 @@ And quick try on one of the CRCs resulted in a hit. Now how to get all of them i
 
 ![CRCs](content/images/2017/10/CRCs.png)
 
-Having those I could write a script that would run throuh all 4 char printable range, calculate CRC32 and compare.
+Having those I could write a script that would run through all 4 char printable range, calculate CRC32 and compare.
 [code]
     import zlib
     import itertools
@@ -73,7 +73,7 @@ We got almost all the files content, all but the last one. And there's a reason 
 
 ![last_one](content/images/2017/10/last_one.png)
 
-A short addedntum to the script that would additionally computes one-length char CRC32 and we find the last one "!".
+A short addendum to the script that would additionally computes one-length char CRC32 and we find the last one "!".
 
 > And I would have gotten away with it too, if it weren't for you meddling kids and your CRC32!
 
