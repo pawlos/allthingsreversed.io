@@ -12,11 +12,11 @@ feature_image: "content/images/2018/04/tapeta.webp"
 
 # GynvaelEN - Mission 022 - Solution
 
-Blokchain. *Coin. Hot topis for today. The [22nd mission](http://gynvael.vexillium.org/ext/180da8f7c52ec8b4de96b26168cbc6374fc5fad33ad8b1a48b7230de22f491c9_mission022.txt) is about blokchain and about coins. SpyCoins. The mission can be found on [Stream #49](https://www.youtube.com/watch?v=LzypD_NaWAs). The SpyCoin center is here: <http://gynvael.coldwind.pl/mission022_spycoin/>
+Blockchain. *Coin. Hot topics for today. The [22nd mission](http://gynvael.vexillium.org/ext/180da8f7c52ec8b4de96b26168cbc6374fc5fad33ad8b1a48b7230de22f491c9_mission022.txt) is about blokchain and about coins. SpyCoins. The mission can be found on [Stream #49](https://www.youtube.com/watch?v=LzypD_NaWAs). The SpyCoin center is here: <http://gynvael.coldwind.pl/mission022_spycoin/>
 
 # First failed attempt
 
-I've tried to main SpyCoin. That would be an obvious solution to the challenge. Add a next block with a chunk that would transfer all the coind to the "Secret" account and find bytes that would give the md5-squred a valid "Spy" beginning. That failed miserably. Since it was a block above 138 I meeded to match the begining of the block with "SpyCoinXoXo". Tried to do some scripts like this one:
+I've tried to mine SpyCoin. That would be an obvious solution to the challenge. Add a next block with a chunk that would transfer all the coins to the "Secret" account and find bytes that would give the md5-squred a valid "Spy" beginning. That failed miserably. Since it was a block above 138 I needed to match the begining of the block with "SpyCoinXoXo". Tried to do some scripts like this one:
 [code]
     #!/usr/bin/python
     import struct
@@ -55,17 +55,17 @@ I've tried to main SpyCoin. That would be an obvious solution to the challenge. 
     			print 'Found!',i
 [/code]
 
-But after some hours for fruitless searching gave up this approch. I needed a new one..
+But after some hours for fruitless searching gave up this approach. I needed a new one..
 
 # A brand new chain
 
-What if we could construct a new chain? The script only validaes that the root is the same. And our chain has to be only longer in terms of bytes, it doesn't have to be longer in terms of actual blocks in it. Maybe we can trick it into the beliveing that have have one?
+What if we could construct a new chain? The script only validaes that the root is the same. And our chain has to be only longer in terms of bytes, it doesn't have to be longer in terms of actual blocks in it. Maybe we can trick it into believing that have have one?
 
-What would would need to do is this:
+What would need to do is this:
 
   1. Copy the root block into the new one, this is to trick the script that our is a continuation of the current one
   2. Create a block that will transfer enough (500k) SpyCoins
-  3. Create filler blocks. Blocks that are meaningless for us and ther soil purpose is to create a file big enough so the the script will accept it as a new chain
+  3. Create filler blocks. Blocks that are meaningless for us and their sole purpose is to create a file big enough so the the script will accept it as a new chain
   4. ?
   5. Profit?
 
@@ -130,7 +130,7 @@ First a useful function:
 
 [/code]
 
-`verify_block` is taken from the original script. This function is testing all the combinations of bytes (by using `itertools.product`) until it find such combination that md5-squared will start with the apprioriate prefix.
+`verify_block` is taken from the original script. This function is testing all the combinations of bytes (by using `itertools.product`) until it find such combination that md5-squared will start with the appropriate prefix.
 
 With that we just write:
 [code]
@@ -142,7 +142,7 @@ With that we just write:
 
 [/code]
 
-Append it to the chain we're builing
+Append it to the chain we're building
 [code]
     tr += found[0]
     confirm[0] = 0x11+len(tr)
