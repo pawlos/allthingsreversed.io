@@ -9,7 +9,7 @@ feature_image: "content/images/2016/10/Zrzut-ekranu-2016-10-28-o-21.37.46.webp"
 
 # EKOPARTY CTF
 
-Another CTF during in the week - I hate that (I can't participate as much I as want too) but anyway I've took part in this CTF too.
+Another CTF during in the week - I hate that (I can't participate as much as I want to) but anyway I took part in this CTF too.
 
 My contribution:
 
@@ -17,11 +17,11 @@ My contribution:
   * points: 150
   * time spent: 12h 32m
 
-As stated above I've only managed to solved 2 tasks but actually one of them - web 100 - was quite interesting. It wasn't a difficult one but a lot of people had trouble with them.
+As stated above I've only managed to solve 2 tasks but actually one of them - web 100 - was quite interesting. It wasn't a difficult one but a lot of people had trouble with them.
 
 # Super duper advanced attack
 
-We were give a simple message:
+We were given a simple message:
 
 > Can you find the flag?
 
@@ -101,7 +101,7 @@ This task was quite fun and looks like it was a bit of a challenge for people as
 
 I think I was 3rd (or somewhere around that) person who solved the challenge.
 
-Later on in the CTF the organizes have revealed a clue:
+Later on in the CTF the organizers have revealed a clue:
 
 > You don't need to search for the flag outside the DB, there is more than tables and columns in a DB.
 
