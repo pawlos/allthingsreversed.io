@@ -91,7 +91,7 @@ codeUnitFormat = CodeUnitFormat(CodeUnitFormatOptions(CodeUnitFormatOptions.Show
 codeUnitFormat.getRepresentationString(instruction)
 ```
 
-Without that we would be missing some important stuff like references, and string.
+Without that we would be missing some important stuff like references, and strings.
 
 The full script.
 
