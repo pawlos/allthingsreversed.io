@@ -14,7 +14,7 @@ feature_image: "content/images/2021/10/logo.png"
 
 # Flare-On 8 - credchecker
 
-The first task in this year competition. It is a single HTML file. Inside we can find a simple check for credentials.
+The first task in this year's competition. It is a single HTML file. Inside we can find a simple check for credentials.
 [code]
     function checkCreds() {
     	if (username.value == "Admin" && atob(password.value) == "goldenticket")
