@@ -67,7 +67,7 @@ So in this CTF I've started with solving Trivias (one wasn't that trivial at all
 
 > This virus, once clicked, will send itself to everyone in the user’s mailing list and overwrite files with itself making the computer unbootable.
 
-Well there are lots of viruses that can do that but I was looking for some most know ones.
+Well there are lots of viruses that can do that but I was looking for some most known ones.
 
 Finally found out this most famous worm - [ILOVEYOU](https://en.wikipedia.org/wiki/ILOVEYOU). At first I discard this one as a valid solution as it was worm not a virus but the more I read about it I was more and more convinced. An finally this sentence
 
@@ -84,7 +84,7 @@ Ok, checking all the most known trojans I found out [Zeus](https://en.wikipedia.
 
 ### Love Bomb (Trivia 40)
 
-> This virus was created with the intension of disrupting the nuclear efforts of the Iranians
+> This virus was created with the intention of disrupting the nuclear efforts of the Iranians
 
 This one did not require even a second of searching. Who hasn't heard of [Stuxnet](https://en.wikipedia.org/wiki/Stuxnet).
 
@@ -124,7 +124,7 @@ So I've downloaded Blender and import it. And actually it worked. One could see 
 
 ![](content/images/2016/11/Zrzut-ekranu-2016-11-22-o-12.25.55.webp)
 
-but we can also see there's are other elements on the scene.
+but we can also see there are other elements on the scene.
 
 ![](content/images/2016/11/Zrzut-ekranu-2016-11-22-o-12.28.19.webp)
 
@@ -163,7 +163,7 @@ After downloading the file we can see there are bunch of zip files in the tar ar
 >  It appears that the conspiracy runs deeper than I thought.
 >  _Cut to black_
 
-for a short wile I was searching for something hidden here but gave that up very quickly. And I've started looking at `.tar` & `.zip` files. By hex dumping the whole archive I've noticed something that can't be unrecognized.
+for a short while I was searching for something hidden here but gave that up very quickly. And I've started looking at `.tar` & `.zip` files. By hex dumping the whole archive I've noticed something that can't be unrecognized.
 
 > My0yMAo=
 
@@ -193,7 +193,7 @@ so first I've decoded them
 
 [View Gist](https://gist.github.com/pawlos/c40aab5b687704362e7cb2b3b4a143fa)
 
-it looks like some quotes from a movie. My searching for some of them in your favorite search engine it was obvious that they come from two zombie movies:
+it looks like some quotes from a movie. By searching for some of them in your favorite search engine it was obvious that they come from two zombie movies:
 
   * [Army of Darkness](http://www.imdb.com/title/tt0106308/)
   * [Evil Dead 2](http://www.imdb.com/title/tt0092991/)
@@ -251,7 +251,7 @@ Ok, so maybe the flag is coded as binary depending of the movie? Let's try it ou
     print binascii.unhexlify('%x' % n)
 ```
 
-There was some back and forth with few of the quotes but due to the fact that I knew the first chars of the flag (`RC-2016-`) I could verify the correctness of quotes assignment to the movies. After making it correct and running we get the flag:
+There was some back and forth with few of the quotes but due to the fact that I knew the first chars of the flag (`RC3-2016-`) I could verify the correctness of quotes assignment to the movies. After making it correct and running we get the flag:
 
 `RC3-2016-CHRLSD3D`
 
