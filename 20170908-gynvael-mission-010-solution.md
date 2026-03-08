@@ -14,9 +14,9 @@ feature_image: "content/images/2017/09/top.webp"
 
 We are given the [PDF file](https://goo.gl/wgt94W) with the instructions to retrieve the hidden message.
 
-If you didn't know it already, PDF is quite an interesting file format and then contain a lot of information.
+If you didn't know it already, PDF is quite an interesting file format and can contain a lot of information.
 
-The approach in such tasks can vary. We could look at the file in some hex editor and spot something but there's a bunch of good tools for PDF reading, and I'm not talking about Adobe Acrobat Reader of Foxit.
+The approach in such tasks can vary. We could look at the file in some hex editor and spot something but there's a bunch of good tools for PDF reading, and I'm not talking about Adobe Acrobat Reader or Foxit.
 
 What I like to use is [peepdf](https://github.com/jesparza/peepdf) a python based cmd line tool for inspecting PDFs. It can be used in a interactive or non-interactive way so it's good for both manual work with PDFs as well as to be used in scripts.
 
