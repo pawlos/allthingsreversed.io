@@ -17,7 +17,7 @@ Mission link: <https://goo.gl/oUg99i>
 
 This mission in comparison to the [previous one](http://ctfs.ghost.io/gynvael-en-mission-13-solution/) was an easy one. This was a PPC category (programming).
 
-In this one we're give a [log file](goo.gl/uQjX3H) and the [application](goo.gl/yz4hJb) that produced it. So our task is to retrieve the initial map.
+In this one we're give a [log file](https://goo.gl/uQjX3H) and the [application](https://goo.gl/yz4hJb) that produced it. So our task is to retrieve the initial map.
 
 So we write our script based on what we see in the log and what we know from analyzing the application - the only thing that might be a bit more difficult is that the maze is traversed recursively so we need to have the same approach in our script. I've decided to use a stack to store the visited location and then when we go back pop it up from the stack.
 
