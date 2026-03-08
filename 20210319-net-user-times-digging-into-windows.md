@@ -26,7 +26,7 @@ but when I used it to restrict my kids account, I've encountered an interesting 
 
 ## Context
 
-So I wanted to limit possible login days and times so that during week, it's only allowed for few hours and a bit more relaxing hours during weekend. The format of time times part for the command is the following
+So I wanted to limit possible login days and times so that during week, it's only allowed for few hours and a bit more relaxing hours during weekend. The format of the times part for the command is the following
 
 ```
     StartDay[-EndDay],StartHour-EndHour
@@ -63,7 +63,7 @@ So I run `Process Monitor` and executed the command again.
 
 ![](content/images/2021/03/image-1.webp)Finding the net binary
 
-After some filtering it was obvious that the binary is called (duh!) `net.exe` but also another one appeared with - not so obvious - name `net1.exe`. It was was started by the `net.exe` and it looked like the first one was just a proxy. So it looks like we should start there.
+After some filtering it was obvious that the binary is called (duh!) `net.exe` but also another one appeared with - not so obvious - name `net1.exe`. It was started by the `net.exe` and it looked like the first one was just a proxy. So it looks like we should start there.
 
 I've opened `net1.exe` in Ghidra to more or less locate the culprit code. It was not that difficult to find due to the `/TIMES` string being referenced.
 
@@ -142,7 +142,7 @@ Apart from a lot of translations, we can see the particular ones starting with I
 
 ![](content/images/2021/03/image-26.png)
 
-We still miss one piece of the puzzle - how does we match names with day number. This is done in `find_match` function. We the string is equal, we return the value located after the ID of the matched day. So If we match `Niedziela` with ID `0x1121` the function will return `0x00`.
+We still miss one piece of the puzzle - how do we match names with day number. This is done in `find_match` function. We the string is equal, we return the value located after the ID of the matched day. So If we match `Niedziela` with ID `0x1121` the function will return `0x00`.
 
 Now it should be obvious where the mistake is, For Saturday we should return 5 - we start at zero, and remember the +1 - so we see two values before `5h` \- `0x112E` and `0x112F` but if we look into the resources those have values of `N` and `So` assigned which is wrong as it should be `Sb` and `So`. So entering `N` in our input string, will yield this function to set matched day as `5` which will be interpreted as Saturday and that would be set :/
 
