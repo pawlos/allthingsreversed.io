@@ -114,6 +114,6 @@ Doing those checks in the VM, I've managed to reconstruct the order to be: `7260
 
 [/code]
 
-The final program is that the flag, is never returned by the driver. It sits in the memory. Since we are running in the VM, we could dump the VMs memory and search for `hitcon`. This is (more or less what I did) and the flag was there:
+The final problem is that the flag, is never returned by the driver. It sits in the memory. Since we are running in the VM, we could dump the VMs memory and search for `hitcon`. This is (more or less what I did) and the flag was there:
 
 ![](content/images/2022/11/image-9.png)Flag in the dump
