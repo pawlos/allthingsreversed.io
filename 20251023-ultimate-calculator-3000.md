@@ -15,7 +15,7 @@ tags:
 >
 > There's no prizes, but the first 3 solves will earn themselves the "Hacker Cat" rank in discord.
 >
-> You can use the this channel to discuss, but no hints/spoilers until the challenge finishes, please!
+> You can use this channel to discuss, but no hints/spoilers until the challenge finishes, please!
 >
 > DM me if you get the flag or have questions (no hints!) 🙂
 > Download "Ultimate Calculator 3000" to get started 👇
