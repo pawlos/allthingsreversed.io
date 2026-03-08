@@ -12,7 +12,7 @@ feature_image: "content/images/2017/08/Zrzut-ekranu-2017-08-04-o-20.26.43.webp"
 
 If you don't know Gynvael - check his [channel](https://www.youtube.com/gynvaelen) where he shows some RE/hacking stuff. After each video he posts some small challenge for solving by viewers. In this post I'll show how to solve [mission 11](https://www.youtube.com/watch?v=s5gOW-N9AAo).
 
-In this [task](http://gynvael.vexillium.org/ext/c12192e97a9872d274ee4db57de34e835b3eacd0_mission011.txt) we're given a file that is the ["firmware"](goo.gl/axsAHt). When we open the file it is immediately know that it's a python byte code. If you don't know it - it's quite simple and actually very descriptive.
+In this [task](http://gynvael.vexillium.org/ext/c12192e97a9872d274ee4db57de34e835b3eacd0_mission011.txt) we're given a file that is the ["firmware"](https://goo.gl/axsAHt). When we open the file it is immediately known that it's a python byte code. If you don't know it - it's quite simple and actually very descriptive.
 
 If you apply the opcodes definition to the given firmware you will start reconstructing the original function that was written in python.
 
