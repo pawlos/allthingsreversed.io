@@ -15,7 +15,7 @@ I've decided to list all the places where I can find useful knowledge. I don't w
 
 Puzzles are not directly related to CTFs but you can practice your programming skills. It is often required to think about better than naïve solutions to a particular problem as those might take huge amount of time.
 
-  * [Project Euler](https://projecteuler.net) \- mathematical puzzles. More then 500 of them. From some simple ones to a bit more difficult.
+  * [Project Euler](https://projecteuler.net) \- mathematical puzzles. More than 500 of them. From some simple ones to a bit more difficult.
   * [Top Coder](https://www.topcoder.com) \- programming tasks
   * [Hacker Rank](https://www.hackerrank.com) \- as above
 
@@ -40,12 +40,12 @@ Hackmes/Crackmes are similar to CTFs but without time pressure and deadlines. Yo
 
   * [Hack.me](https://hack.me) \- hacking challenges from different categories
   * [WeChall](https://www.wechall.net) \- this is also an aggregator for your points from numerous sites with crackmes/hackmes
-  * [Exploit Excercises](https://exploit-exercises.com) \- a set of exploiting challenges to test your skills. Distributes as self-contained iso images
+  * [Exploit Exercises](https://exploit-exercises.com) \- a set of exploiting challenges to test your skills. Distributes as self-contained iso images
   * [Root-me](https://www.root-me.org/?lang=en) \- even more hacking challenges. Not all related to "rooting" a system
 
 ## YouTube
 
-Recently there are more and more resources on YouTube. I'm not a big fun of this way of learning as one needs to pause a lot if you want to follow the material but anyway it's also a way to get familiar with the skills. Few particular channels I follow:
+Recently there are more and more resources on YouTube. I'm not a big fan of this way of learning as one needs to pause a lot if you want to follow the material but anyway it's also a way to get familiar with the skills. Few particular channels I follow:
 
   * [LiveOverflow](https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w) \- quite nice tutorials focuses on CTFs and
   * [JackkTutorials - Kali Linux and BackTrack](https://www.youtube.com/playlist?list=PLn-akFzjAR19ka6JXJvJwUIKHGB3FeEjN) \- tutorial focused on Kali Linux and Back Track, a particular distro with a lot of useful tools preinstalled
@@ -57,7 +57,7 @@ Recently there are more and more resources on YouTube. I'm not a big fun of this
 
 ## Summary
 
-A lot has changed in the recent years and there are lot's of places where one can lear useful CTFs skills. The best is, of course, just play CTFs. Nothing builds your knowledge like the actual competition.
+A lot has changed in the recent years and there are lots of places where one can learn useful CTFs skills. The best is, of course, just play CTFs. Nothing builds your knowledge like the actual competition.
 
 Of course the list is not near being complete. I've listed most of the places I've check for resources + some additional ones I know.
 
