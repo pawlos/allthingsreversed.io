@@ -12,7 +12,7 @@ In the last post I've promised that I need to look a bit more into the Security 
 
 ## web 100 - Bulletproof Login Server™
 
-In this task we are give a part of the server code and a login panel that located under <https://monk.pwning2016.p4.team/login.php>
+In this task we are given a part of the server code and a login panel that is located under <https://monk.pwning2016.p4.team/login.php>
 
 ```
     ');
@@ -55,7 +55,7 @@ We load this program into r2.
 
 ![](content/images/2016/11/Zrzut-ekranu-2016-11-26-o-17.04.07.webp)
 
-main is quit simple. Let's analyze `check_my_brackets`
+main is quite simple. Let's analyze `check_my_brackets`
 
 It is a bit more complex but the most important bits are at the beginning
 
@@ -81,7 +81,7 @@ So to sum up:
 
 So if we want to exploit the buffer and run `shell_me` function we need to provide a "correct" expression
 
-Ok. Time to for some python. For pwning we will use [pwntools](https://github.com/Gallopsled/pwntools). A library that makes exploitation easy. The nice feature is that you can easily switch from attacking a ELF file on your local machine to targeting over a socket.
+Ok. Time for some python. For pwning we will use [pwntools](https://github.com/Gallopsled/pwntools). A library that makes exploitation easy. The nice feature is that you can easily switch from attacking a ELF file on your local machine to targeting over a socket.
 
 But before that we need our payload:
 `payload = ''.join("()"*62)+struct.pack("I",0x0)+"AAAAAAAA"+struct.pack("Q",0x00000000004005f6)`
@@ -128,7 +128,7 @@ The full script
 
 ## re 100 - Rex
 
-In this task we are again given with the binary that we load to IDA (free).
+In this task we are again given a binary that we load to IDA (free).
 
 We quickly locate the 'check password' code and obtain the information that expected password is 26 characters long (`flag_len`)
 
@@ -146,7 +146,7 @@ If we go into the `do_more_with_char` method we can see that it's generates some
 
 `0x7e 0xe9 0xf3 0x71 0x80 ...`
 
-We know that the flag should start with `pwn{` so we input it as a flag and in fact we get few first values to be `0x73 0xe9 pxf3 0x71`. What about the next ones?
+We know that the flag should start with `pwn{` so we input it as a flag and in fact we get few first values to be `0x73 0xe9 0xf3 0x71`. What about the next ones?
 
 We'll use `gdb`. Let's put a breakpoint on the line:
 
