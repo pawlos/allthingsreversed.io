@@ -42,7 +42,7 @@ As mentioned, the method was long and complex, and it could work with automating
 
 Copied the decompiled source code from Ghidra and started to remove unneeded lines. What was left was the characters, but I needed to construct the flag from that as some characters were used in multiple places.
 
-![](content/images/2023/01/image-3.png)'A' is uses in 4 different spots in the final flag
+![](content/images/2023/01/image-3.png)'A' is used in 4 different spots in the final flag
 
 Again, lazy approach won.
 [code]
@@ -101,7 +101,7 @@ The first one of those function (`FUN_00104f54`) has some ASCII strings and a xo
 
 ![](content/images/2023/01/image-6.png)ASCII and a xor (inside `FUN_00103559`) are obvious candidates
 
-The second one (`FUN_00105052`) has also very distinct patter of operations that are common in RE challenges.
+The second one (`FUN_00105052`) has also very distinct pattern of operations that are common in RE challenges.
 
 ![](content/images/2023/01/image-7.png)Bunch of logical operators based on different characters of an array - big 🚩
 
@@ -125,7 +125,7 @@ So, if the first part of our license would be `anakin:` we would pass those chec
 
 The `check2` function gets more complex, but we can see at least the parts of the logic.
 
-First, the `after` part is cat in three, 15-chars long parts.
+First, the `after` part is cut in three, 15-chars long parts.
 
 ![](content/images/2023/01/image-11.png)
 
