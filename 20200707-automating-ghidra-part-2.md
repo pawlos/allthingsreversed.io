@@ -19,7 +19,7 @@ In the last [Automating Ghidra post](20200508-scripting-ghidra.md) we looked at 
 
 [Watch on YouTube](https://www.youtube.com/watch?v=udN0ziN1jq4)
 
-During ASIS CTF 2020 a task was present that posses unique opportunities to show how we can automate the mundane part or reverse engineering process. Task called `latte` had a bunch of bytes in the data, that was clearly indicating some readable values, if we only parse the data correctly.
+During ASIS CTF 2020 a task was present that poses unique opportunities to show how we can automate the mundane part or reverse engineering process. Task called `latte` had a bunch of bytes in the data, that was clearly indicating some readable values, if we only parse the data correctly.
 
 ![](content/images/2020/07/image.webp)
 
@@ -41,7 +41,7 @@ Next, we need to get our data. For that, first we will need to get hold of `List
 
 [/code]
 
-Now's the fun part. To get the data ad a given address, we can use function `getDataAt` passing an address. We can get nothing or we can get a data but it would be uninitialized so let's cover those cases. For the first one, we will simply finish our work, and for the second one, we will just skip those bytes and move to the next one.
+Now's the fun part. To get the data at a given address, we can use function `getDataAt` passing an address. We can get nothing or we can get a data but it would be uninitialized so let's cover those cases. For the first one, we will simply finish our work, and for the second one, we will just skip those bytes and move to the next one.
 [code]
     d = l.getDataAt(addr)
     if d == None:
@@ -58,7 +58,7 @@ Ok. now - how we can get the value of the data. What we get from `getDataAt` is 
 
 [/code]
 
-Additionally, we convert spaces to underscores as labels, that we will like to set doesn't allow that, and one of the string has a space in it - yet I think that's a mistake as all the rest has underscores in case os spaces.
+Additionally, we convert spaces to underscores as labels, that we will like to set doesn't allow that, and one of the string has a space in it - yet I think that's a mistake as all the rest has underscores in case of spaces.
 
 So now the last part. How to set a label for the data to be our string? Again, simple when we look at the API. There's a method for that.
 
