@@ -26,7 +26,7 @@ Recently, I was solving one of the challenge from ångstromCTF 2021 and after op
     iVar2 = socket(in_stack_ffffffffffc7fcc0->ai_family,in_stack_ffffffffffc7fcc0->ai_socktype,in_stack_ffffffffffc7fcc0->ai_protocol);
 ```
 
-This is not usually how Ghidra name stack variables in the current frame. Trying to rename those did not resulted in a regular dialog for a new name showing up. There were more examples of such weird naming along the method. Having no clue why the decompiler was acting strange had to resort to ultimate truth - disassembly.
+This is not usually how Ghidra name stack variables in the current frame. Trying to rename those did not result in a regular dialog for a new name showing up. There were more examples of such weird naming along the method. Having no clue why the decompiler was acting strange had to resort to ultimate truth - disassembly.
 
 Done so, almost immediately it was obvious what could be the problem. See for yourself:
 
@@ -77,7 +77,7 @@ Cleaning up the stack had one more benefit. looking at the disassembly and the c
     }
 ```
 
-Looks like a small innocent code, with a clear meaning. Even considering the odd names for stack variables. But looking at the corresponding disassembly after a call to `_ID_getc` and following the execution (no `call` or `jump`) there was some `xor` operation that was not present anywhere in the decompilation.
+Looks like a small innocent code, with a clear meaning. Even considering the odd names for stack variables. But looking at the corresponding disassembly after a call to `_IO_getc` and following the execution (no `call` or `jump`) there was some `xor` operation that was not present anywhere in the decompilation.
 
 ![](content/images/2021/05/hidden_xor.png)
 
@@ -94,7 +94,7 @@ It was odd as by analyzing the code I was pretty sure it supposed to be there. B
     }
 ```
 
-See the `xor` operation now? Before it was never there. This is not yet the most cleaned-up code but already the additional line is visible, and it was a curcial one (for getting the flag).
+See the `xor` operation now? Before it was never there. This is not yet the most cleaned-up code but already the additional line is visible, and it was a crucial one (for getting the flag).
 
 The final, cleaned up disassembly looks like this:
 
