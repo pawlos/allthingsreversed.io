@@ -73,7 +73,7 @@ obj 8 0
 PDF Comment '%%EOF\n'
 ```
 
-Apart from the standard stuff, we can spot 2 images at index 6 and 8. Especially the one at index 8 can catches attention, as it's only 200 in height but 440471 in width. Its size is also over 10 MB.
+Apart from the standard stuff, we can spot 2 images at index 6 and 8. Especially the one at index 8 catches attention, as it's only 200 in height but 440471 in width. Its size is also over 10 MB.
 
 We can extract the stream in its raw form using the tool:
 
