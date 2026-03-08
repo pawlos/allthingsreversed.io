@@ -12,7 +12,7 @@ feature_image: "content/images/2020/01/hitcon_logo.webp"
 
 # Core Dumb - HitCon 2019
 
-_Note: challenge was solved together with[Disconnected](https://twitter.com/disconnect3d_pl)._
+_Note: challenge was solved together with [Disconnected](https://twitter.com/disconnect3d_pl)._
 
 > Damn it my flag checker is so buggy it destroyed the program itself 😱
 > All I left is a core dump file :(
@@ -86,7 +86,7 @@ Let's write them like that:
   FUN_555555554b0c(local_e8,local_e0,&local_98,local_e8);
 ```
 
-Each group starts with a call to `FUN_555555555548bc` and closes with `FUN_55555555490f` (except for the last one). The call in the middle is not always the same but it alternating between `FUN_555555554a38` and `FUN_55555555b0c`.
+Each group starts with a call to `FUN_555555555548bc` and closes with `FUN_55555555490f` (except for the last one). The call in the middle is not always the same but it alternating between `FUN_555555554a38` and `FUN_555555554b0c`.
 
 The first one - `FUN_5555555548bc` \- after simple renaming looks like a `memncpy`
 
