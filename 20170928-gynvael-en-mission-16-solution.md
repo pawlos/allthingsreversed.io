@@ -30,7 +30,7 @@ I've tried one from the wikipage to see if it actually works. The first choice w
 
 ![mission_16_sstv](content/images/2017/09/mission_16_sstv.webp)
 
-We can see that we are on the right track as available modes are the ones used in the message (Martin/Scotie).
+We can see that we are on the right track as available modes are the ones used in the message (Martin/Scottie).
 
 And when played the file.... we got a result!
 
@@ -42,7 +42,7 @@ And believe me that was one of the better ones. If I would get some of the other
 
 I guess, now comes the "difficult" part of the "bruteforcing" the parameters that was mentioned in the task.
 
-I've tried multiple configurations and either it was part of the task or the tool is not right but I couldn't get a clear message. I've tried different tools but actually non matched the result of this one. After like 1h our trying out different setups I've got what was I think the best output I have this.
+I've tried multiple configurations and either it was part of the task or the tool is not right but I couldn't get a clear message. I've tried different tools but actually non matched the result of this one. After like 1h of trying out different setups I've got what was I think the best output I have this.
 
 ![good](content/images/2017/09/good.webp)
 
@@ -62,7 +62,7 @@ And what is probable encoded message: `Y DHXDMW BQLF KDYNV`.
 
 Ok, we can clearly see a 5x5 matrix in the middle and there's not much ciphers that uses such construct. If you have ever had any interest in ciphers than you are probably familiar with Playfair cipher. How it works is that you type a secret password into the 5x5 grid (skipping letters that are already there) and finish up with the rest of the letters. It's common to put I/J in one cell so that gives 25 letters total.
 
-To cipher/decipher first the text needs to be split into two and then need to find the letters in the grid. To code is to get the letters on the corresponding corners (top-down, left-right manner). To decode - do the revers. There's so corner cases when the column or row is the same but we'll not describe that here (check wiki).
+To cipher/decipher first the text needs to be split into two and then need to find the letters in the grid. To code is to get the letters on the corresponding corners (top-down, left-right manner). To decode - do the revers. There are some corner cases when the column or row is the same but we'll not describe that here (check wiki).
 
 Ok, so what might be the password? We don't know but we can do some fill-up based on the description how the Playfair matrix is constructed.
 
