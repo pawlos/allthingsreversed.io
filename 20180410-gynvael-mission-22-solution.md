@@ -21,7 +21,7 @@ Just type
 
 > r2 -e asm.arch=riscv 876cad97a05cdb39c4fc749f99c3a4b5ae9317edb1271a23c5b82457996e5cbd_pin_storage.bin
 
-and we're good to go. I think I've haven't had any experience with this architecure before so I did some reading [here](https://riscv.org/specifications/) and [there](https://rv8.io/asm) to get the basic understanding of the assembly. Although (almost) everything was new to me, it was pretty clear from the beginning where the algorith was. `sscanf`, `xor` and a lot of operations that looked like checking the input gave me an idea that this is what I was looking for.
+and we're good to go. I think I've haven't had any experience with this architecure before so I did some reading [here](https://riscv.org/specifications/) and [there](https://rv8.io/asm) to get the basic understanding of the assembly. Although (almost) everything was new to me, it was pretty clear from the beginning where the algorithm was. `sscanf`, `xor` and a lot of operations that looked like checking the input gave me an idea that this is what I was looking for.
 
 ![Zrzut-ekranu-2018-04-09-o-23.33.44](content/images/2018/04/Zrzut-ekranu-2018-04-09-o-23.33.44.webp)
 
@@ -29,17 +29,17 @@ By looking at those `sscanf` it was obvious that the application expects 2 input
 ![Zrzut-ekranu-2018-04-09-o-23.41.29](content/images/2018/04/Zrzut-ekranu-2018-04-09-o-23.41.29.webp)
 And from the above we see it's just a `xor` \- but we don't know the key.
 
-At that moment I've decided that the best approch would be to have the ability to run the damn thing. Or better - to debug it.
+At that moment I've decided that the best approach would be to have the ability to run the damn thing. Or better - to debug it.
 
 ## QEMU+RISC-V
 
-QEmu is an emulator that can emulate a lot of weird* architectures. One of them being RISC-V. You just need to download a Qemu that supports it from [here].(<https://github.com/riscv/riscv-qemu>).
+QEmu is an emulator that can emulate a lot of weird* architectures. One of them being RISC-V. You just need to download a Qemu that supports it from [here](https://github.com/riscv/riscv-qemu).
 
 It took like a gazilion hours to compile but after that I was able to actually run the code. Yet the password and the correct values were unknown. Now what we need is a debugger.
 
 ## Failed attempts to debug with GDB
 
-GDB is also a pretty cool tool as it also can be used to debug weird* things. It is also supported by QEmu. You can easily put you app in a state that it will wait for GDB to attach to it. One just need to specify it correctly and connect. Well, at least that's the theory of it. Maybe it works for x86 but for the RISC-V I coudn't get it running. Every time I connected to it via
+GDB is also a pretty cool tool as it also can be used to debug weird* things. It is also supported by QEmu. You can easily put you app in a state that it will wait for GDB to attach to it. One just need to specify it correctly and connect. Well, at least that's the theory of it. Maybe it works for x86 but for the RISC-V I couldn't get it running. Every time I connected to it via
 
 > target remote localhost:1234
 
@@ -49,7 +49,7 @@ I got an error stating the output was reply was too big.
 
 So much for my plan to debug it.
 
-At that time I've almost got enough of those non working tools but found out that there's supposed to be a complete solution for RISC-V called [rv8](http://rv8.io) so gave it a go. It turned out this is using the same repos I did installed manually so there was no point in trying them again. Anyway they failed on me also.
+At that time I've almost got enough of those non working tools but found out that there's supposed to be a complete solution for RISC-V called [rv8](http://rv8.io) so gave it a go. It turned out this is using the same repos I had installed manually so there was no point in trying them again. Anyway they failed on me also.
 
 Well then, I guess there's nothing else left than to understand the code.
 
@@ -61,9 +61,9 @@ I've got my 'aha/eureka' moment when I got to the documentation and fully unders
 
 ![Zrzut-ekranu-2018-04-10-o-00.13.17](content/images/2018/04/Zrzut-ekranu-2018-04-10-o-00.13.17.webp)
 
-First I translated this like a normal load, but `lui` is different. It is supposted to be written as: `a4 = 0x1d << 12`. So the above instruction actually is equal to `a4 = 0x1CAF0 (0x1d000-0x510)`. For me it was a breakthrough. By doing this calculation I was also able to locate the encoded data in the binary (this was the exact location) and also find out that those `sscanf` were expecting a hexadecimal input (format was `'%x'`).
+First I translated this like a normal load, but `lui` is different. It is supposed to be written as: `a4 = 0x1d << 12`. So the above instruction actually is equal to `a4 = 0x1CAF0 (0x1d000-0x510)`. For me it was a breakthrough. By doing this calculation I was also able to locate the encoded data in the binary (this was the exact location) and also find out that those `sscanf` were expecting a hexadecimal input (format was `'%x'`).
 
-What we also can get from the code, as we know how `andi` works, is the 0/1 value for bits from `0` to `10` as that are used in conjunction with `andi`. Just needed to check what jumps are used we can get that the lowest byte of the number to pass the cheks needs to be `0xa4`.
+What we also can get from the code, as we know how `andi` works, is the 0/1 value for bits from `0` to `10` as those are used in conjunction with `andi`. Just needed to check what jumps are used we can get that the lowest byte of the number to pass the cheks needs to be `0xa4`.
 
 ![Zrzut-ekranu-2018-04-10-o-12.57.46](content/images/2018/04/Zrzut-ekranu-2018-04-10-o-12.57.46.webp)
 
@@ -75,12 +75,12 @@ Going further, we can see that the key for xoring is extracted from the value we
 
 ![Zrzut-ekranu-2018-04-09-o-23.52.44](content/images/2018/04/Zrzut-ekranu-2018-04-09-o-23.52.44.webp)
 
-If we follow the code more it is obivious that the xor key is:
+If we follow the code more it is obvious that the xor key is:
 
 sp+8| sp+9| sp+10| sp+11| sp+12| sp+13| sp+14| sp+15
 ---|---|---|---|---|---|---|---
 a5| ~a5| a1| ~a1| a2| ~a2| a4| ~a4
-So every byte of the number constitutes to 2 bytes of the key. First being the original byte, second one is negated. What we also know is the last byte. Hmm, one byte of the key probably wouldn't give us much as there might be a lot of false-possitives. But two might actually give us some decoded text. Let's try that.
+So every byte of the number constitutes to 2 bytes of the key. First being the original byte, second one is negated. What we also know is the last byte. Hmm, one byte of the key probably wouldn't give us much as there might be a lot of false-positives. But two might actually give us some decoded text. Let's try that.
 [code]
     import sys
     import string
@@ -184,7 +184,7 @@ And `ofs=6`:
     0xaf Cy    in d    NTa:    ERCy    ECur    IThM    NELe    NG!
 [/code]
 
-A lot of results also for this one. Combining it with the previous results gave a bit more clarity and allowed to pic the potential results to be either `0xaf` or `0x8f`.
+A lot of results also for this one. Combining it with the previous results gave a bit more clarity and allowed to pick the potential results to be either `0xaf` or `0x8f`.
 
 So after running those script we were left with (LSB):
 
