@@ -15,9 +15,9 @@ Few years ago I've made a video that demonstrates how one can debug (from Visual
 
 [Watch on YouTube](https://www.youtube.com/watch?v=D7spm6C2j30)
 
-[DotPeek](https://www.jetbrains.com/decompiler/) is one of many competed .NET decompiler (I ❤ [dnSpy](https://github.com/0xd4d/dnSpy)) but it has a great feature that allows it to act as a PDB symbole servers for the assemblies that are being loaded by our application when we debug it in Visual Studio.
+[DotPeek](https://www.jetbrains.com/decompiler/) is one of many competing .NET decompilers (I ❤ [dnSpy](https://github.com/0xd4d/dnSpy)) but it has a great feature that allows it to act as a PDB symbol server for the assemblies that are being loaded by our application when we debug it in Visual Studio.
 
-I've recently got a mail with a related questions that was describing the similar use case but when we tried to step through such code some lines were available and some were instantaneously skipped. It would look like this:
+I've recently got a mail with a related question that described a similar use case but when we tried to step through such code some lines were available and some were instantaneously skipped. It would look like this:
 
 ![](content/images/2020/03/vs-breakpoint.gif)
 
