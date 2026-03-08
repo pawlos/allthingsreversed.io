@@ -32,7 +32,7 @@ Something along the lines:
     t.interactive()
 [/code]
 
-And I did that, but instead attaching to gdb I got unexpected error
+And I did that, but instead of attaching to gdb I got unexpected error
 
 ![](content/images/2020/06/image.webp)
 
@@ -81,7 +81,7 @@ And with that fix, our `.attach()` to gdb works!
 
 ![](content/images/2020/06/image-4.webp)
 
-There's still an error that states that debugger exited! but I don't mind that, if I can use it with its' full power.
+There's still an error that states that debugger exited! but I don't mind that, if I can use it with its full power.
 
 Final starting script would be:
 [code]
@@ -96,6 +96,6 @@ Final starting script would be:
     t.interactive()
 [/code]
 
-Should we file an issue into `pwntools` repo? Apparently this was know as it is [fixed](https://github.com/Gallopsled/pwntools/blob/dev/pwnlib/util/proc.py#L349) in the `dev` branch but haven't been yet merged to stable.
+Should we file an issue into `pwntools` repo? Apparently this was known as it is [fixed](https://github.com/Gallopsled/pwntools/blob/dev/pwnlib/util/proc.py#L349) in the `dev` branch but haven't been yet merged to stable.
 
 Happy pwning!
