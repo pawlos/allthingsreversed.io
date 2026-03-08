@@ -18,7 +18,7 @@ feature_image: "content/images/2017/08/Zrzut-ekranu-2017-08-11-o-16.27.10.webp"
 
 Boy, that was a hard one but also very challenging task.
 
-In this [mission](http://goo.gl/yEBeVh) we're given a [PCAP file](goo.gl/JSyinL) and an information that we've intercepted a remote GDB session.
+In this [mission](http://goo.gl/yEBeVh) we're given a [PCAP file](https://goo.gl/JSyinL) and an information that we've intercepted a remote GDB session.
 
 When I saw that info I've immediately got a flashback from the [Pwnium CTF](https://github.com/ctfs/write-ups-2014/tree/master/pwnium-ctf-2014/remote-kg) where a similar task was given. I've even [started](https://github.com/pawlos/gdb-remote-protocol) writing a parser for that but probably due to lack of time haven't finished much.
 
@@ -30,7 +30,7 @@ So we save that data to a file and we can exchange Wireshark to python.
 
 If you don't know (or were not aware about) GDB remote protocol just check the [docs](https://sourceware.org/gdb/onlinedocs/gdb/Remote-Protocol.html). For the start it's good to read [Overview](https://sourceware.org/gdb/onlinedocs/gdb/Overview.html#Overview) & [Packets](https://sourceware.org/gdb/onlinedocs/gdb/Packets.html#Packets) sections. The most important lesson is that it's a textual protocol where packets are generally divided with `$`. Also an important info is that data can be RLE encoded.
 
-We can start writing the parser[1]. My gut feeling told me that we should focus on `m` command - `reading memory` so I've focused on that but in fact we needed a bit more that that.
+We can start writing the parser[1]. My gut feeling told me that we should focus on `m` command - `reading memory` so I've focused on that but in fact we needed a bit more than that.
 
 After spending like 2h on writing the parser I've got something more or less working (don't judge the code - it's crappy I know). What we get from running it is a log that could be more or less analyzed by a human.
 
@@ -74,7 +74,7 @@ What we see there only the `0s` encoded as `add byte ptr [rax],al` but Relyze on
 
 ![](content/images/2017/08/Offset_780.png)
 
-At that offset there's some code but 0x10 bytes father we see only `dup`. Let's press `C` to convert it to code. Magic happened & we get something that looks like some actual code.
+At that offset there's some code but 0x10 bytes farther we see only `dup`. Let's press `C` to convert it to code. Magic happened & we get something that looks like some actual code.
 
 ![Function graph](content/images/2017/08/the_function.webp)
 
