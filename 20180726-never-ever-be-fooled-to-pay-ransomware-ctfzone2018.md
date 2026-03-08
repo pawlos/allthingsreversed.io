@@ -4,7 +4,7 @@ date: 2018-07-26T18:24:54.000Z
 tags:
   - "ctf"
   - "reversing"
-  - "forensincs"
+  - "forensics"
   - "ransomware"
   - "malware"
   - "ctfzone"
@@ -49,17 +49,17 @@ Apps folder
 Shared folder
 ![shared folder](content/images/2018/07/Screen-Shot-2018-07-26-at-20.16.00.webp)
 
-Here was a little bit of manual labour going through files and folders and trying to identify another interesting point of attack. And this work did payed off. In `shared/0/DCIM/Camera` were some interesting files:
+Here was a little bit of manual labour going through files and folders and trying to identify another interesting point of attack. And this work did pay off. In `shared/0/DCIM/Camera` were some interesting files:
 
   * IMG_20180101_071505.jpg.iv
   * IMG_20180101_071505.jpg.salt
   * IMG_20180101_071505.jpg.xxx
 
-Looks like this file was encrypted (somehow) and we are give the IV, salt and the encrypted file itself. Now the job is to find out how it was encrypted.
+Looks like this file was encrypted (somehow) and we are given the IV, salt and the encrypted file itself. Now the job is to find out how it was encrypted.
 
 # Looking for malware
 
-Since the taks has malware in the name an assumption is that there was some kind of (real or fake) malware that was present on the device. I’ve started to look for evidence of those in the `~/Download` folder. There were four `.apk` that might be a potential malware. But since the phone got already infected the malware had to be present in the device already so it should be seen in the `apps` folder. Let’s try to grep the folder for any files that have ‘.xxx’ in them.
+Since the task has malware in the name an assumption is that there was some kind of (real or fake) malware that was present on the device. I’ve started to look for evidence of those in the `~/Download` folder. There were four `.apk` that might be a potential malware. But since the phone got already infected the malware had to be present in the device already so it should be seen in the `apps` folder. Let’s try to grep the folder for any files that have ‘.xxx’ in them.
 
 > find . -exec grep -sl xxx '{}' ;
 
@@ -80,7 +80,7 @@ The final problem was the the function `faweifunhiunfg2uylbh8734gh778ghinegkrGln
 
 # getting the flag
 
-Afer fixing the bugs and all errors we were able to get the file decrypted.
+After fixing the bugs and all errors we were able to get the file decrypted.
 
 > javac own.java
 >  java own
