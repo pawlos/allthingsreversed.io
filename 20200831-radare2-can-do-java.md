@@ -16,7 +16,7 @@ I was once asked on my YT channel to do a Java crackme.
 
 ![](content/images/2020/08/image.webp)
 
-It only took 7* months to fulfill this request. So, wile waiting for Part 4, Professor this is for you.
+It only took 7* months to fulfill this request. So, while waiting for Part 4, Professor this is for you.
 
 * * *
 
@@ -24,7 +24,7 @@ It only took 7* months to fulfill this request. So, wile waiting for Part 4, Pro
 
 We will do a Java crack-me, but an easy one created by me. This is as I want to focus not on crack-me today, but on something else. On the fact that r2 can do java.
 
-Radare2 is a native disassembler, debugger but it is also a swiss-army knife that includes Thor only knows what inside. You never know what other blade is in your disposal.
+Radare2 is a native disassembler, debugger but it is also a swiss-army knife that includes Thor only knows what inside. You never know what other blade is at your disposal.
 
 Such hidden feature of radare2 might be that it can do java. Java is not native, java is compiled to p-code but radare2 can understand it. So let's see how we can start.
 
