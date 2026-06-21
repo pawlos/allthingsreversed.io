@@ -4,6 +4,7 @@ date: 2016-11-27T08:39:57.000Z
 tags:
   - "ctf"
 feature_image: "content/images/2016/11/score_board.webp"
+description: "More solutions to the Security Pwning CTF by p4, starting with the Bulletproof Login Server web challenge and its remember_me cookie."
 ---
 
 # Security Pwning CTF by p4 - cont
