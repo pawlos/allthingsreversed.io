@@ -35,7 +35,8 @@ We can start writing the parser[1]. My gut feeling told me that we should focus 
 After spending like 2h on writing the parser I've got something more or less working (don't judge the code - it's crappy I know). What we get from running it is a log that could be more or less analyzed by a human.
 
 Reading it reveals some interesting data. We can see maps (there's a read operation on `/proc/<pid>/maps`), data reads with the actual data content (dumping the memory) and some paths (part of the environment variables) and much more.
-[code]
+
+```
     File: open: /proc/5979/maps ,0,0#ed
     Unk: F7
     ÷
@@ -49,7 +50,7 @@ Reading it reveals some interesting data. We can see maps (there's a read operat
     7ffff7ffe000-7ffff7fff000 rw-p 00000000 00:00 0
     7ffffffde000-7ffffffff000 rw-p 00000000 00:00 0                          [stack]
     ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
-[/code]
+```
 
 That was a great source of intel. Our target is probably `a.out` and it was mapped `@0x555555554000`, but in our output we also saw lines like this one.
 `Reading memory at: 0x555555554000 of 0x40 bytes` and the returning data even starts with `ELF`. Does it mean that we have the whole binary in the log and we should search for the flag there? Let's add an "extractor" to our script and save the binary data to a file. Next run and we've got a file but running a `file` on it gives us this
@@ -79,13 +80,14 @@ At that offset there's some code but 0x10 bytes farther we see only `dup`. Let's
 ![Function graph](content/images/2017/08/the_function.webp)
 
 Even though we see the code we still miss the imports and parts of the methods. But maybe we can use a bit of deduction.
-[code]
+
+```
      code_0x5555555547E5:
         488D3D31030000       lea rdi, [rip+0x331]
         E83FFEFFFF           call func_0x555555554630; void __unknown func_0x555555554630( void )
         B801000000           mov eax, 0x1
         E971020000           jmp code_0x555555554A6C
-[/code]
+```
 
 If we check the `[rip+0x331]` we could actually calculate the right offset. We are at: 0x7ec + 0x331 = 0xb1d(2845). But in our binary we miss that offset. Maybe there's a bit more info elsewhere? Maybe in the GDB log?
 
@@ -106,23 +108,24 @@ Analyzing the function a bit more we discover this piece of code:
 The part on left looks like encryption and the one on the right something we should end up with after the encryption that we will compare to.
 
 Focusing first on the algo first. It doesn't look complex - on the first look it looks like there are some unused instructions that we could get rid of and if we follow the asm it boils down to this.
-[code]
+
+```
     temp = (c ^ 0x5A + 0x63) & 255 ;byte limit
     v = (temp ^ 0x5A + 0x63) & 255 ;byte limit
-
-[/code]
+```
 
 Okay - we know the algo. Let's try to reverse it on first two chars.
-[code]
+
+```
     v = ((c - 0x63) ^ 0x5a) & 255
     v = ((v - 0x63) ^ 0x5a) & 255
-
-[/code]
+```
 
 Running a quick in python reveals that it might be actually working! We got a `Th`.
 
 Quick & dirty python script reveals that it actually works!
-[code]
+
+```python
     import sys
     bytes = [0x8e, 0x32, 0x2f, 0x39, 0xea, 0x2d, 0x27, 0x39, 0xea, 0x27, 0xea, 0x88, 0x25, 0x94, 0x3b, 0x30, 0x39, 0x2f, 0x29, 0x39, 0xea, 0x2e,0x27, 0x39, 0x31,0xea,0x8f, 0xea, 0x5d, 0x2b,0x5b,0x39,0x39,0xf0]
 
@@ -130,7 +133,7 @@ Quick & dirty python script reveals that it actually works!
     	v = ((c-0x63) ^ 0x5a) & 255
     	v = ((v-0x63) ^ 0x5a) & 255
     	sys.stdout.write(chr(v))
-[/code]
+```
 
 > λ python mission13.py
 

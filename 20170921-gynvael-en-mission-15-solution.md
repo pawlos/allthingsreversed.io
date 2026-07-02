@@ -16,7 +16,8 @@ So we download the attached image and got this:
 ![mission_15_leak](content/images/2017/09/mission_15_leak.png)
 
 The immediate conclusion is that the bars represent chars in the file and the ascii value are represented by the bar height. Let's verify this with a short python script
-[code]
+
+```python
     #mission_15.py
     import png
 
@@ -36,11 +37,11 @@ The immediate conclusion is that the bars represent chars in the file and the as
     			sc.write(chr(value))
     			print 'OK',chr(value), i/bytesPerPixel,j, r,g,b
     			break
-
-[/code]
+```
 
 What we do here we get the height of each bar in a very naive approach - but it's enough here. We don't need anything fancy. After running the script we get the mentioned script.
-[code]
+
+```
      'e6d9fe6df8fd2a07ca6636729d4a615a',
       5 => '273e97dc41693b152c71715d099a1049',
       10 => 'bd014fafb6f235929c73a6e9d5f1e458',
@@ -55,14 +56,14 @@ What we do here we get the height of each bar in a very naive approach - but it'
     }
 
     die("GW!");
-
-[/code]
+```
 
 So the password we are looking for is a 25 char that we have a md5 hash for. It would be impossible to find it without helps in the file. In the script we see that there's additional check for every 5 characters in the pass. We can use that. Quick search in google does not result in any hashes found so we are forced to crack them on our own.
 Probably here we could write something fancy but the most important part is to select a correct charset.
 
 Our script is like this:
-[code]
+
+```python
     #crack
     import string
     import md5
@@ -87,8 +88,7 @@ Our script is like this:
     						print "4",  i+j+k+l+m
     					if digest == "b56a807858d5948a4e4604c117a62c2d":
     						print "5", i+j+k+l+m
-
-[/code]
+```
 
 My initial approach was to select only lower & upper case letters and I've quickly got some parts of the password but the others were missing.
 

@@ -47,14 +47,14 @@ I've tried multiple configurations and either it was part of the task or the too
 ![good](content/images/2017/09/good.webp)
 
 Here we see a bit more clear - at this moment I've assumed that this is part of the task. So let's note what we have:
-[code]
+
+```
     ? ? R O N
     D I Y M A
     U Z ? ? ?
     B C K P ?
     ? ? V W X
-
-[/code]
+```
 
 And what is probable encoded message: `Y DHXDMW BQLF KDYNV`.
 
@@ -67,11 +67,11 @@ To cipher/decipher first the text needs to be split into two and then need to fi
 Ok, so what might be the password? We don't know but we can do some fill-up based on the description how the Playfair matrix is constructed.
 
 We can clearly see that the last two rows letters are in ascending order so we can assume it's already the filling part. There are 3 slots left between `P` and `V` and if we check how many letters there are in the alphabet in between those there are only: "R, S, T, U" \- 4, but R is already used on the first row in 'RON' so we can cross that out. So we have the filling for the last two rows
-[code]
+
+```
     B C K P S
     T U V W X
-
-[/code]
+```
 
 What about the top? Well that's a bit trickier but maybe from those two rows we can get something out?
 
@@ -88,14 +88,14 @@ I've found out an [online tool](http://www.dcode.fr/playfair-cipher) to check so
 At first I got the wrong decoding as `MISSIONPLAYFAIRX`. I know it's different in those two first letters but I was doing a lot of changes as I was unclear to some of the letters in the matrix and in the cipher text too. And I've tried different combinations and this one looked right. But it was not :(.
 
 Some more checks and tries and I've managed to put the letters in place:
-[code]
+
+```
     E G R O N
     D I Y M A
     U Z F H L
     B C K P Q
     S T V W X
-
-[/code]
+```
 
 and the cipher text was: `Y DHXDMW BQLF KDYNV`=`I ALWAYS PLAY FAIRX`.
 
