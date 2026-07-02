@@ -24,7 +24,8 @@ The challenges can be accessed at <http://challenges.gynvael.stream> with the po
 ## :5000
 
 First challenge is in Flask and the problem here is the following code
-[code]
+
+```python
     @app.route('/secret')
     def secret():
       if request.remote_addr != "127.0.0.1":
@@ -34,13 +35,13 @@ First challenge is in Flask and the problem here is the following code
         return "Nope."
 
       return f"GOOD WORK! Flag is {FLAG}"
-
-[/code]
+```
 
 We should issue a request that is identified as a local one and also containing a specific custom header.
 
 The code gives us the ability to query an address we specify but how do we make sure the request is identified as a local one and additionally how we can inject a custom header if the request is build in the following way
-[code]
+
+```python
     def fetch_url(url, lang):
       o = urlparse(url)
 
@@ -53,12 +54,12 @@ The code gives us the ability to query an address we specify but how do we make 
         "",
         ""
       ])
-
-[/code]
+```
 
 For the header, we can submit a `lang` value as `'en-us\r
 X-Secret: YEAH'` so we will use the new line character that will be correctly interpreted when we build the request for the flag. And how to pass the local IP check? Well, the code is on the server so we can just query it directly by passing `127.0.0.1`. So the following request will give us the flag for this challenge.
-[code]
+
+```
     url = 'http://127.0.0.1:5000/secret'
     splitter = '\r
 '
@@ -66,13 +67,13 @@ X-Secret: YEAH'` so we will use the new line character that will be correctly in
     r = splitter.join(additional)
     data = {'url':url, 'lang':r}
     requests.post('http://challenges.gynvael.stream:5000/fetch',data=data)
-
-[/code]
+```
 
 ## :5001
 
 This one is in NodeJs & Express challenge. The problem that we need overcome.
-[code]
+
+```python
     if (req.query.secret.length > 5) {
         res.end("I don't allow it.")
         return
@@ -82,8 +83,7 @@ This one is in NodeJs & Express challenge. The problem that we need overcome.
       res.end("Wrong secret.")
       return
     }
-
-[/code]
+```
 
 The first check ensures that we do not provide more than 5 characters while the second one check if our secret is "GIVEmeTHEFlagNOW", which for sure is longer than 5 characters.
 
@@ -97,28 +97,28 @@ agNOW'`
 ## :5002
 
 Another NodeJS & Express one. Also in this one the task is clear.
-[code]
+
+```python
     if (req.query.X.length > 800) {
       const s = JSON.stringify(req.query.X)
       if (s.length > 100) {
         res.end("Go away.")
         return
       }
-
-[/code]
+```
 
 So to get past this one we need to provide a query parameter `X` that is at least 800 characters long, but when processed through `JSON.stringify` we will get at max 100 characters.
 
 The second check is that when appending `<` & `>` produce an error.
-[code]
+
+```
     try {
         const k = '<' + req.query.X + '>'
         res.end("Close, but no cigar.")
       } catch {
           res.end(FLAG)
       }
-
-[/code]
+```
 
 Reading about query object on request in [Express documentation](https://expressjs.com/en/api.html#req.query) it is very clear that it can be dangerous to use it if it's not controlled correctly for user input.
 
@@ -159,7 +159,8 @@ So the final query is:
 ## :5004
 
 In this one we have yet another prevention mechanism that forbids to query for the flag. From the code inspection we see that this time we do have an additional `verify` method that checks for existence of particular string and yet the same string is needed to be passed to get the flag.
-[code]
+
+```python
     app.use(express.text({
       verify: (req, res, body) => {
         const magic = Buffer.from('ShowMeTheFlag')
@@ -170,8 +171,6 @@ In this one we have yet another prevention mechanism that forbids to query for t
       }
     }))
 
-[/code]
-[code]
     if ((typeof req.body) !== 'string') {
         res.end("What?")
         return
@@ -181,8 +180,7 @@ In this one we have yet another prevention mechanism that forbids to query for t
       res.end(FLAG)
       return
     }
-
-[/code]
+```
 
 So what can we do here? We read the docs. What we [find out](https://expressjs.com/en/api.html#express.text) about the verify method that it in fact accept four arguments and the last one is the encoding of the body. It is not provided here. Also reading about [Buffer.from](https://nodejs.org/api/buffer.html#buffer_class_method_buffer_from_string_encoding) shows that there's also a encoding parameter that in our example is not provided and it's by default 'utf-8'. We might be getting somewhere.
 
@@ -199,7 +197,8 @@ will reveal the flag.
 ## :5005
 
 This one is slightly modified one from the previous port. The relevant part of code is this:
-[code]
+
+```
     req.youAreBanned = false
       let body = ''
       req
@@ -208,11 +207,11 @@ This one is slightly modified one from the previous port. The relevant part of c
           const o = new URLSearchParams(body)
           req.youAreBanned = o.toString().includes("ShowMeTheFlag")
         })
-
-[/code]
+```
 
 and this
-[code]
+
+```
     if (req.body.secret !== 'ShowMeTheFlag') {
         res.end("Say the magic phrase!")
         return
@@ -222,8 +221,7 @@ and this
       res.end("How about no.")
       return
     }
-
-[/code]
+```
 
 So on one hand we need to provide a `body` with a `secret` that has a value o `ShowMeTheFlag` on the other hand we do scan the body that we will be processing before we reach `post` and set a flag to disallow showing the flag when we pass this value in our request. So how we can overcome this limitation?
 
@@ -240,17 +238,17 @@ This sounds like a tough nut to crack. The default `Content-Type` for this is `a
 What we can try is this "automatic inflation of `gzip` and `deflate` encodings. Let's try with it.
 
 Let's compress the data `"secret=ShowMeTheFlag"` with `zlib` and pass it to our request.
-[code]
+
+```python
     import zlib
     a = zlib.compress(b'secret=ShowMeTheFlag')
-
-[/code]
+```
 
 and we pass this to our request as data. What we need to add for this request to be parsed correctly is a header that will indicate that the data is compressed. We do it by passing `Content-encoding` header. So the final request is:
-[code]
-    requests.post(f'http://challenges.gynvael.stream:5005/flag',data=a,headers={'Content-Type':'application/x-www-form-urlencoded; charset=utf-8','Content-encoding': 'deflate'})
 
-[/code]
+```python
+    requests.post(f'http://challenges.gynvael.stream:5005/flag',data=a,headers={'Content-Type':'application/x-www-form-urlencoded; charset=utf-8','Content-encoding': 'deflate'})
+```
 
 and with that, we will skip the filtering in the `proxy` and will get the flag.
 
@@ -269,21 +267,22 @@ The final query:
 `flag?secret1=aaa&secret2=<undefined>`
 
 The issue here was ASI or automatic semicolon insertion. If we read this [answer on SO](https://stackoverflow.com/a/2846298/4832634) at the very end we see an interesting example
-[code]
+
+```
     return
       "something";
-
-[/code]
+```
 
 will be converted to
-[code]
+
+```
     return;
       "something";
-
-[/code]
+```
 
 And how does our function looks like?
-[code]
+
+```
     const checkSecret = (secret) => {
       return
         [
@@ -292,11 +291,11 @@ And how does our function looks like?
           secret.split("").join("-")
         ].join('+')
     }
-
-[/code]
+```
 
 The same pattern. So it will in fact look like this
-[code]
+
+```
     const checkSecret = (secret) => {
       return;
         [
@@ -305,8 +304,7 @@ The same pattern. So it will in fact look like this
           secret.split("").join("-")
         ].join('+')
     }
-
-[/code]
+```
 
 and thus returning undefined.
 

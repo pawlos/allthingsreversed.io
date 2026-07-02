@@ -17,7 +17,8 @@ Blockchain. *Coin. Hot topics for today. The [22nd mission](http://gynvael.vexil
 # First failed attempt
 
 I've tried to mine SpyCoin. That would be an obvious solution to the challenge. Add a next block with a chunk that would transfer all the coins to the "Secret" account and find bytes that would give the md5-squred a valid "Spy" beginning. That failed miserably. Since it was a block above 138 I needed to match the begining of the block with "SpyCoinXoXo". Tried to do some scripts like this one:
-[code]
+
+```python
     #!/usr/bin/python
     import struct
     import hashlib
@@ -53,7 +54,7 @@ I've tried to mine SpyCoin. That would be an obvious solution to the challenge. 
     		#print b
     		if verify_block(block_hash(b)):
     			print 'Found!',i
-[/code]
+```
 
 But after some hours for fruitless searching gave up this approach. I needed a new one..
 
@@ -72,18 +73,19 @@ What would need to do is this:
 ## 1 Copy the root block
 
 This part is easy just copy over first `0x65` bytes:
-[code]
+
+```python
     current = open('current_blockchain','rb').read()
     current = bytearray(current)
 
     newone = current[0:0x64+1]
-
-[/code]
+```
 
 ## 2 Transfer the funds
 
 A bit trickier part. Let's create a helper function that will return a transfer block to the "Secret20" account:
-[code]
+
+```python
     def add_funds(src, amount):
       secret = struct.pack("8s","Secret20")
       #add transffers
@@ -93,11 +95,11 @@ A bit trickier part. Let's create a helper function that will return a transfer 
       transfer += secret #to
       transfer += struct.pack("I", amount) #amount
       return transfer
-
-[/code]
+```
 
 What we do here is creating a bytes that will encode a transfer chunk (type = `0x03`) then we specify a source wallet, destination wallet and of course the amount. Having that we can just type:
-[code]
+
+```python
     tr = bytearray()
     tr += add_funds("626973686f700000", 98830)
     tr += add_funds("6b61790000000000", 91400)
@@ -105,15 +107,15 @@ What we do here is creating a bytes that will encode a transfer chunk (type = `0
     tr += add_funds("6167656e74393900", 90210)
     tr += add_funds("646f6e706564726f", 45032)
     tr += add_funds("6e61746173686100", 500000-98830-91400-142487-90210-45032)
-
-[/code]
+```
 
 And we have 6 operations that will, if everything is right, transfer 500k SpyCoins to "Secret20" wallet.
 
 What we're missing is a signature of a block. How they are constructed? We're taking a `0x02` chunk with a previous block hash we concatenate it with this block and the md5-squared of that needs to start with "Sp", "Spy" or "SpyCoinXoXo" depending on the block number. So let's do that.
 
 First a useful function:
-[code]
+
+```python
     def find_bytes(block, block_num):
       found = None
 
@@ -127,38 +129,38 @@ First a useful function:
     			found = (''.join(map(chr,i)),h)
     			break
       return found
-
-[/code]
+```
 
 `verify_block` is taken from the original script. This function is testing all the combinations of bytes (by using `itertools.product`) until it find such combination that md5-squared will start with the appropriate prefix.
 
 With that we just write:
-[code]
+
+```python
     block_num = 1
     confirm = current[0x65:0x65+0x12]
 
     found = find_bytes(confirm[1:]+tr, block_num)
     block_num += 1
-
-[/code]
+```
 
 Append it to the chain we're building
-[code]
+
+```python
     tr += found[0]
     confirm[0] = 0x11+len(tr)
 
     hash = found[1]
     newone += confirm
     newone += tr
-
-[/code]
+```
 
 Ok, so at this point we have the same root and we have transfer all the necessary funds to the "Secret20" account. What's left? Well now we need to prove our chain is later than the current one but having the size bigger than the size of existing SpyCoin chain.
 
 ## 3 Creating filler blocks
 
 To have the bigger size, we will use the chunk type `0x00`.
-[code]
+
+```python
     while len(newone) < len(current):
       print 'Newone size: ',len(newone), 'Current: ', len(current)
       filler = bytearray()
@@ -172,16 +174,15 @@ To have the bigger size, we will use the chunk type `0x00`.
       block_num += 1
       hash = found[1]
       newone += filler
-
-[/code]
+```
 
 No magic here. We add blocks until we know we are bigger. And in each loop we create a block with a given size (starting with `0xff`) then we provide a chunk type `0x02` (previous hash) with a hash. After that a chunk type `0x00` with some "random data" and of course some needed bytes so that the hash is correct. After bytes being added, we need to correct the size (`filler[0] = len(filler)-1`) and we're done. Rinse & repeat.
 
 Save all the bytes to the new file:
-[code]
-    open('new_one','wb').write(newone)
 
-[/code]
+```python
+    open('new_one','wb').write(newone)
+```
 
 And voilà.
 

@@ -22,7 +22,8 @@ For RE (which is my main area of interest) it mostly boils down to running a bin
 The usual starting script is to create a local context and attach gdb from `pwntools`.
 
 Something along the lines:
-[code]
+
+```python
     from pwn import *
 
     t = process('./ret2win32')
@@ -30,7 +31,7 @@ Something along the lines:
     gdb.attach(t)
 
     t.interactive()
-[/code]
+```
 
 And I did that, but instead of attaching to gdb I got unexpected error
 
@@ -39,10 +40,10 @@ And I did that, but instead of attaching to gdb I got unexpected error
 Ok, no `context.terminal` set so we need to do that but what should it be in case of WSL?
 
 My first idea was to pass `wsl.exe` to this property, with additional option `-e` to indicate that we want to execute the `gdb` command.
-[code]
-    context.terminal = ['wsl.exe','-e']
 
-[/code]
+```
+    context.terminal = ['wsl.exe','-e']
+```
 
 That worked, well partially, kinda.
 
@@ -53,10 +54,10 @@ And the process hangs. Maybe it did execute `gdb` correctly but I did not get an
 Let's resort to duckduckgo and search for [wsl terminal](https://duckduckgo.com/?q=wsl+terminal). The first link it gives was something that looks promising - [wsl-terminal](https://github.com/mskyaxl/wsl-terminal).
 
 Installing the tool it gives a program - called `open-wsl` that supposed to work as a terminal emulation under wsl. Let's point our `context.terminal` to this new binary.
-[code]
-    context.terminal = ['<path-to>/open-wsl.exe','-e']
 
-[/code]
+```
+    context.terminal = ['<path-to>/open-wsl.exe','-e']
+```
 
 Executing the script gives this
 
@@ -84,7 +85,8 @@ And with that fix, our `.attach()` to gdb works!
 There's still an error that states that debugger exited! but I don't mind that, if I can use it with its full power.
 
 Final starting script would be:
-[code]
+
+```python
     from pwn import *
 
     t = process('./ret2win32')
@@ -94,7 +96,7 @@ Final starting script would be:
     gdb.attach(t)
 
     t.interactive()
-[/code]
+```
 
 Should we file an issue into `pwntools` repo? Apparently this was known as it is [fixed](https://github.com/Gallopsled/pwntools/blob/dev/pwnlib/util/proc.py#L349) in the `dev` branch but haven't been yet merged to stable.
 

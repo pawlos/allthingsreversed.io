@@ -26,10 +26,11 @@ If we we can find the cookie in Developers Tools. And in fact yes, we can see th
 ![mission17cookie](content/images/2017/10/mission17cookie.webp)
 
 If we decode that with a short python script we get:
-[code]
+
+```python
     import urllib
     urllib.unquote("6VhhU05LYPoyhOCajJ9mZw%2BdSO1%2FAj4%3D").decode('base64').encode('hex')
-[/code]
+```
 
 We can see that the amount of bytes is equal to the decoded JSON object so we can assume that this is what is stored in this cookie. Now, let's think how we can attack & exploit.
 
@@ -40,22 +41,22 @@ If we change one byte in the cookie (and encode it correctly), after we send the
 So we for sure can influence what the server receives but how to do it correctly? What we want to do is to exchange `"user"}` with `"admin"}`. But we face two issues here. First is how to change the characters, and the second one is that they are of different length. Let's deal with those separately.
 
 So let's look how this is encrypted. Not going into much details (if you want to learn I recommend - [Cryptography I](https://www.coursera.org/learn/crypto) on Coursera!) each plaintext char is xored with a key. So if we encrypt 'u' (0x75) with some byte of the key, we get:
-[code]
-    0x75 ^ k = 0x9d
 
-[/code]
+```python
+    0x75 ^ k = 0x9d
+```
 
 Let's see what would happen if we xor different letter but on the same position:
-[code]
-    0x61 ^ k = ??
 
-[/code]
+```python
+    0x61 ^ k = ??
+```
 
 From the first one we can get `k = 0x9d ^ 0x75` and if we apply this to the second one we get a formula to calculate the char:
-[code]
-    0x61 ^ 0x9d ^ 0x75 = 0x89
 
-[/code]
+```python
+    0x61 ^ 0x9d ^ 0x75 = 0x89
+```
 
 Let's test that:
 
@@ -64,7 +65,8 @@ Let's test that:
 Nice we got: "{"access_level":"aser"}" \- now repeat this for the rest of the chars (of course you can code that) so after doing this we should be able to send a {"access_level":"admin" to the server. Now for the problem of missing the one char.
 
 Actually this is even simpler than this. There's only 256 combinations that's needed to be tested so we brute-force it.
-[code]
+
+```python
     decoded_hex ="e95861534e4b60fa3284e09a8c9f66670f895fe5644e61"
     from urllib import quote
     import requests
@@ -79,7 +81,7 @@ Actually this is even simpler than this. There's only 256 combinations that's ne
     		continue
     	else:
     		print text
-[/code]
+```
 
 ![solution](content/images/2017/10/solution.png)
 

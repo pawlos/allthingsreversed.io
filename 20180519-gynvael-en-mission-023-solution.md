@@ -46,11 +46,11 @@ The other important parts are `GeneratePassword` and `CreateKey`.
 ![2018-05-19_13-13-51](content/images/2018/05/2018-05-19_13-13-51.png)
 
 The last parts of the puzzle are the `Salt` & `IV` that're defined as:
-[code]
+
+```
     HelperProgram.Salt = new byte[] { 10, 20, 30, 40, 50, 60, 70, 80};
     HelperProgram.IV = "GBVPmjy9FUDitUMeZmgUBA==";
-
-[/code]
+```
 
 Ok, we're done here. Let's find the `dbname.db.enc`.
 
