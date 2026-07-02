@@ -20,7 +20,8 @@ Ghidra supports many distinct types and setting them correctly can help understa
 ![](content/images/2024/11/image-3.png)Data Type Chooser Dialog
 
 Lets check this part of the code.
-[code]
+
+```
     switchD_00400a48::sth_interesting
                 00400ea0 e8              ??           E8h
                 00400ea1 00              ??           00h
@@ -42,22 +43,24 @@ Lets check this part of the code.
                 00400eb1 00              ??           00h
                 00400eb2 00              ??           00h
                 00400eb3 00              ??           00h
-[/code]
+```
 
 The bytes define and offset that is used to address some code section in a different part of the assembly. We can apply an int type to them for better visibility. For this example we will use Ghidra’s flat API that is available  from Python.
 
 Let’s jump to the text editor.
-[code]
+
+```
     ptr_type = getDataTypes("int")[0]
-[/code]
+```
 
 First we use the `getDataTypes` method passing the type we want to apply to our bytes. This method returns an array, so we pick the first type returned.
 
 Next thing…oh wait, that’s already it. We can use `createData` with our type to convert.
-[code]
+
+```
     for addr in range(0x00400ea0,0x00400f14,4):
         createData(toAddr(addr), ptr_type)
-[/code]
+```
 
 To convert a value to an address we can use already known helper method - `toAddr`. Let’s see this code in action.
 
