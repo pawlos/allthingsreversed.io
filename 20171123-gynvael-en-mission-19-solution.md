@@ -40,7 +40,8 @@ That's interesting. What should we xor? The first assumption was to xor the crac
 > In the final phase use a string, not a number. Try different offsets.
 
 Hmm, the only way this message is valid would be if we use `1fa8` as the key as this is the valid hex number. Also the offseting might indicate that we have a bit longer data input. Let's try with the whole file data.
-[code]
+
+```python
     data = open('788661c6a49c4e081492416bf2ce86342116bb1d_crackme.chip8','rb').read()
     pwd = "1fa8"
 
@@ -50,7 +51,7 @@ Hmm, the only way this message is valid would be if we use `1fa8` as the key as 
     	wyn += chr(ord(data[i]) ^ ord(pwd[(i+2) % len(pwd)]))
 
     print wyn
-[/code]
+```
 
 Running the script gives us the pass:
 ![m19_sol](content/images/2017/11/m19_sol.webp)

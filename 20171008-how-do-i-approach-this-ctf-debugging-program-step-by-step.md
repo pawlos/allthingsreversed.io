@@ -36,14 +36,14 @@ If you look closely you can see a pattern
 and it is repeated during the whole `setup()` method. So if we understand what one block is doing, we will understand the whole method. So let's start:
 
 What the block does it first allocates 0x14 (5*4) bytes of space. And then puts some "random" (we will later see they are not random) values in the indexes (0,1,2,3,4). So after the first block executes we do have:
-[code]
+
+```
     tab[0] = 0x01
     tab[1] = 0x81
     tab[2] = 0x65
     tab[3] = 0x0C
     tab[4] = 0x5A
-
-[/code]
+```
 
 And we repeat that pattern 31 times - with different values. And that's all - this is this scary setup function. Now let's analyze
 

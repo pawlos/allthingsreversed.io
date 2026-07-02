@@ -18,15 +18,15 @@ Prefer videos? You can also watch it - if not, continue reading.
 Mission status: <http://gynvael.vexillium.org/ext/43bf753f/mission023.txt>
 
 We are given the package that consists of one .exe file and `system.img`. The .exe looks like a .NET application (default name for Console project is `ConsoleApp1.exe`) but we should check that before we do any further analysis.
-[code]
+
+```
     ➜  23 rabin2 -I ConsoleApp1.exe
     Metadata Signature: 0x434 0x10001424a5342 12
     .NET Version: v4.0.30319
     Number of Metadata Streams: 5
     DirectoryAddress: 6c Size: 39c
     ...
-
-[/code]
+```
 
 Now we can safely assume we have a .net assembly.
 

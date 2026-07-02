@@ -11,7 +11,8 @@ feature_image: "content/images/2017/10/Zrzut-ekranu-2017-10-15-o-19.18.46.webp"
 # GynvaelEN - Mission 018 - Solution
 
 This is an another [GynvaelEN mission](https://www.youtube.com/watch?v=adHOlKKbFXM) solution. This time, the [task is simple](http://goo.gl/2MYXfu). We're given a script and we need to find the correct password to get the flag.
-[code]
+
+```
     Your flag: **$FLAG_ADMIN**
      ");
       } else {
@@ -24,8 +25,7 @@ This is an another [GynvaelEN mission](https://www.youtube.com/watch?v=adHOlKKbF
     } else {
       show_source('admin.php');
     }
-
-[/code]
+```
 
 The script is a simple MD5/SHA1 comparison that uses a weak equals operator (`==`) and we can exploit that. The additional problem here is that those hashes are quite specific. The format might be somewhat familiar. If you look closely you can notice that they are: `0e<digits>`. Apart from being a valid hash - those are valid numbers, only written in exponential form. So this is just 0 raised to a big number. So what we need to do is to find another hash that starts with `0e`. If we get that the weak comparison will return true. We could do the hashing ourself but this issue is not new. For MD5 we could do some searching on the internet and have some hits. So this is what I did and got a hit on this repository.
 

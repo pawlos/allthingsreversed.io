@@ -37,22 +37,23 @@ I've downloaded all of them and began next stage - outside Wireshark.
 Zip was password protected and having seen the "something_suspicious.png" I've immediately jump into the conclusion that this is the next step that I need to solve (it will contain the password for zip). I was even more sure that this is the thing when I saw this
 
 > xxd something_suspicious.png | more
-[code]
+
+```
     00000060: 1f13 3b37 5690 de20 0000 0023 7445 5874  ..;7V.. ...#tEXt
     00000070: 436f 6d6d 656e 7400 2d2d 2d3e 2075 6e61  Comment.---> una
     00000080: 6c70 6861 206d 7920 616c 7068 6120 3c2d  lpha my alpha <-
-
-[/code]
+```
 
 And for sure there was something with alpha when this image was displayed. So I went on a chase to remove the alpha transparency from this image. After few quick trials with Photoshop and searching for an online tool I've switched to Python & stackoverflow. With few backs and forth managed to get something working:
-[code]
+
+```python
     from PIL import Image
 
     png = Image.open('something_suspicious.png')
     background = Image.new("RGB", png.size, (0, 0, 0))
     background.paste(png)
     background.save('foo.png')
-[/code]
+```
 
 Running this script gave me this:
 

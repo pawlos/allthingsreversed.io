@@ -27,20 +27,21 @@ I needed another approach. What struck me a bit was the fact that the files are 
 Let's try this idea out.
 
 First I've came across this SO post - <https://stackoverflow.com/a/2387880/4832634> that shows how to calculate CRC32 in python. Small convert to not to read the file but use the data and we're good to go:
-[code]
+
+```python
     def crc(d):
         prev = 0
         prev = zlib.crc32(d, prev)
         return prev & 0xFFFFFFFF
-
-[/code]
+```
 
 And quick try on one of the CRCs resulted in a hit. Now how to get all of them in a nice manner. I did not one (at least in the time that I've wanted to spend on this) so I've just copy - paste them to a script from PkCrack's tool - `extract` output.
 
 ![CRCs](content/images/2017/10/CRCs.png)
 
 Having those I could write a script that would run through all 4 char printable range, calculate CRC32 and compare.
-[code]
+
+```python
     import zlib
     import itertools
     import string
@@ -67,7 +68,7 @@ Having those I could write a script that would run through all 4 char printable 
 
     print "".join(results)
     print "End!"
-[/code]
+```
 
 We got almost all the files content, all but the last one. And there's a reason for that. If I would look closely at extract output or just check the files I would have noticed that all of them are of 4 bytes. All but the last one! It's only one char so our script can't find it.
 

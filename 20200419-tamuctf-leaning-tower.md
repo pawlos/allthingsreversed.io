@@ -33,15 +33,15 @@ What's happening here is that we load `ntdll` and if that works we immediately g
 ![](content/images/2020/04/image-2.png)
 
 To know what's happening here we need to check what is this function signature.
-[code]
+
+```
     __kernel_entry NTSTATUS NtQueryInformationProcess(
     IN HANDLE           ProcessHandle,
     IN PROCESSINFOCLASS ProcessInformationClass,
     OUT PVOID           ProcessInformation,
     IN ULONG            ProcessInformationLength,
     OUT PULONG          ReturnLength);
-
-[/code]
+```
 
 In our code we can see the handle being passed as well as some additional parameters we need to decode what they mean. In our decompiled code we see value of `7` begin passed as `PROCESSINFOCLASS`. Let's look at the documentation to see what that means.
 
@@ -100,7 +100,8 @@ After we exit this function what is left is only a hash comparison
 and base on the result we either break out of the loop or continue iterating.
 
 Knowing that we can write a short python script to solve the flag for us:
-[code]
+
+```python
     hashes =  ["9033bacfd0636139084ea80aa654113f3240f7fc",
     "97f0f871be356f464bca862487e365d92fc507bb",
     "11071c464490c8baaa979bf83e098f3318b36003",
@@ -147,7 +148,6 @@ Knowing that we can write a short python script to solve the flag for us:
 
 
     print(result)
-
-[/code]
+```
 
 Running this script will give a proper flag: `flag{nice_flag}`.

@@ -22,7 +22,8 @@ One of the easier task was a basic xor with one char password. A simple brute ru
 # xorxor (crypto 25)
 
 This one was a bit more difficult as the xor key was a 4 char string. Of course it's still brutable so a short script will give us the flag but it might take a bit more time. A small observation of the included data can help us as it's clearly visible that the key would be in the higher values so we can go down from 255 rather than from 0.
-[code]
+
+```python
     import string
     import itertools
     data = open('xorxor_b8cf1bd02512e3294f069089803d3840.dms').read()
@@ -36,8 +37,7 @@ This one was a bit more difficult as the xor key was a 4 char string. Of course 
     		decipher += z
     	if "pwn{" in decipher and all(c in string.printable for c in decipher):
     		print decipher, key
-
-[/code]
+```
 
 Key used for xoring was (0x92, 0x81, 0xa7, 0xbf), and the flag: `pwn{cyber-cyber-co-z-ciebie-wyrosnie}`.
 
@@ -62,7 +62,8 @@ Upon inspection of the HTML we notice all the bits and pieces that are required 
 ![Zrzut-ekranu-2017-11-10-o-21.14.26](content/images/2017/11/Zrzut-ekranu-2017-11-10-o-21.14.26.webp)
 
 So we need to send a forged successful payment request and after that check the transaction result. We can do that with a simple Python script
-[code]
+
+```python
     import requests
     import re
 
@@ -85,7 +86,7 @@ So we need to send a forged successful payment request and after that check the 
 
     print w3.headers
     print w3.text
-[/code]
+```
 
 There are some checks in the script (like checking the User agent) but we can easily beat those. Running the script will give us the flag: `pwn{paypal_integrated_in_a_very_shitty_way_lawl}`.
 
@@ -97,7 +98,8 @@ The algo itself is simple, it xores first char, with the next one and so on. You
 ![image_preview](content/images/2017/11/image_preview.png)
 
 Short python script that reverses the process and we extract the flag:
-[code]
+
+```python
     import string
 
     inp = "\x07\x19\x15\x18\x11\x0B\x09\x04\x1B\x30\x1E\x0F\x0a\x1B\x2D\x17\x13\x13\x17\x01\x16\x18\x7D\x00"
@@ -111,8 +113,7 @@ Short python script that reverses the process and we extract the flag:
     	wynik += chr(c)
 
     print wynik[::-1]
-
-[/code]
+```
 
 `pwn{crypto_AND_reverse}`.
 
@@ -147,7 +148,8 @@ My first impression was to to understand the format completely and I started to 
 ` %14 = icmp eq i32 %13, 119`
 
 Hmm...icmp and a value (119) that looks like a valid ASCII character. Let's check what's that value is mapped to. A short `chr(119)` in python and we get `w`. Looks like we got a second char in `pwn`. Let's write a short script that will extract those and concat:
-[code]
+
+```python
     import re
 
     lines = open('converted.asm').readlines()
@@ -162,7 +164,7 @@ Hmm...icmp and a value (119) that looks like a valid ASCII character. Let's chec
     		print w
 
     print w
-[/code]
+```
 
 And we get the flag: `pwn{more_bitcode_more_fun}`.
 
