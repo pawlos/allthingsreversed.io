@@ -63,7 +63,8 @@ I had not really much knowledge how the drawing is done, but inspecting the `Pla
 ![](content/images/2019/06/plane.gif)
 
 If we go the method `FUN_000008da` we can see something similar:
-[code]
+
+```
         000008ea 23 fc 60        move.l     #0x60a40003,(VDP_CONTROL).l
                  a4 00 03
                  00 c0 00 04
@@ -91,13 +92,13 @@ If we go the method `FUN_000008da` we can see something similar:
         0000092c 33 fc 00        move.w     #0x0,(VDP_DATA).l
                  00 00 c0
                  00 00
-
-[/code]
+```
 
 Inspecting few first instructions gives us clear indication that this method prints the text that's located to the right of the image, so we can name it like that.
 
 If we do the same analysis of the `FUN_00000c60` we see similar pattern. This time
-[code]
+
+```
     undefined FUN_00000c60()
         0000028a(c)
         00000c60 72 02           moveq      #0x2,D1
@@ -105,11 +106,11 @@ If we do the same analysis of the `FUN_00000c60` we see similar pattern. This ti
         00000c64 23 fc 49        move.l     #0x49140003,(VDP_CONTROL).l
                  14 00 03
                  00 c0 00 04
-
-[/code]
+```
 
 First two lines initialize two some variables. The `D2` one will later be used to execute loop body 8 times. This is exactly what we need to print one line of the num pad. The first item in this pad has id of `0x2002` and this is what we see in the following lines:
-[code]
+
+```
             00000c6e 36 01           move.w     D1w,D3w
             00000c70 00 43 20 00     ori.w      #0x2000,D3w
             00000c74 33 c3 00        move.w     D3w,(VDP_DATA).l
@@ -119,15 +120,15 @@ First two lines initialize two some variables. The `D2` one will later be used t
                      00 00
             00000c82 52 41           addq.w     #0x1,D1w
             00000c84 51 ca ff e8     dbf        D2w,LAB_00000c6e
-
-[/code]
+```
 
 The two lines will result in `0x2002` in `D3w` and later we will add `0x1` by every loop iteration.
 
 Few lines later we have similar code that does the same for the second line. Knowing that we can rename this function to `print_num_pad`.
 
 The main function is a bit clearer now, but we still have some unclear references to unravel. One would be the memory location of `0xFF0008`. Inspecting RAM at that address does not reveal anything specific but by looking on how it is used it could be assumed that it's also a variable that contains an input. Seeing code that compares it with `0x40` (`A`) or `0x10` (`S`) is a strong indicator of that. We can take a guess and rename it to `probably_input`. Now the main loop is even more clear
-[code]
+
+```
     if ((probably_input & 0x10) != 0) {
       FUN_00000d28();
     }
@@ -136,7 +137,7 @@ The main function is a bit clearer now, but we still have some unclear reference
       FUN_00000414();
       FUN_000003a4();
     }
-[/code]
+```
 
 If our assumption is right then `FUN_00000d28` is a function that contains code responsible for executing code when we press `S` (we haven't tested that yet) and `FUN_00000414` & `FUN_000003a4` are responsible for handling when user press `A`.
 
@@ -149,23 +150,23 @@ In most cases we end up in `0xd60c` but sometimes we can end up in the same addr
 That gives as information that we can somehow control the PC and direct it to any address in the ROM. We just need to find out where we need to be. Let's start analyzing those methods.
 
 Let's start with `FUN_00000d28`. The code for this function is not long
-[code]
+
+```
     undefined FUN_00000d28()
         00000d28 30 39 00        move.w     (DAT_00ff0018).l,D0w
                  ff 00 18
         00000d2e 02 80 00        andi.l     #0xffff,D0
                  00 ff ff
         00000d34 61 00 00 02     bsr.w      FUN_00000d38
-
-[/code]
+```
 
 We know from our initial analysis that `DAT_00ff0018` holds our password. So in the next line we are limiting the entry to 2 bytes and we call another function `FUN_00000d38` remembering that in `D0w` holds the password.
-[code]
+
+```
     FUN_00000d38
         00000d38 2e 80           move.l     D0,(SP)=>local_res0
         00000d3a 4e 75           rts
-
-[/code]
+```
 
 This function is even shorter. Remembering that `D0` has our password (as a int) we can interpret this code as:
 
@@ -175,7 +176,8 @@ This function is even shorter. Remembering that `D0` has our password (as a int)
 This explain the fact that sometimes we can end up with PC equal to user specified input. Now the real question is where should we jump?
 
 Looking at this `FUN_00000d38` we can spot some unrecognized bytes
-[code]
+
+```
         00000d3c 33              ??         33h    3
         00000d3d fc              ??         FCh
         00000d3e 45              ??         45h    E
@@ -187,18 +189,17 @@ Looking at this `FUN_00000d38` we can spot some unrecognized bytes
         00000d44 4e              ??         4Eh    N
         00000d45 75              ??         75h    u
         00000d46 4e 73           rte
-
-[/code]
+```
 
 But this `rte` at the end looks oddly suspicious. Maybe we should try to decode is as opcodes? In Ghidra we can do this by using `D`. After that we get some additional code:
-[code]
+
+```
         00000d3c 33 fc 45        move.w     #0x4553,(DAT_00ff0020).l
                  53 00 ff
                  00 20
         00000d44 4e 75           rts
         00000d46 4e 73           rte
-
-[/code]
+```
 
 Interesting. We set a value `0x4553` and store it in `0xFF0020` a new memory address.
 
@@ -207,7 +208,8 @@ So providing a password as `0d3c` and pressing `S` we should get `0x4545` in RAM
 ![](content/images/2019/06/first_part.PNG)
 
 Nice! We get `0x4553` where we expect it to be! But where the flag? Since we found one part that was hidden maybe there's more? This part is not really scientific one but by scrolling through the code we see another one. At the address `0x034c` we see a similar bytes
-[code]
+
+```
         0000034c 30              ??         30h    0
         0000034d 39              ??         39h    9
         0000034e 00              ??         00h
@@ -216,11 +218,11 @@ Nice! We get `0x4553` where we expect it to be! But where the flag? Since we fou
         00000351 20              ??         20h
         00000352 41              ??         41h    A
         00000353 fa              ??         FAh
-
-[/code]
+```
 
 that turns to the code after pressing `D`.
-[code]
+
+```
         0000034c 30 39 00        move.w     (DAT_00ff0020).l,D0w
                  ff 00 20
         00000352 41 fa 2a 3c     lea        (0x2a3c,PC)=>DAT_00002d90,A0                     = 5E4Eh
@@ -237,14 +239,13 @@ that turns to the code after pressing `D`.
         00000372 23 fc 4c        move.l     #0x4c060003,(VDP_CONTROL).l
                  06 00 03
                  00 c0 00 04
-
-[/code]
+```
 
 This is interesting. We again see that memory location of `0xFF0020` is being referenced. Also we see some `XOR` with `0x5E4E` and `0x4A44` and with an unknown value that is passed in `D1w`. This one is better visible on the decompiled code here:
-[code]
-    if (((ushort)(in_D1w ^ _DAT_00ff0020 ^ DAT_00002d90) == 0x5a5a) &&((ushort)(in_D1w ^ _DAT_00ff0020 ^ DAT_00002d92) == 0x4e50)) {
 
-[/code]
+```
+    if (((ushort)(in_D1w ^ _DAT_00ff0020 ^ DAT_00002d90) == 0x5a5a) &&((ushort)(in_D1w ^ _DAT_00ff0020 ^ DAT_00002d92) == 0x4e50)) {
+```
 
 And when this condition is met we go to a function that looks like printing the flag. So we need to get this right `[0xff0020] ^ 0x5E4E == 0x5a5a` and `[0xff0020] ^ 0x4A44 == 0x4e50` we get the flag. So let's see what the value should be:
 
@@ -255,12 +256,12 @@ And when this condition is met we go to a function that looks like printing the 
 > '0x414'
 
 Ok. It should be `0x414` but for know we only know how to put `0x4553` in that field. We need to get some more hidden code. More scrolling technique and we locate the address of `0x2d86` with the following code:
-[code]
+
+```
         00002d86 32 3c 41 47     move.w     #0x4147,D1w
         00002d8a 61 00 d5 c0     bsr.w      FUN_0000034c                                     undefined FUN_0000034c()
         00002d8e 4e 75           rts
-
-[/code]
+```
 
 This is the exactly missing part that we needed. So in order to solve this we would need to perform the following combination:
 

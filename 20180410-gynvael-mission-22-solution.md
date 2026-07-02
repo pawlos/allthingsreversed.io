@@ -81,7 +81,8 @@ sp+8| sp+9| sp+10| sp+11| sp+12| sp+13| sp+14| sp+15
 ---|---|---|---|---|---|---|---
 a5| ~a5| a1| ~a1| a2| ~a2| a4| ~a4
 So every byte of the number constitutes to 2 bytes of the key. First being the original byte, second one is negated. What we also know is the last byte. Hmm, one byte of the key probably wouldn't give us much as there might be a lot of false-positives. But two might actually give us some decoded text. Let's try that.
-[code]
+
+```python
     import sys
     import string
 
@@ -100,17 +101,17 @@ So every byte of the number constitutes to 2 bytes of the key. First being the o
     	r += '    '
     if all(c in chrset for c in r):
     	print hex(i), r#, r.encode('hex')
-
-
-[/code]
+```
 
 Running it gives:
-[code]
+
+```
     0xa4 Cy     d    a:    Cy    ur    hM    Le    !
-[/code]
+```
 
 Wow. That's something readable. We're sure we on the right track! But how to get the rest of the chars? We can try bruteforcing as for every byte we get a 2 bytes of the deciphered text.
-[code]
+
+```python
     import sys
     import string
 
@@ -135,18 +136,18 @@ Wow. That's something readable. We're sure we on the right track! But how to get
     	r += deciphered[7]
     	if all(c in chrset for c in r):
     		print hex(i), r#, r.encode('hex')
+```
 
-
-[/code]
-[code]
+```
     0x1c CyBE     dO    a:c    CyBE    urIT    hMAC    LeAR    !
     0x3c Cybe     do     a: C    Cybe    urit    hMac    Lear    !
-[/code]
+```
 
 Wow. It only gave two potential results! We're almost there. By adjusting the offset we can find the rest of the values of the key.
 
 Having `ofs=4`:
-[code]
+
+```
     0x89 Cy  Jh   d  SW  a:  AZ  Cy  Jk  ur  Ao  hM  PQ  Le  VQ  !
     0x8a Cy  Ik   d  PT  a:  BY  Cy  Ih  ur  Bl  hM  SR  Le  UR  !
     0x8b Cy  Hj   d  QU  a:  CX  Cy  Hi  ur  Cm  hM  RS  Le  TS  !
@@ -161,12 +162,13 @@ Having `ofs=4`:
     0xb0 Cy  sQ   d  jn  a:  xc  Cy  sR  ur  xV  hM  ih  Le  oh  !
     0xb1 Cy  rP   d  ko  a:  yb  Cy  rS  ur  yW  hM  hi  Le  ni  !
     0xb2 Cy  qS   d  hl  a:  za  Cy  qP  ur  zT  hM  kj  Le  mj  !
-[/code]
+```
 
-Wow. This time a bit more results, but from the previous two it was almost 100% certain that the first word would be Cyber so I was looking at rows that had r as the first letter in the first group. That elimiates potential solutions to just two cases: `0xb1` and `0x91`.
+Wow. This time a bit more results, but from the previous two it was almost 100% certain that the first word would be Cyber so I was looking at rows that had r as the first letter in the first group. That eliminates potential solutions to just two cases: `0xb1` and `0x91`.
 
 And `ofs=6`:
-[code]
+
+```python
     0x89 Cy    OH d    hra:    ctCy    ceur    orhM    hcLe    ha!
     0x8b Cy    MJ d    jpa:    avCy    agur    mphM    jaLe    jc!
     0x8d Cy    KL d    lva:    gpCy    gaur    kvhM    lgLe    le!
@@ -182,13 +184,13 @@ And `ofs=6`:
     0xad Cy    kl d    LVa:    GPCy    GAur    KVhM    LGLe    LE!
     0xae Cy    ho d    OUa:    DSCy    DBur    HUhM    ODLe    OF!
     0xaf Cy    in d    NTa:    ERCy    ECur    IThM    NELe    NG!
-[/code]
+```
 
 A lot of results also for this one. Combining it with the previous results gave a bit more clarity and allowed to pick the potential results to be either `0xaf` or `0x8f`.
 
 So after running those script we were left with (LSB):
 
-0xa4, [0x1c, 0x3c], [0x91, 0xb1], [0x8f, 0xaf]
+`0xa4, [0x1c, 0x3c], [0x91, 0xb1], [0x8f, 0xaf]`
 
 One of those combination shall satisfy all the checks done prior decoding the message. What we also need to rememebr that we acutally need two numbers as an input but they are just `xor`-ed together so we can use something like `0x10`.
 

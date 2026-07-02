@@ -20,7 +20,8 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
 [Watch on YouTube](https://www.youtube.com/watch?v=o9D5iwa99B4)
 
 **Notes:** .net binary, with 3 stages, 2nd stage simple xor, 3rd stage - RC4
-[code]
+
+```python
     import base64
 
     data = [95,193,50,12,127,228,98,6,215,46,200,106,251,121,186,119,109,73,35,14,20]#base64.b64decode("")
@@ -45,7 +46,7 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
         out.append(chr(ord(char) ^ S[(S[i] + S[j]) % 256]))
 
     print(''.join(out))
-[/code]
+```
 
 **Tools used:** dnSpy, python for decoding an RC4 encoded message for stage 3
 **Tags:** dnSpy, RC4, .net, encryption
@@ -85,7 +86,8 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
 **Notes:** 3d app, dump data, import to blender
 **Tools:** x32dbg, python, blender
 **Tags:** 3d,**** x32dbg, python, blender
-[code]
+
+```python
     import struct
 
     cv = 0
@@ -126,8 +128,9 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
 
 
     print ("Vertex: {}, Indices: {}".format(cv, ci))
-[/code]
-[code]
+```
+
+```python
     import bpy
     from mathutils import Vector
     import sys
@@ -166,7 +169,7 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
 
     scene = bpy.context.scene
     scene.collection.objects.link(obj)
-[/code]
+```
 
 ## bmphide
 
@@ -177,7 +180,8 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
 **Tags:** steganography**,** dnspy
 
 [View Gist](https://gist.github.com/pawlos/a4893719aa2b36d497ab820b52204d2d)
-[code]
+
+```python
     array = [121,255,214,60,106,216,149,89,96,29,81,123,182,24,167,252,88,212,43,85,181,86,108,213,50,78,247,83,193,35,135,217,0,64,45,236,134,102,76,74,153,34,39,10,192,202,71,183,185,175,84,118,9,158,66,128,116,117,4,13,46,227,132,240,122,11,18,186,30,157,1,154,144,124,152,187,32,87,141,103,189,12,53,222,206,91,20,174,49,223,155,250,95,31,98,151,179,101,47,17,207,142,199,3,205,163,146,48,165,225,62,33,119,52,241,228,162,90,140,232,129,114,75,82,190,65,2,21,14,111,115,36,107,67,126,80,110,23,44,226,56,7,172,221,239,161,61,93,94,99,171,97,38,40,28,166,209,229,136,130,164,194,243,220,25,169,105,238,245,215,195,203,170,16,109,176,27,184,148,131,210,231,125,177,26,246,127,198,254,6,69,237,197,54,59,137,79,178,139,235,249,230,233,204,196,113,120,173,224,55,92,211,112,219,208,77,191,242,133,244,168,188,138,251,70,150,145,248,180,218,42,15,159,104,22,37,72,63,234,147,200,253,100,19,73,5,57,201,51,156,41,143,68,8,160,58]
 
     def _f(idx, num2):
@@ -201,7 +205,7 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
     	b = ((idx + 1) * 0x126b6fc5) % 256
     	k = ((idx + 2) * 0xc82c97d) % 256
     	return (b ^ k, a)
-[/code]
+```
 
 ## wopr
 
@@ -228,7 +232,8 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
 **Notes:** program that fails Ghidra disassembly, shows different disassembly than running
 **Tools:** Ida 7 Free, x32dbg, python
 **Tags:** ida, python, x32dbg
-[code]
+
+```python
     from itertools import *
     import string
 
@@ -257,8 +262,7 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
     		continue
     	if '.com' in res.lower():
     		print('{0} -> {1}'.format(key, res))
-
-[/code]
+```
 
 ## MugatuWare
 

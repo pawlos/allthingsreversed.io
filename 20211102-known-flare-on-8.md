@@ -18,7 +18,8 @@ feature_image: "content/images/2021/11/capa.webp"
 With the second challenge, it's a bit step up in the difficulty. We are given an EXE with some files (different types; images and text) that has been encrypted.
 
 Opening file in Ghidra, we can see less than 10 methods. From `entry` we can identify `main` and check what it's doing.
-[code]
+
+```
     local_c = FindFirstFileA(s_*.encrypted_0040372c,(LPWIN32_FIND_DATAA)&local_194);
     if (local_c == (HANDLE)0xffffffff) {
       FUN_004010c0(s_FindFirstFile_0040371c);
@@ -36,8 +37,7 @@ Opening file in Ghidra, we can see less than 10 methods. From `entry` we can ide
       FUN_004010c0(s_FindNextFile_0040370c);
     }
     FUN_00401160(local_8);
-
-[/code]
+```
 
 The core part is the following:
 
@@ -46,7 +46,8 @@ The core part is the following:
   * call `FUN_00401220` with the new name, original name an argument passed to the binary
 
 Cleaning up the above code, we can get the following, much more readable version
-[code]
+
+```
     File = FindFirstFileA(s_*.encrypted_0040372c,(LPWIN32_FIND_DATAA)&local_194);
     if (hFile == (HANDLE)0xffffffff) {
       exit(s_FindFirstFile_0040371c);
@@ -64,11 +65,11 @@ Cleaning up the above code, we can get the following, much more readable version
       exit(s_FindNextFile_0040370c);
     }
     print_stats(cnt);
-
-[/code]
+```
 
 `decrypt_files` is the function we want to focus and check the code (again, after a clean up) we can see that the main routine is simple `decrypt` function written as follow
-[code]
+
+```
     void __cdecl decrypt(char *dst,char *src)
 
     {
@@ -82,19 +83,19 @@ Cleaning up the above code, we can get the following, much more readable version
       }
       return;
     }
-
-[/code]
+```
 
 The function works in chunks of 8 bytes and transforms them according the the above formula. This actually might be a bit confusing with the `shift`-s, and `or`-s, but if we would look at the assembly (which is sometimes better - see [https://allthingsreversed.io/dont-trust-the-decompilers/](20210517-dont-trust-the-decompilers.md)) it's clear that the routine is build from three simple opcodes: `xor`, `rol` and `sub`.
 
 Simplifying, each character is processed in the following way:
-[code]
-    dst[j] = rol(inp[j] ^ key[j], j) - j # j goes from 0 to 7
 
-[/code]
+```
+    dst[j] = rol(inp[j] ^ key[j], j) - j # j goes from 0 to 7
+```
 
 `Rol` (and `ror`) are not available in python but we can write them using simple lambda:
-[code]
+
+```python
     ror = lambda val, r_bits, max_bits: \
         ((val & (2**max_bits-1)) >> r_bits%max_bits) | \
         (val << (max_bits-(r_bits%max_bits)) & (2**max_bits-1))
@@ -102,8 +103,7 @@ Simplifying, each character is processed in the following way:
     rol = lambda val, r_bits, max_bits: \
         (val << r_bits%max_bits) & (2**max_bits-1) | \
         ((val & (2**max_bits-1)) >> (max_bits-(r_bits%max_bits)))
-
-[/code]
+```
 
 To use them, we need to provide the additional information as 3rd parameter - size of the data - in this case - 8 bits).
 
@@ -114,13 +114,13 @@ Let's focus on the encrypted files. We have, `cicero.txt.encrypted`, `commandovm
 Some of those images, are known FlareVM images that we could find and extract password for the encryption. But we have a simpler sample. `latin_alphabet.txt.encrypted`.
 
 If we consider the file name to be telling the truth, we should have all the Latin letters inside this file. Let's see what we will get if we can reverse the routine and get the password (knowing the output and the input):
-[code]
+
+```python
     def extract_key(dst, inp):
         key = [None]*len(inp)
         for j in range(8):
             key[j] = ror(inp[j] + j,j) ^ dst[j]
         return key
-
-[/code]
+```
 
 If we pass our encrypted `latin_alphabet.txt.encrypted` and potential input `"ABCDEFGHIJKLMNOPQRSTUVWXYZ"` we can retrieve the key: `No1Trust`. Having that, we can decode the rest of the files and obtain the flag: `(>0_0)> You_Have_Awakened_Me_Too_Soon_EXE@flare-on.com <(0_0<)`. Solved.
