@@ -271,7 +271,8 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
 **Notes:** Malware with broken imports, XTEA used as an algorithm to encrypt GIF files.
 **Tools:** Ghidra, x32dbg, python
 **Tags:** mugatu, xtea,
-[code]
+
+```python
     from http.server import HTTPServer, BaseHTTPRequestHandler
     import base64
     from io import BytesIO
@@ -302,7 +303,7 @@ So here's my notes for the 11 tasks (the post will be updated as a publish the r
 
     httpd = HTTPServer(('localhost', 80), SimpleHTTPRequestHandler)
     httpd.serve_forever()
-[/code]
+```
 
 [View Gist](https://gist.github.com/pawlos/e34876102af6cdcff63705ca27ee2a79)
 
