@@ -28,7 +28,8 @@ While Ghidra includes a comprehensive list of common names and values, we often 
 ![](content/images/2024/11/image.webp)Initial disassembly code
 
 We can start the script by loading a list of hashes with their corresponding names. Here’s a list that we can use to feed into our script...
-[code]
+
+```
     # C:\Windows\System32\kernel32.dll
     AcquireSRWLockExclusive,0x4784e83e
     AcquireSRWLockShared,0x23c00487
@@ -43,10 +44,11 @@ We can start the script by loading a list of hashes with their corresponding nam
     AddRefActCtx,0x5d41574a
     AddSIDToBoundaryDescriptor,0x2a3a39ad
     ...
-[/code]
+```
 
 Saving this into `api_hashes.txt` we can move to the script.
-[code]
+
+```
     from ghidra.app.cmd.equate import SetEquateCmd
     from os import path
 
@@ -56,21 +58,23 @@ Saving this into `api_hashes.txt` we can move to the script.
     data = {}
     with open(file_name,'r') as f:
       data = dict([(v,k) for k,v in [l.split(',') for l in f.read().splitlines() if '#' not in l]])
-[/code]
+```
 
 This part of the script will read the aforementioned file and populate the variable `dict` with API hashes as keys and their corresponding names as values. Additionally, lines that start with `#` will be skipped, as these are provided in the file as comments.
 
 Once this setup is complete, we can start replacing hash values in the disassembly. In this example, the hashes appear at regular intervals, so we can use a simple loop with a predefined step. In a more complex scenario, we would need a more sophisticated approach to handle all cases.
-[code]
+
+```
     start_addr = 0x2ba
     end_addr = 0x66c
     step = 0x16
     for addr in range(start_addr, end_addr+1, step):
        #do the replace - code to follow
-[/code]
+```
 
 To replace a value with a name, we will use `SetEquateCmd` Ghidra APIs. But to use it, we need a couple of values.
-[code]
+
+```
     i = getInstructionAt(toAddr(addr))
     v = i.getScalar(1)
     key = v.toString(16, False, False, '0x', '')
@@ -78,14 +82,15 @@ To replace a value with a name, we will use `SetEquateCmd` Ghidra APIs. But to u
       continue
     name = data[key]
     e = SetEquateCmd(name, toAddr(addr), 1, v.getValue())
-[/code]
+```
 
 First, we extract the instruction at a specific address using `getInstructionAt` in conjunction with `toAddr`, which converts a number to an address.
 
 Next, we extract the hash used in the instruction `MOV dword ptr [RBP + local_214], 0x5c856c47`. Based on that value, we can find the corresponding name to replace the hash. Finally, we create a `SetEquateCmd` using the information we’ve gathered.
 
 To apply the change, we call `e.applyTo(currentProgram)`. And that’s it—the script is short but effective.
-[code]
+
+```
     from ghidra.app.cmd.equate import SetEquateCmd
     from os import path
 
@@ -108,7 +113,7 @@ To apply the change, we call `e.applyTo(currentProgram)`. And that’s it—the 
         name = data[key]
         e = SetEquateCmd(name, toAddr(addr), 1, v.getValue())
         e.applyTo(currentProgram)
-[/code]
+```
 
 We need to save it along with the `api_hashes.txt` file and run.
 
