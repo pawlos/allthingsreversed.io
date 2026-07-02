@@ -24,7 +24,8 @@ Driver has much more interesting code. From the function at `0x1400011b0` we can
 The method that is being called, does some `magic` on the bytes in the driver's memory where some driver's code was located as well as an encrypted flag object.
 
 The call that we saw in the exe, with an id of `0x222080` is also interesting. It's different from the other ones. It checks the `flags` set by the other functions and returns `0` if the first byte in specific memory location starts with `hitcon`. This is undoubtedly our flag checker.
-[code]
+
+```
     if (uVar2 != 0) {
       valid = true;
       i = 0;
@@ -44,8 +45,7 @@ The call that we saw in the exe, with an id of `0x222080` is also interesting. I
         break;
       }
     }
-
-[/code]
+```
 
 At the time, it wasn't clear what needed to be done, but the team decided to give it a shot and just run those other functions from the driver.
 
@@ -58,7 +58,8 @@ I've taken a manual approach in this part. Assuming there's only one valid order
 So in this part, see doing the following: Load the driver, run the application with the next IOCTL ID, and if it crash, rinse and repeat. If not, note down the message and move on to the next level.
 
 Doing those checks in the VM, I've managed to reconstruct the order to be: `72601435`. Complete program:
-[code]
+
+```
     #include <stdio.h>
     #include <Windows.h>
 
@@ -111,8 +112,7 @@ Doing those checks in the VM, I've managed to reconstruct the order to be: `7260
 
     	return 0;
     }
-
-[/code]
+```
 
 The final problem is that the flag, is never returned by the driver. It sits in the memory. Since we are running in the VM, we could dump the VMs memory and search for `hitcon`. This is (more or less what I did) and the flag was there:
 

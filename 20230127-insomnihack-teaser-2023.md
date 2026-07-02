@@ -45,7 +45,8 @@ Copied the decompiled source code from Ghidra and started to remove unneeded lin
 ![](content/images/2023/01/image-3.png)'A' is used in 4 different spots in the final flag
 
 Again, lazy approach won.
-[code]
+
+```python
     flag = {
         0x0: 'I', 0x1: 'N', 0x15: 'N', 2: 'S', 3: '{', 4: 'A',
         9: 'A', 0xc: 'A', 0x33: 'A', 5: 'u', 6: 'T', 0x12: 'T',
@@ -64,7 +65,7 @@ Again, lazy approach won.
         s += flag[i]
     print(s)
 
-[/code]
+```
 
 This will give the flag: `INS{AuT0MAtEALLth3Th1NGGZ_L1k3_THE_l33t_R3V3rSER_U_Are}`.
 
@@ -79,11 +80,11 @@ This was an 64-bit ELF binary, written in C++.
 We could easily navigate to the `main` method, where we could immediately see some interesting strings: "Enter license", "You can activate your license with the following code: ".
 
 Casually checking the functions in `main` we can spot, what appears to be a hash (and many more later)
-[code]
+
+```
       FUN_00107234(local_88,local_68);
       cVar1 = FUN_001078ac(local_88,"7951276d108732f685ad39766351430a193de32d");
-
-[/code]
+```
 
 `FUN_00107234` is a probably a function calculating the hash and by going inside (few levels) we can spot SHA-1 initial values
 
@@ -134,15 +135,16 @@ And each of the inputs, are passed to each of the function pointers, spawn in a 
 The first 15-char long part of the input shall be equal to the `xor` result from function 1. The second, 15-char long part of the input, shall satisfy the "complex" logical expression from function 2. The last 15-char long part of the input, shall satisfy the hashes.
 
 Starting from part 1:
-[code]
-    ''.join([chr(x ^ y) for x,y in zip(b'rev_insomnihack',b";+%$/\x1c@\\2,]\x0b*'[")])
 
-[/code]
+```python
+    ''.join([chr(x ^ y) for x,y in zip(b'rev_insomnihack',b";+%$/\x1c@\\2,]\x0b*'[")])
+```
 
 = `INS{Fr33_B4cKD0`
 
 For the second part, z3 will help us:
-[code]
+
+```python
     import z3
 
     input = [z3.BitVec('a'+str(i), 32) for i in range(15)]
@@ -169,13 +171,13 @@ For the second part, z3 will help us:
     s.check()
     m = s.model()
     print(''.join([chr(m[c].as_long()) for c in input]))
-
-[/code]
+```
 
 = `0rEd_License_Fo`
 
 Lastly, part 3:
-[code]
+
+```python
     import hashlib
     import itertools
     import string
@@ -210,7 +212,7 @@ Lastly, part 3:
                 print(f'Decoded: {s} at {hasesh.index(digest)}')
                 break
 
-[/code]
+```
 
 = `R_3vEry0ne_FFS}`
 

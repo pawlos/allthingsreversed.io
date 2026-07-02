@@ -19,16 +19,17 @@ If you apply the opcodes definition to the given firmware you will start reconst
 It's not hard at all as all the information is given and not obfuscated at all.
 
 So for example the lines:
-[code]
+
+```
     0 LOAD_CONST               1
     3 LOAD_ATTR                0
     6 LOAD_CONST               2
     9 CALL_FUNCTION            1
-
-[/code]
+```
 
 can be written in python as `"4e5d4e92865a4e495a86494b5a5d49525261865f5758534d4a89".decode('hex')`. If we follow that for the rest of the file we are able to reconstruct the original function as:
-[code]
+
+```python
     def check_password(s):
         good = "4e5d4e92865a4e495a86494b5a5d49525261865f5758534d4a89".decode('hex')
         if len(s) != len(good):
@@ -45,10 +46,11 @@ can be written in python as `"4e5d4e92865a4e495a86494b5a5d49525261865f5758534d4a
             result.append(cs==ord(cg))
 
         return all(result)
-[/code]
+```
 
 And if we want to find out the password we need to create a reverse function.
-[code]
+
+```python
     def check_password(s):
         good = "4e5d4e92865a4e495a86494b5a5d49525261865f5758534d4a89".decode('hex')
         if len(s) != len(good):
@@ -79,6 +81,6 @@ And if we want to find out the password we need to create a reverse function.
 
     print check_password(reverse_password())
 
-[/code]
+```
 
 If we run this, we will get: `huh, that actually worked!` which is the mission password.

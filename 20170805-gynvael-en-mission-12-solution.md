@@ -30,7 +30,8 @@ Since there are not so many keys used in the dumped data we can map them manuall
 We need to handle Caps (press - `0x58` & release `0xF0 0x58`), Left Shift (press - `0x12` & release `0xF0 0x12`) and Right Shift (press - `0x59` & release `0xF0 0x59`) and change the casing accordingly.
 
 Full solution (not very efficient) is here:
-[code]
+
+```python
     #http://gynvael.vexillium.org/ext/a5da6349803f65783958b51c3b9fd15c3c35c0d5_mission012.txt
     codes = "58 f0 58 1b f0 1b 58 f0 58 44 f0 44 2d f0 2d 2d f0 2d 35 f0 35 41 f0 41 29 f0 29 59 43 f0 43 f0 59 29 f0 29 23 f0 23 44 f0 44 31 f0 31 52 f0 52 2c f0 2c 29 f0 29 1b f0 1b 4d f0 4d 24 f0 24 1c f0 1c 42 f0 42 29 f0 29 12 42 f0 42 f0 12 24 f0 24 35 f0 35 32 f0 32 44 f0 44 1c f0 1c 2d f0 2d 23 f0 23 49 f0 49".replace(" ","").decode('hex')
 
@@ -71,7 +72,7 @@ Full solution (not very efficient) is here:
 
     print result
 
-[/code]
+```
 
 After running the script we get the password: `Sorry, I don't speak Keyboard.`
 
