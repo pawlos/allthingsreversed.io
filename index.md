@@ -1,5 +1,6 @@
 # Blog Index
 
+- 2026-07-06 - [Structure-aware fuzzing with AFL++ and SharpFuzz](20260706-structure-aware-fuzzing.md)
 - 2026-06-23 - [Corpus Delicti: Infinite Loops — NCalc case](20260623-corpus-delicti-infinite-loops-ncalc-case.md)
 - 2026-03-08 - [A 29-Year-Old Bug in Quake II - Hunting a 64-bit Porting Issue in ref_soft](20260308-quake2-64bit-sizeof-bug.md)
 - 2026-03-08 - [Fuzzing .NET Libraries with AFL++ and SharpFuzz](20260308-fuzzing-dotnet-libraries.md)
